@@ -11,6 +11,18 @@ enum WatchMessageKey: String {
     case climbRecord = "climbRecord"
     case todayClimbCount = "todayClimbCount"
     case todayTotalDuration = "todayTotalDuration"
+    
+    // Route fields
+    case climbType = "climbType"
+    case difficulty = "difficulty"
+    case completionStatus = "completionStatus"
+    case isStarred = "isStarred"
+    case locationName = "locationName"
+    case isOutdoor = "isOutdoor"
+    case routeLogs = "routeLogs"
+    
+    // Cheer
+    case cheerFromUser = "cheerFromUser"
 }
 
 enum WatchMessageType: String, Codable {
@@ -18,6 +30,8 @@ enum WatchMessageType: String, Codable {
     case sessionStarted = "sessionStarted"
     case sessionEnded = "sessionEnded"
     case recordSync = "recordSync"
+    case routeLogged = "routeLogged"          // Watch → iPhone: single route marked
+    case cheerNotification = "cheerNotification" // iPhone → Watch: someone cheered
 }
 
 struct RealtimeData: Codable {
@@ -55,6 +69,77 @@ struct RealtimeData: Codable {
             timestamp: Date(timeIntervalSince1970: ts),
             todayClimbCount: dictionary[WatchMessageKey.todayClimbCount.rawValue] as? Int ?? 0,
             todayTotalDuration: dictionary[WatchMessageKey.todayTotalDuration.rawValue] as? TimeInterval ?? 0
+        )
+    }
+}
+
+/// Structured route log data for Watch ↔ iPhone sync
+struct RouteLogData: Codable {
+    var climbType: String
+    var difficulty: String
+    var completionStatus: String
+    var isStarred: Bool
+    var timestamp: Date
+}
+
+/// Session end payload helper
+struct ClimbSessionData {
+    var recordId: UUID
+    var startTime: Date
+    var endTime: Date
+    var duration: TimeInterval
+    var averageHeartRate: Double
+    var maxHeartRate: Double
+    var minHeartRate: Double
+    var calories: Double
+    var heartRateSamples: [HeartRateSample]
+    var climbType: String
+    var difficulty: String?
+    var completionStatus: String
+    var isStarred: Bool
+    var locationName: String?
+    var isOutdoor: Bool
+    var routeLogs: [RouteLogData]
+    
+    static func from(message: [String: Any]) -> ClimbSessionData? {
+        let recordId = (message["recordId"] as? String).flatMap { UUID(uuidString: $0) } ?? UUID()
+        let startTime = (message["startTime"] as? TimeInterval).map { Date(timeIntervalSince1970: $0) } ?? Date()
+        let endTime = (message["endTime"] as? TimeInterval).map { Date(timeIntervalSince1970: $0) } ?? Date()
+        let duration = message["duration"] as? TimeInterval ?? 0
+        let avgHR = message["averageHeartRate"] as? Double ?? 0
+        let maxHR = message["maxHeartRate"] as? Double ?? 0
+        let minHR = message["minHeartRate"] as? Double ?? 0
+        let calories = message["calories"] as? Double ?? 0
+        
+        var samples: [HeartRateSample] = []
+        if let samplesString = message["heartRateSamples"] as? String,
+           let data = samplesString.data(using: .utf8) {
+            samples = (try? JSONDecoder().decode([HeartRateSample].self, from: data)) ?? []
+        }
+        
+        var routes: [RouteLogData] = []
+        if let routesString = message[WatchMessageKey.routeLogs.rawValue] as? String,
+           let data = routesString.data(using: .utf8) {
+            routes = (try? JSONDecoder().decode([RouteLogData].self, from: data)) ?? []
+        }
+        
+        return ClimbSessionData(
+            recordId: recordId,
+            startTime: startTime,
+            endTime: endTime,
+            duration: duration,
+            averageHeartRate: avgHR,
+            maxHeartRate: maxHR,
+            minHeartRate: minHR,
+            calories: calories,
+            heartRateSamples: samples,
+            climbType: message[WatchMessageKey.climbType.rawValue] as? String ?? "indoorBoulder",
+            difficulty: message[WatchMessageKey.difficulty.rawValue] as? String,
+            completionStatus: message[WatchMessageKey.completionStatus.rawValue] as? String ?? "completed",
+            isStarred: message[WatchMessageKey.isStarred.rawValue] as? Bool ?? false,
+            locationName: message[WatchMessageKey.locationName.rawValue] as? String,
+            isOutdoor: message[WatchMessageKey.isOutdoor.rawValue] as? Bool ?? false,
+            routeLogs: routes
         )
     }
 }

@@ -15,6 +15,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             profileSection
+            notificationSection
             devicesSection
             detectionSection
             dataSection
@@ -43,6 +44,31 @@ struct SettingsView: View {
             }
         } header: {
             Text("个人信息")
+                .foregroundStyle(TopOutTheme.textSecondary)
+        }
+    }
+
+    // MARK: - Notifications
+
+    private var notificationSection: some View {
+        Section {
+            NavigationLink(destination: NotificationSettingsView()) {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(TopOutTheme.accentGreen.opacity(0.15))
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "bell.badge.fill")
+                            .font(.subheadline)
+                            .foregroundStyle(TopOutTheme.accentGreen)
+                    }
+                    Text("通知设置")
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                }
+            }
+            .listRowBackground(TopOutTheme.backgroundCard)
+        } header: {
+            Text("通知")
                 .foregroundStyle(TopOutTheme.textSecondary)
         }
     }

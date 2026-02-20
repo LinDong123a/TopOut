@@ -187,6 +187,7 @@ final class ClimbSessionManager: ObservableObject {
     
     func endClimbing() {
         guard isSessionActive else { return }
+        let now = Date()
         
         // Build summary before stopping
         summaryDuration = elapsedTime
@@ -203,6 +204,31 @@ final class ClimbSessionManager: ObservableObject {
         
         todayClimbCount += routeLogs.count
         todayTotalDuration += elapsedTime
+        
+        // Build route log data for sync
+        let routeLogData = routeLogs.map { log in
+            RouteLogData(
+                climbType: log.type.rawValue,
+                difficulty: log.difficulty,
+                completionStatus: log.status.rawValue,
+                isStarred: log.isStarred,
+                timestamp: log.timestamp
+            )
+        }
+        
+        // Build and send record to iPhone
+        let record = ClimbRecord(
+            startTime: now.addingTimeInterval(-elapsedTime),
+            endTime: now,
+            duration: elapsedTime,
+            averageHeartRate: summaryAvgHR,
+            maxHeartRate: summaryMaxHR,
+            calories: 0,
+            heartRateSamples: samples,
+            climbType: scene == .outdoor ? "outdoor" : "indoor",
+            isOutdoor: scene == .outdoor
+        )
+        connectivity.sendSessionEnded(record: record, routeLogs: routeLogData)
         
         // Simulate sync
         syncedToPhone = false
@@ -228,23 +254,13 @@ final class ClimbSessionManager: ObservableObject {
         let log = RouteLog(type: type, difficulty: difficulty, status: status, isStarred: starred, timestamp: Date())
         routeLogs.append(log)
         
-        // Send to phone
-        let message: [String: Any] = [
-            "type": "routeLogged",
-            "climbType": type.rawValue,
-            "difficulty": difficulty,
-            "status": status.rawValue,
-            "starred": starred,
-            "timestamp": Date().timeIntervalSince1970
-        ]
-        connectivity.sendRealtimeData(RealtimeData(
-            heartRate: heartRate,
-            climbState: climbState,
-            duration: elapsedTime,
-            timestamp: Date(),
-            todayClimbCount: todayClimbCount + routeLogs.count,
-            todayTotalDuration: todayTotalDuration + elapsedTime
-        ))
+        // Send route log to phone via dedicated message type
+        connectivity.sendRouteLogged(
+            climbType: type.rawValue,
+            difficulty: difficulty,
+            status: status.rawValue,
+            starred: starred
+        )
         
         WKInterfaceDevice.current().play(.success)
     }

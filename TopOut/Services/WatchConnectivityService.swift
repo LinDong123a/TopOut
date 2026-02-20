@@ -9,6 +9,7 @@ final class WatchConnectivityService: NSObject, ObservableObject {
     @Published var realtimeData: RealtimeData?
     @Published var isSessionActive = false
     @Published var pendingSessionData: ClimbSessionData?
+    @Published var latestRouteLogs: [RouteLogData] = []
     
     private var session: WCSession?
     private var modelContext: ModelContext?
@@ -28,6 +29,28 @@ final class WatchConnectivityService: NSObject, ObservableObject {
         self.modelContext = context
     }
     
+    // MARK: - Send to Watch
+    
+    /// Send cheer notification to Watch
+    func sendCheerNotification(fromUser: String) {
+        let message: [String: Any] = [
+            WatchMessageKey.messageType.rawValue: WatchMessageType.cheerNotification.rawValue,
+            WatchMessageKey.cheerFromUser.rawValue: fromUser,
+            WatchMessageKey.timestamp.rawValue: Date().timeIntervalSince1970
+        ]
+        guard let session, session.isReachable else {
+            // Use transferUserInfo for guaranteed delivery
+            session?.transferUserInfo(message)
+            return
+        }
+        session.sendMessage(message, replyHandler: nil) { [weak self] _ in
+            // Fallback to transferUserInfo
+            self?.session?.transferUserInfo(message)
+        }
+    }
+    
+    // MARK: - Handle incoming
+    
     private func handleMessage(_ message: [String: Any]) {
         guard let typeRaw = message[WatchMessageKey.messageType.rawValue] as? String,
               let type = WatchMessageType(rawValue: typeRaw) else { return }
@@ -41,15 +64,34 @@ final class WatchConnectivityService: NSObject, ObservableObject {
                 
             case .sessionStarted:
                 self?.isSessionActive = true
+                self?.latestRouteLogs = []
                 
             case .sessionEnded:
                 self?.isSessionActive = false
-                // Instead of auto-saving, store pending data for ClimbFinishView
                 self?.pendingSessionData = ClimbSessionData.from(message: message)
                 
             case .recordSync:
-                // Background sync — save directly
                 self?.saveRecord(from: message)
+                
+            case .routeLogged:
+                // Single route logged on Watch
+                if let climbType = message[WatchMessageKey.climbType.rawValue] as? String,
+                   let difficulty = message[WatchMessageKey.difficulty.rawValue] as? String,
+                   let status = message[WatchMessageKey.completionStatus.rawValue] as? String,
+                   let starred = message[WatchMessageKey.isStarred.rawValue] as? Bool,
+                   let ts = message[WatchMessageKey.timestamp.rawValue] as? TimeInterval {
+                    let route = RouteLogData(
+                        climbType: climbType,
+                        difficulty: difficulty,
+                        completionStatus: status,
+                        isStarred: starred,
+                        timestamp: Date(timeIntervalSince1970: ts)
+                    )
+                    self?.latestRouteLogs.append(route)
+                }
+                
+            case .cheerNotification:
+                break // iPhone doesn't handle incoming cheers
             }
         }
     }
@@ -81,7 +123,13 @@ final class WatchConnectivityService: NSObject, ObservableObject {
             maxHeartRate: maxHR,
             minHeartRate: minHR,
             calories: calories,
-            heartRateSamples: samples
+            heartRateSamples: samples,
+            climbType: message[WatchMessageKey.climbType.rawValue] as? String ?? "indoorBoulder",
+            difficulty: message[WatchMessageKey.difficulty.rawValue] as? String,
+            completionStatus: message[WatchMessageKey.completionStatus.rawValue] as? String ?? "completed",
+            isStarred: message[WatchMessageKey.isStarred.rawValue] as? Bool ?? false,
+            locationName: message[WatchMessageKey.locationName.rawValue] as? String,
+            isOutdoor: message[WatchMessageKey.isOutdoor.rawValue] as? Bool ?? false
         )
         
         modelContext.insert(record)
@@ -95,10 +143,17 @@ extension WatchConnectivityService: WCSessionDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.isReachable = session.isReachable
         }
+        if let error {
+            print("[WatchConnectivity] Activation error: \(error)")
+        }
     }
     
-    func sessionDidBecomeInactive(_ session: WCSession) {}
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        print("[WatchConnectivity] Session became inactive")
+    }
+    
     func sessionDidDeactivate(_ session: WCSession) {
+        // Re-activate for multi-watch support
         session.activate()
     }
     
@@ -119,5 +174,9 @@ extension WatchConnectivityService: WCSessionDelegate {
     
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         handleMessage(userInfo)
+    }
+    
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        handleMessage(applicationContext)
     }
 }

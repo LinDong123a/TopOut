@@ -9,6 +9,8 @@ struct LiveDashboardView: View {
     @State private var showGymLive = false
     @State private var showSpectate = false
     @State private var showGymSelector = false
+    @State private var showNotifications = false
+    @StateObject private var notificationStore = NotificationStore.shared
     @State private var selectedGymName = "岩时攀岩馆（望京店）"
     @State private var appeared = false
     @State private var elementsAppeared = [false, false, false, false, false]
@@ -43,6 +45,17 @@ struct LiveDashboardView: View {
             }
             .padding(.bottom, 16)
             .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+        .sheet(isPresented: $showNotifications) {
+            NavigationStack {
+                NotificationCenterView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("关闭") { showNotifications = false }
+                                .foregroundStyle(TopOutTheme.textSecondary)
+                        }
+                    }
+            }
         }
         .sheet(isPresented: $showSpectate) {
             SpectateView()
@@ -203,6 +216,21 @@ struct LiveDashboardView: View {
                     )
                 }
                 .transition(.scale.combined(with: .opacity))
+            }
+
+            // Notification bell
+            Button { showNotifications = true } label: {
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: "bell.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(TopOutTheme.textSecondary)
+                    if notificationStore.unreadCount > 0 {
+                        Circle()
+                            .fill(TopOutTheme.heartRed)
+                            .frame(width: 8, height: 8)
+                            .offset(x: 2, y: -2)
+                    }
+                }
             }
 
             Image(systemName: viewModel.isConnected
