@@ -39,30 +39,8 @@ struct LoginView: View {
                 
                 // Logo
                 VStack(spacing: 14) {
-                    ZStack {
-                        Circle()
-                            .fill(
-                                RadialGradient(
-                                    colors: [TopOutTheme.accentGreen.opacity(0.18), TopOutTheme.earthBrown.opacity(0.06)],
-                                    center: .center, startRadius: 8, endRadius: 44
-                                )
-                            )
-                            .frame(width: 84, height: 84)
-                        
-                        Image(systemName: "figure.climbing")
-                            .font(.system(size: 38, weight: .medium))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [TopOutTheme.accentGreen, TopOutTheme.sageGreen],
-                                    startPoint: .topLeading, endPoint: .bottomTrailing
-                                )
-                            )
-                    }
-                    
-                    Text("TopOut")
-                        .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundStyle(TopOutTheme.textPrimary)
-                    
+                    LogoView(size: 140)
+
                     Text("攀岩实时记录")
                         .font(.subheadline)
                         .foregroundStyle(TopOutTheme.textTertiary)
@@ -190,6 +168,7 @@ struct LoginView: View {
     }
     
     private func submit() {
+        guard canSubmit else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         if code == "888" {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) { authService.isLoggedIn = true }
