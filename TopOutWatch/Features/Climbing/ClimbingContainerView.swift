@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ClimbingContainerView: View {
     @EnvironmentObject var session: ClimbSessionManager
-    @State private var selectedPage = 0
+    @State private var selectedPage = 1
     
     var body: some View {
         ZStack {
