@@ -1,0 +1,717 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00777F64224552E5DFF56B1D /* ClimbingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F545DC58F03238C5CBDC969 /* ClimbingView.swift */; };
+		015CBE9E751938E641FADADE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED162391E818450D6252847 /* AuthService.swift */; };
+		09CC68961E0BE7A8D2D011A6 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543A247D6B898164380A6DE /* APIService.swift */; };
+		0BD34188D149BDA1DE571C10 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
+		10708F1CD1646AF35E16B466 /* PhoneConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213AC6D31349B0A0E478872D /* PhoneConnectivityService.swift */; };
+		1759F2A7B1D4D322AC73D7BE /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */; };
+		1BA5CC649A00CDEFEF62911A /* PrivacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */; };
+		1F71BA5D58EF0700FC72D8A1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06DE1A996FCB7BC592CA5FA /* LocationService.swift */; };
+		2AC3B13233F78EA531C0308A /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */; };
+		2FC19E94490ED821665070C1 /* LiveDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */; };
+		32116D60D51EB55649F38A00 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872242F87A1511886A4486C7 /* WatchMessage.swift */; };
+		32C4772D14E4DBEB48723627 /* ClimbRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F1505365D04FB7CA0811E /* ClimbRecord.swift */; };
+		35CB4F11B8004968EAFD1D28 /* GymLiveScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E4103F2EB7BE1B0370235F /* GymLiveScreenView.swift */; };
+		3BF5228CBCBD42D1A53EA80F /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872242F87A1511886A4486C7 /* WatchMessage.swift */; };
+		401BE971E08EF1858AD14891 /* TopOutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */; };
+		4C125525ECD5B4FB6B64E5C7 /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */; };
+		4C793EA72B19F816660E57F1 /* LiveDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */; };
+		5EF0A4D305E1975E58B13AE4 /* PrivacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */; };
+		5F47A0E482E249FD1C6B23AC /* ClimbRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F1505365D04FB7CA0811E /* ClimbRecord.swift */; };
+		71F28BD67F9D35A3A6C9FD6C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
+		81E9F75E492B1B5D0A4795BA /* ClimbingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */; };
+		84EE6EBF705BF22285F56A1F /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */; };
+		88EF839BCDB6C6BF18089E91 /* WatchConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */; };
+		8AE5E2A707C16E8F3854B5F7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE49D72B65C204E06C0BAB3 /* LoginView.swift */; };
+		917525EB4D93F13ABC52BD8C /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */; };
+		927646D137F8790543C48272 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C5F7D119C0B3B6766D4264 /* SettingsView.swift */; };
+		92A59B0AF697034C5596C5C9 /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
+		94957C18C5CA9E313E726C70 /* ClimbDetectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5490AE490926578365B75CA7 /* ClimbDetectionService.swift */; };
+		9BB570537190D04667160313 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC9A891A58A28C337FC853D /* HealthKitService.swift */; };
+		A849435553E19745D21431FE /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */; };
+		AB615E0C14B6EAFDA18D1212 /* TopOutWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */; };
+		ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3424661951A288A3961A54B5 /* ContentView.swift */; };
+		C014909C9E16142F9D60696D /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
+		C05220209EC39C0794C04A0B /* RecordsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11688CC19795E800810FC67D /* RecordsListView.swift */; };
+		C5C77224F14D8407AE01AB58 /* ActiveGymsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */; };
+		C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */; };
+		D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */; };
+		DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */; };
+		E043F3E2D9307A82C81C6C52 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
+		E20B4A917EB757344E79B2EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B0F8503CD7B1395E27733FC /* Assets.xcassets */; };
+		E7C317266501D71D68708F35 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
+		F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25702741F6D8A93AF5D67B4 /* Assets.xcassets */; };
+		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AFE1D554E3C9806AE9440471 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0200A8DD97F868C69CF26195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 287E3AA579B377E5BF58162C;
+			remoteInfo = TopOut;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05E4103F2EB7BE1B0370235F /* GymLiveScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymLiveScreenView.swift; sourceTree = "<group>"; };
+		06C5F7D119C0B3B6766D4264 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		11688CC19795E800810FC67D /* RecordsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsListView.swift; sourceTree = "<group>"; };
+		1D2571614148D8A4347F13AF /* Gym.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gym.swift; sourceTree = "<group>"; };
+		213AC6D31349B0A0E478872D /* PhoneConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConnectivityService.swift; sourceTree = "<group>"; };
+		2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
+		287F1505365D04FB7CA0811E /* ClimbRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbRecord.swift; sourceTree = "<group>"; };
+		29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveGymsView.swift; sourceTree = "<group>"; };
+		311A05F71B0DCD6C55508D50 /* TopOut.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TopOut.entitlements; sourceTree = "<group>"; };
+		3424661951A288A3961A54B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutWatchApp.swift; sourceTree = "<group>"; };
+		41EEE7C28FC4C95AE74D6BEA /* TopOutWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TopOutWatch.entitlements; sourceTree = "<group>"; };
+		4543A247D6B898164380A6DE /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		4B745ADD963B68FDDCE970B1 /* TopOut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopOut.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutService.swift; sourceTree = "<group>"; };
+		5490AE490926578365B75CA7 /* ClimbDetectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbDetectionService.swift; sourceTree = "<group>"; };
+		578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopOutWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutApp.swift; sourceTree = "<group>"; };
+		63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityService.swift; sourceTree = "<group>"; };
+		6F545DC58F03238C5CBDC969 /* ClimbingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingView.swift; sourceTree = "<group>"; };
+		74A1075096D03D4CCAC05121 /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
+		7A26DED48C966D85A4213E89 /* ClimbState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbState.swift; sourceTree = "<group>"; };
+		7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
+		872242F87A1511886A4486C7 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
+		8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
+		8B0F8503CD7B1395E27733FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8ED162391E818450D6252847 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardViewModel.swift; sourceTree = "<group>"; };
+		BE0A28FD4059128A51AF3357 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C25702741F6D8A93AF5D67B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
+		C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingViewModel.swift; sourceTree = "<group>"; };
+		D06DE1A996FCB7BC592CA5FA /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardView.swift; sourceTree = "<group>"; };
+		D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		EDC9A891A58A28C337FC853D /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettings.swift; sourceTree = "<group>"; };
+		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0244D1E5BEC5BD26192AF963 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */,
+				7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		0AC2330DC53E84E1B22FE3E8 /* Privacy */ = {
+			isa = PBXGroup;
+			children = (
+				2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */,
+			);
+			path = Privacy;
+			sourceTree = "<group>";
+		};
+		157407B7D27E2A6CD7458CDD /* Records */ = {
+			isa = PBXGroup;
+			children = (
+				DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */,
+				11688CC19795E800810FC67D /* RecordsListView.swift */,
+			);
+			path = Records;
+			sourceTree = "<group>";
+		};
+		1A2D2A42EDCB52945C7BAA94 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				06C5F7D119C0B3B6766D4264 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		2100D0A859C5F2E6E2778458 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				4838EEC04384F5DD4E386398 /* Auth */,
+				9536450C2B7EE76E6775D1D6 /* GymLive */,
+				EE568E25BB57467C03CC259E /* LiveDashboard */,
+				0AC2330DC53E84E1B22FE3E8 /* Privacy */,
+				157407B7D27E2A6CD7458CDD /* Records */,
+				1A2D2A42EDCB52945C7BAA94 /* Settings */,
+				49A0604B2C53EF5E13D5C866 /* Statistics */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		3E275FC8428E4EC19F6114E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B745ADD963B68FDDCE970B1 /* TopOut.app */,
+				578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		478D0E2FE1E24B648223D925 /* Climbing */ = {
+			isa = PBXGroup;
+			children = (
+				6F545DC58F03238C5CBDC969 /* ClimbingView.swift */,
+				C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */,
+			);
+			path = Climbing;
+			sourceTree = "<group>";
+		};
+		4838EEC04384F5DD4E386398 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				FFE49D72B65C204E06C0BAB3 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		49A0604B2C53EF5E13D5C866 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		4FB151D787E77F18460E34E5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5490AE490926578365B75CA7 /* ClimbDetectionService.swift */,
+				213AC6D31349B0A0E478872D /* PhoneConnectivityService.swift */,
+				4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		5556F833B11127A8B88C448E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C25702741F6D8A93AF5D67B4 /* Assets.xcassets */,
+				311A05F71B0DCD6C55508D50 /* TopOut.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		786DE26089534AAD396D9C09 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				478D0E2FE1E24B648223D925 /* Climbing */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		9536450C2B7EE76E6775D1D6 /* GymLive */ = {
+			isa = PBXGroup;
+			children = (
+				29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */,
+				05E4103F2EB7BE1B0370235F /* GymLiveScreenView.swift */,
+			);
+			path = GymLive;
+			sourceTree = "<group>";
+		};
+		9807870BFECD94BCF985135B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0244D1E5BEC5BD26192AF963 /* Extensions */,
+				A67157AF49299CD7F8768DB4 /* Models */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A67157AF49299CD7F8768DB4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				287F1505365D04FB7CA0811E /* ClimbRecord.swift */,
+				7A26DED48C966D85A4213E89 /* ClimbState.swift */,
+				1D2571614148D8A4347F13AF /* Gym.swift */,
+				EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */,
+				BE0A28FD4059128A51AF3357 /* User.swift */,
+				872242F87A1511886A4486C7 /* WatchMessage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B3B513C6EBC8F31EAC2325AE = {
+			isa = PBXGroup;
+			children = (
+				9807870BFECD94BCF985135B /* Shared */,
+				BD09CA0238A673B868784FE3 /* TopOut */,
+				C9616EE3A6EE3DCE68E36269 /* TopOutWatch */,
+				3E275FC8428E4EC19F6114E8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BD09CA0238A673B868784FE3 /* TopOut */ = {
+			isa = PBXGroup;
+			children = (
+				F358874B880E263E8CCCD2C5 /* App */,
+				2100D0A859C5F2E6E2778458 /* Features */,
+				5556F833B11127A8B88C448E /* Resources */,
+				C03E921B98282E2F8D0E8BDE /* Services */,
+			);
+			path = TopOut;
+			sourceTree = "<group>";
+		};
+		C03E921B98282E2F8D0E8BDE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4543A247D6B898164380A6DE /* APIService.swift */,
+				8ED162391E818450D6252847 /* AuthService.swift */,
+				EDC9A891A58A28C337FC853D /* HealthKitService.swift */,
+				D06DE1A996FCB7BC592CA5FA /* LocationService.swift */,
+				8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */,
+				63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */,
+				74A1075096D03D4CCAC05121 /* WebSocketService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C9616EE3A6EE3DCE68E36269 /* TopOutWatch */ = {
+			isa = PBXGroup;
+			children = (
+				D83ED8C659EA304974FADB64 /* App */,
+				786DE26089534AAD396D9C09 /* Features */,
+				F268BA3DD71678570BCF0C3F /* Resources */,
+				4FB151D787E77F18460E34E5 /* Services */,
+			);
+			path = TopOutWatch;
+			sourceTree = "<group>";
+		};
+		D83ED8C659EA304974FADB64 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EE568E25BB57467C03CC259E /* LiveDashboard */ = {
+			isa = PBXGroup;
+			children = (
+				D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */,
+				B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */,
+			);
+			path = LiveDashboard;
+			sourceTree = "<group>";
+		};
+		F268BA3DD71678570BCF0C3F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8B0F8503CD7B1395E27733FC /* Assets.xcassets */,
+				41EEE7C28FC4C95AE74D6BEA /* TopOutWatch.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F358874B880E263E8CCCD2C5 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3424661951A288A3961A54B5 /* ContentView.swift */,
+				5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		287E3AA579B377E5BF58162C /* TopOut */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5054FA4A4CD8442B2B96E70 /* Build configuration list for PBXNativeTarget "TopOut" */;
+			buildPhases = (
+				AA40DD5792BDECBA344AFF4B /* Sources */,
+				9B0B9579309F1F3C40CEF3F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TopOut;
+			packageProductDependencies = (
+			);
+			productName = TopOut;
+			productReference = 4B745ADD963B68FDDCE970B1 /* TopOut.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CAC7A3303AA1576E97C13B3A /* TopOutWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF172C2BC29C1278AA3F985F /* Build configuration list for PBXNativeTarget "TopOutWatch" */;
+			buildPhases = (
+				B5EEB20F699CB64912D07777 /* Sources */,
+				885CB551596C672532F5D125 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				183B2823F6A496BDF6E78DE5 /* PBXTargetDependency */,
+			);
+			name = TopOutWatch;
+			packageProductDependencies = (
+			);
+			productName = TopOutWatch;
+			productReference = 578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0200A8DD97F868C69CF26195 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = CAC33EE09CF6AAF0D1B6998A /* Build configuration list for PBXProject "TopOut" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B3B513C6EBC8F31EAC2325AE;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				287E3AA579B377E5BF58162C /* TopOut */,
+				CAC7A3303AA1576E97C13B3A /* TopOutWatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		885CB551596C672532F5D125 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E20B4A917EB757344E79B2EA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B0B9579309F1F3C40CEF3F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA40DD5792BDECBA344AFF4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09CC68961E0BE7A8D2D011A6 /* APIService.swift in Sources */,
+				C5C77224F14D8407AE01AB58 /* ActiveGymsView.swift in Sources */,
+				015CBE9E751938E641FADADE /* AuthService.swift in Sources */,
+				5F47A0E482E249FD1C6B23AC /* ClimbRecord.swift in Sources */,
+				C014909C9E16142F9D60696D /* ClimbState.swift in Sources */,
+				ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */,
+				917525EB4D93F13ABC52BD8C /* Date+Helpers.swift in Sources */,
+				0BD34188D149BDA1DE571C10 /* Gym.swift in Sources */,
+				35CB4F11B8004968EAFD1D28 /* GymLiveScreenView.swift in Sources */,
+				9BB570537190D04667160313 /* HealthKitService.swift in Sources */,
+				2FC19E94490ED821665070C1 /* LiveDashboardView.swift in Sources */,
+				4C793EA72B19F816660E57F1 /* LiveDashboardViewModel.swift in Sources */,
+				1F71BA5D58EF0700FC72D8A1 /* LocationService.swift in Sources */,
+				8AE5E2A707C16E8F3854B5F7 /* LoginView.swift in Sources */,
+				1759F2A7B1D4D322AC73D7BE /* NetworkConfig.swift in Sources */,
+				5EF0A4D305E1975E58B13AE4 /* PrivacySettings.swift in Sources */,
+				DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */,
+				C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */,
+				C05220209EC39C0794C04A0B /* RecordsListView.swift in Sources */,
+				927646D137F8790543C48272 /* SettingsView.swift in Sources */,
+				A849435553E19745D21431FE /* StatisticsView.swift in Sources */,
+				2AC3B13233F78EA531C0308A /* TimeInterval+Formatting.swift in Sources */,
+				401BE971E08EF1858AD14891 /* TopOutApp.swift in Sources */,
+				71F28BD67F9D35A3A6C9FD6C /* User.swift in Sources */,
+				88EF839BCDB6C6BF18089E91 /* WatchConnectivityService.swift in Sources */,
+				3BF5228CBCBD42D1A53EA80F /* WatchMessage.swift in Sources */,
+				F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5EEB20F699CB64912D07777 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94957C18C5CA9E313E726C70 /* ClimbDetectionService.swift in Sources */,
+				32C4772D14E4DBEB48723627 /* ClimbRecord.swift in Sources */,
+				92A59B0AF697034C5596C5C9 /* ClimbState.swift in Sources */,
+				00777F64224552E5DFF56B1D /* ClimbingView.swift in Sources */,
+				81E9F75E492B1B5D0A4795BA /* ClimbingViewModel.swift in Sources */,
+				84EE6EBF705BF22285F56A1F /* Date+Helpers.swift in Sources */,
+				E7C317266501D71D68708F35 /* Gym.swift in Sources */,
+				10708F1CD1646AF35E16B466 /* PhoneConnectivityService.swift in Sources */,
+				1BA5CC649A00CDEFEF62911A /* PrivacySettings.swift in Sources */,
+				4C125525ECD5B4FB6B64E5C7 /* TimeInterval+Formatting.swift in Sources */,
+				AB615E0C14B6EAFDA18D1212 /* TopOutWatchApp.swift in Sources */,
+				E043F3E2D9307A82C81C6C52 /* User.swift in Sources */,
+				32116D60D51EB55649F38A00 /* WatchMessage.swift in Sources */,
+				D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		183B2823F6A496BDF6E78DE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 287E3AA579B377E5BF58162C /* TopOut */;
+			targetProxy = AFE1D554E3C9806AE9440471 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		213C7B01979E3A1B147111B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取您的健康数据以显示攀爬时的心率信息";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录您的攀爬活动";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "TopOut 需要您的位置来自动匹配附近的攀岩场馆";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOut;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3FB4C6B18EEB4EB47F5E1D17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		6F4072D4B362A59A66A7610D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取心率数据以记录攀爬";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录攀爬";
+				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.topout.TopOut;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOutWatch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		BE4AAF00A60BC3AB2265D5B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取您的健康数据以显示攀爬时的心率信息";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录您的攀爬活动";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "TopOut 需要您的位置来自动匹配附近的攀岩场馆";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOut;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C78C02E4E26463315A7F9CF1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取心率数据以记录攀爬";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录攀爬";
+				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.topout.TopOut;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOutWatch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		EEAA7814BA19DA4236F03AA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CAC33EE09CF6AAF0D1B6998A /* Build configuration list for PBXProject "TopOut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EEAA7814BA19DA4236F03AA6 /* Debug */,
+				3FB4C6B18EEB4EB47F5E1D17 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E5054FA4A4CD8442B2B96E70 /* Build configuration list for PBXNativeTarget "TopOut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				213C7B01979E3A1B147111B1 /* Debug */,
+				BE4AAF00A60BC3AB2265D5B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FF172C2BC29C1278AA3F985F /* Build configuration list for PBXNativeTarget "TopOutWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C78C02E4E26463315A7F9CF1 /* Debug */,
+				6F4072D4B362A59A66A7610D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0200A8DD97F868C69CF26195 /* Project object */;
+}

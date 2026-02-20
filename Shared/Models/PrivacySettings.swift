@@ -1,6 +1,6 @@
 import Foundation
 
-struct PrivacySettings: Codable {
+struct PrivacySettings: Codable, Equatable {
     var isVisible: Bool
     var isAnonymous: Bool
     
