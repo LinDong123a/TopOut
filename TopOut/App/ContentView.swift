@@ -9,13 +9,16 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
+            // Fill entire window with theme color to eliminate black gaps
+            Color(red: 0.08, green: 0.07, blue: 0.06)
+                .ignoresSafeArea()
+            
             if authService.isLoggedIn {
                 mainTabView
                     .transition(.move(edge: .trailing).combined(with: .opacity))
             } else {
                 LoginView()
                     .transition(.move(edge: .leading).combined(with: .opacity))
-                    .ignoresSafeArea()
             }
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
