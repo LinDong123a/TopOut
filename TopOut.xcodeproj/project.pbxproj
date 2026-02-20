@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000001000000000000001A /* ClimbSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001B /* ClimbSessionManager.swift */; };
-		A1000002000000000000001A /* SceneSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000001B /* SceneSelectionView.swift */; };
-		A1000003000000000000001A /* ReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003000000000000001B /* ReadyView.swift */; };
-		A1000004000000000000001A /* ClimbingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004000000000000001B /* ClimbingContainerView.swift */; };
-		A1000005000000000000001A /* LiveDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005000000000000001B /* LiveDataView.swift */; };
-		A1000006000000000000001A /* RouteMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000006000000000000001B /* RouteMarkView.swift */; };
-		A1000007000000000000001A /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000007000000000000001B /* ControlView.swift */; };
-		A1000008000000000000001A /* ClimbSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000008000000000000001B /* ClimbSummaryView.swift */; };
 		015CBE9E751938E641FADADE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED162391E818450D6252847 /* AuthService.swift */; };
 		09CC68961E0BE7A8D2D011A6 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543A247D6B898164380A6DE /* APIService.swift */; };
 		0BD34188D149BDA1DE571C10 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
@@ -42,22 +34,6 @@
 		92A59B0AF697034C5596C5C9 /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
 		94957C18C5CA9E313E726C70 /* ClimbDetectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5490AE490926578365B75CA7 /* ClimbDetectionService.swift */; };
 		9BB570537190D04667160313 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC9A891A58A28C337FC853D /* HealthKitService.swift */; };
-		A849435553E19745D21431FE /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */; };
-		AB615E0C14B6EAFDA18D1212 /* TopOutWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */; };
-		ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3424661951A288A3961A54B5 /* ContentView.swift */; };
-		C014909C9E16142F9D60696D /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
-		C05220209EC39C0794C04A0B /* RecordsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11688CC19795E800810FC67D /* RecordsListView.swift */; };
-		C5C77224F14D8407AE01AB58 /* ActiveGymsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */; };
-		C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */; };
-		D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */; };
-		DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */; };
-		E043F3E2D9307A82C81C6C52 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
-		E20B4A917EB757344E79B2EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B0F8503CD7B1395E27733FC /* Assets.xcassets */; };
-		E7C317266501D71D68708F35 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
-		F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25702741F6D8A93AF5D67B4 /* Assets.xcassets */; };
-		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
-		AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */; };
-		DD4E5F6A7B8C9D0E1F2A3B4C /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */; };
 		A01A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */; };
 		A02A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift */; };
 		A03A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift */; };
@@ -65,6 +41,18 @@
 		A05A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */; };
 		A06A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */; };
 		A07A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */; };
+		A1000001000000000000001A /* ClimbSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001B /* ClimbSessionManager.swift */; };
+		A1000002000000000000001A /* SceneSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000001B /* SceneSelectionView.swift */; };
+		A1000003000000000000001A /* ReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003000000000000001B /* ReadyView.swift */; };
+		A1000004000000000000001A /* ClimbingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004000000000000001B /* ClimbingContainerView.swift */; };
+		A1000005000000000000001A /* LiveDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005000000000000001B /* LiveDataView.swift */; };
+		A1000006000000000000001A /* RouteMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000006000000000000001B /* RouteMarkView.swift */; };
+		A1000007000000000000001A /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000007000000000000001B /* ControlView.swift */; };
+		A1000008000000000000001A /* ClimbSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000008000000000000001B /* ClimbSummaryView.swift */; };
+		A849435553E19745D21431FE /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */; };
+		AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */; };
+		AB615E0C14B6EAFDA18D1212 /* TopOutWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */; };
+		ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3424661951A288A3961A54B5 /* ContentView.swift */; };
 		B10100010000000000000001 /* ClimbFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10100010000000000000002 /* ClimbFinishView.swift */; };
 		B10200010000000000000001 /* MyClimbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10200010000000000000002 /* MyClimbsView.swift */; };
 		B10300010000000000000001 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10300010000000000000002 /* DiscoverView.swift */; };
@@ -78,6 +66,18 @@
 		B10B00010000000000000001 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B00010000000000000002 /* CelebrationView.swift */; };
 		B10C00010000000000000001 /* CheerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C00010000000000000002 /* CheerButton.swift */; };
 		B10D00010000000000000001 /* VideoStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10D00010000000000000002 /* VideoStorageService.swift */; };
+		C014909C9E16142F9D60696D /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
+		C05220209EC39C0794C04A0B /* RecordsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11688CC19795E800810FC67D /* RecordsListView.swift */; };
+		C5C77224F14D8407AE01AB58 /* ActiveGymsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */; };
+		C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */; };
+		D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */; };
+		DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */; };
+		DD4E5F6A7B8C9D0E1F2A3B4C /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */; };
+		E043F3E2D9307A82C81C6C52 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
+		E20B4A917EB757344E79B2EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B0F8503CD7B1395E27733FC /* Assets.xcassets */; };
+		E7C317266501D71D68708F35 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
+		F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25702741F6D8A93AF5D67B4 /* Assets.xcassets */; };
+		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +110,13 @@
 		578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopOutWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutApp.swift; sourceTree = "<group>"; };
 		63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityService.swift; sourceTree = "<group>"; };
+		74A1075096D03D4CCAC05121 /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
+		7A26DED48C966D85A4213E89 /* ClimbState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbState.swift; sourceTree = "<group>"; };
+		7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
+		872242F87A1511886A4486C7 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
+		8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
+		8B0F8503CD7B1395E27733FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8ED162391E818450D6252847 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		A1000001000000000000001B /* ClimbSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbSessionManager.swift; sourceTree = "<group>"; };
 		A1000002000000000000001B /* SceneSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSelectionView.swift; sourceTree = "<group>"; };
 		A1000003000000000000001B /* ReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyView.swift; sourceTree = "<group>"; };
@@ -118,26 +125,6 @@
 		A1000006000000000000001B /* RouteMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMarkView.swift; sourceTree = "<group>"; };
 		A1000007000000000000001B /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		A1000008000000000000001B /* ClimbSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbSummaryView.swift; sourceTree = "<group>"; };
-		74A1075096D03D4CCAC05121 /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
-		7A26DED48C966D85A4213E89 /* ClimbState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbState.swift; sourceTree = "<group>"; };
-		7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
-		872242F87A1511886A4486C7 /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
-		8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
-		8B0F8503CD7B1395E27733FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8ED162391E818450D6252847 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardViewModel.swift; sourceTree = "<group>"; };
-		BE0A28FD4059128A51AF3357 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		C25702741F6D8A93AF5D67B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
-		D06DE1A996FCB7BC592CA5FA /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardView.swift; sourceTree = "<group>"; };
-		D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
-		DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
-		EDC9A891A58A28C337FC853D /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
-		EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettings.swift; sourceTree = "<group>"; };
-		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutTheme.swift; sourceTree = "<group>"; };
-		EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingView.swift; sourceTree = "<group>"; };
 		A12A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectateView.swift; sourceTree = "<group>"; };
 		A13A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymSelectorView.swift; sourceTree = "<group>"; };
@@ -158,6 +145,19 @@
 		B10B00010000000000000002 /* CelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelebrationView.swift; sourceTree = "<group>"; };
 		B10C00010000000000000002 /* CheerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheerButton.swift; sourceTree = "<group>"; };
 		B10D00010000000000000002 /* VideoStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStorageService.swift; sourceTree = "<group>"; };
+		B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardViewModel.swift; sourceTree = "<group>"; };
+		BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutTheme.swift; sourceTree = "<group>"; };
+		BE0A28FD4059128A51AF3357 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C25702741F6D8A93AF5D67B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
+		D06DE1A996FCB7BC592CA5FA /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardView.swift; sourceTree = "<group>"; };
+		D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		EDC9A891A58A28C337FC853D /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
+		EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettings.swift; sourceTree = "<group>"; };
+		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -200,14 +200,6 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		B01A2B3C4D5E6F7A8B9C0D1E /* Following */ = {
-			isa = PBXGroup;
-			children = (
-				A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */,
-			);
-			path = Following;
-			sourceTree = "<group>";
-		};
 		2100D0A859C5F2E6E2778458 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,30 +237,6 @@
 				A1000007000000000000001B /* ControlView.swift */,
 			);
 			path = Climbing;
-			sourceTree = "<group>";
-		};
-		A10000F1000000000000001B /* SceneSelection */ = {
-			isa = PBXGroup;
-			children = (
-				A1000002000000000000001B /* SceneSelectionView.swift */,
-			);
-			path = SceneSelection;
-			sourceTree = "<group>";
-		};
-		A10000F2000000000000001B /* ReadyToClimb */ = {
-			isa = PBXGroup;
-			children = (
-				A1000003000000000000001B /* ReadyView.swift */,
-			);
-			path = ReadyToClimb;
-			sourceTree = "<group>";
-		};
-		A10000F3000000000000001B /* Summary */ = {
-			isa = PBXGroup;
-			children = (
-				A1000008000000000000001B /* ClimbSummaryView.swift */,
-			);
-			path = Summary;
 			sourceTree = "<group>";
 		};
 		4838EEC04384F5DD4E386398 /* Auth */ = {
@@ -336,6 +304,30 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		A10000F1000000000000001B /* SceneSelection */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002000000000000001B /* SceneSelectionView.swift */,
+			);
+			path = SceneSelection;
+			sourceTree = "<group>";
+		};
+		A10000F2000000000000001B /* ReadyToClimb */ = {
+			isa = PBXGroup;
+			children = (
+				A1000003000000000000001B /* ReadyView.swift */,
+			);
+			path = ReadyToClimb;
+			sourceTree = "<group>";
+		};
+		A10000F3000000000000001B /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				A1000008000000000000001B /* ClimbSummaryView.swift */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
 		A67157AF49299CD7F8768DB4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,6 +339,51 @@
 				872242F87A1511886A4486C7 /* WatchMessage.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B01A2B3C4D5E6F7A8B9C0D1E /* Following */ = {
+			isa = PBXGroup;
+			children = (
+				A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */,
+			);
+			path = Following;
+			sourceTree = "<group>";
+		};
+		B10200F10000000000000001 /* MyClimbs */ = {
+			isa = PBXGroup;
+			children = (
+				B10700010000000000000002 /* FollowingListView.swift */,
+				B10200010000000000000002 /* MyClimbsView.swift */,
+			);
+			path = MyClimbs;
+			sourceTree = "<group>";
+		};
+		B10300F10000000000000001 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				B10300010000000000000002 /* DiscoverView.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
+		B10400F10000000000000001 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B10400010000000000000002 /* NotificationCenterView.swift */,
+				B10500010000000000000002 /* NotificationModel.swift */,
+				B10600010000000000000002 /* NotificationSettingsView.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		B10A00F10000000000000001 /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				B10A00010000000000000002 /* CelebrationModifier.swift */,
+				B10B00010000000000000002 /* CelebrationView.swift */,
+				B10C00010000000000000002 /* CheerButton.swift */,
+			);
+			path = Social;
 			sourceTree = "<group>";
 		};
 		B3B513C6EBC8F31EAC2325AE = {
@@ -399,6 +436,15 @@
 			path = TopOutWatch;
 			sourceTree = "<group>";
 		};
+		CC3D4E5F6A7B8C9D0E1F2A3B /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */,
+				BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		D83ED8C659EA304974FADB64 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,15 +473,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		CC3D4E5F6A7B8C9D0E1F2A3B /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */,
-				BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
 		F358874B880E263E8CCCD2C5 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,43 +480,6 @@
 				5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		B10200F10000000000000001 /* MyClimbs */ = {
-			isa = PBXGroup;
-			children = (
-				B10700010000000000000002 /* FollowingListView.swift */,
-				B10200010000000000000002 /* MyClimbsView.swift */,
-			);
-			path = MyClimbs;
-			sourceTree = "<group>";
-		};
-		B10300F10000000000000001 /* Discover */ = {
-			isa = PBXGroup;
-			children = (
-				B10300010000000000000002 /* DiscoverView.swift */,
-			);
-			path = Discover;
-			sourceTree = "<group>";
-		};
-		B10400F10000000000000001 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				B10400010000000000000002 /* NotificationCenterView.swift */,
-				B10500010000000000000002 /* NotificationModel.swift */,
-				B10600010000000000000002 /* NotificationSettingsView.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
-		B10A00F10000000000000001 /* Social */ = {
-			isa = PBXGroup;
-			children = (
-				B10A00010000000000000002 /* CelebrationModifier.swift */,
-				B10B00010000000000000002 /* CelebrationView.swift */,
-				B10C00010000000000000002 /* CheerButton.swift */,
-			);
-			path = Social;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -668,6 +668,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TopOut/Resources/TopOut.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = J52VNHBJH3;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -749,12 +750,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = TopOutWatch/Resources/TopOutWatch.entitlements;
 				DEVELOPMENT_TEAM = J52VNHBJH3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取心率数据以记录攀爬";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录攀爬";
 				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.topout.TopOut;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOutWatch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -766,6 +770,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TopOut/Resources/TopOut.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = J52VNHBJH3;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -790,12 +795,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = TopOutWatch/Resources/TopOutWatch.entitlements;
 				DEVELOPMENT_TEAM = J52VNHBJH3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "TopOut 需要读取心率数据以记录攀爬";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "TopOut 需要写入运动数据以记录攀爬";
 				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.topout.TopOut;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.topout.TopOutWatch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
