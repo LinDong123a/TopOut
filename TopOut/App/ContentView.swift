@@ -5,8 +5,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var connectivity: WatchConnectivityService
     @EnvironmentObject var authService: AuthService
+    @StateObject private var climbSession = ClimbSessionState()
     @State private var selectedTab = 0
     @State private var showClimbFinish = false
+    @State private var showClimbSheet = false
 
     var body: some View {
         ZStack {
@@ -22,6 +24,7 @@ struct ContentView: View {
                     .transition(.move(edge: .leading).combined(with: .opacity))
             }
         }
+        .environmentObject(climbSession)
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
         .preferredColorScheme(.dark)
         .statusBarHidden(true)
@@ -41,39 +44,71 @@ struct ContentView: View {
     }
 
     private var mainTabView: some View {
-        TabView(selection: $selectedTab) {
-            LiveDashboardView()
-                .tabItem {
-                    Label("实时", systemImage: "waveform.path.ecg")
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                HomeView()
+                    .tabItem {
+                        Label("首页", systemImage: "house.fill")
+                    }
+                    .tag(0)
+
+                NavigationStack {
+                    MyClimbsView()
                 }
-                .tag(0)
+                .tabItem {
+                    Label("我的攀爬", systemImage: "person.crop.rectangle.stack.fill")
+                }
+                .tag(1)
 
-            NavigationStack {
-                MyClimbsView()
-            }
-            .tabItem {
-                Label("我的攀爬", systemImage: "person.crop.rectangle.stack.fill")
-            }
-            .tag(1)
+                // Placeholder for center button spacing
+                Color.clear
+                    .tabItem {
+                        Label("", systemImage: "")
+                    }
+                    .tag(99)
 
-            NavigationStack {
-                DiscoverView()
-            }
-            .tabItem {
-                Label("发现", systemImage: "safari.fill")
-            }
-            .tag(2)
+                NavigationStack {
+                    DiscoverView()
+                }
+                .tabItem {
+                    Label("发现", systemImage: "safari.fill")
+                }
+                .tag(2)
 
-            NavigationStack {
-                SettingsView()
+                NavigationStack {
+                    SettingsView()
+                }
+                .tabItem {
+                    Label("设置", systemImage: "gearshape.fill")
+                }
+                .tag(3)
             }
-            .tabItem {
-                Label("设置", systemImage: "gearshape.fill")
-            }
-            .tag(3)
+            .tint(TopOutTheme.accentGreen)
+            .animation(.spring(response: 0.4, dampingFraction: 0.85), value: selectedTab)
+            
+            // Center climb button overlay
+            climbButton
+                .offset(y: -24)
         }
-        .tint(TopOutTheme.accentGreen)
-        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: selectedTab)
+        .sheet(isPresented: $showClimbSheet) {
+            NavigationStack {
+                LiveDashboardView()
+                    .environmentObject(climbSession)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                showClimbSheet = false
+                            } label: {
+                                Image(systemName: "chevron.down")
+                                    .font(.headline)
+                                    .foregroundStyle(TopOutTheme.textSecondary)
+                            }
+                        }
+                    }
+            }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
+        }
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -83,6 +118,37 @@ struct ContentView: View {
             connectivity.setModelContext(modelContext)
             MockDataService.insertIfEmpty(context: modelContext)
         }
+    }
+    
+    // MARK: - Center Climb Button
+    
+    private var climbButton: some View {
+        Button {
+            if !climbSession.isClimbing {
+                climbSession.startSession()
+            }
+            showClimbSheet = true
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(
+                        climbSession.isClimbing
+                            ? TopOutTheme.streakOrange
+                            : TopOutTheme.accentGreen
+                    )
+                    .frame(width: 58, height: 58)
+                    .shadow(
+                        color: (climbSession.isClimbing ? TopOutTheme.streakOrange : TopOutTheme.accentGreen).opacity(0.4),
+                        radius: 10, y: 2
+                    )
+                
+                Image(systemName: climbSession.isClimbing ? "figure.climbing" : "plus")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(.white)
+                    .contentTransition(.symbolEffect(.replace))
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: climbSession.isClimbing)
     }
 }
 

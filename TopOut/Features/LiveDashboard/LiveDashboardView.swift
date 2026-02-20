@@ -4,12 +4,14 @@ import Charts
 /// P0: Full-screen live dashboard — portrait & landscape
 struct LiveDashboardView: View {
     @StateObject private var viewModel = LiveDashboardViewModel()
+    @EnvironmentObject var climbSession: ClimbSessionState
     @ObservedObject private var locationService = LocationService.shared
     @State private var privacySettings = PrivacySettings.load()
     @State private var showGymLive = false
     @State private var showSpectate = false
     @State private var showGymSelector = false
     @State private var showNotifications = false
+    @State private var showRouteRecorder = false
     @StateObject private var notificationStore = NotificationStore.shared
     @State private var selectedGymName = "岩时攀岩馆（望京店）"
     @State private var appeared = false
@@ -39,13 +41,7 @@ struct LiveDashboardView: View {
                 appeared = true
             }
         }
-        .overlay(alignment: .bottom) {
-            FloatingSpectateButton(totalCount: 17) {
-                showSpectate = true
-            }
-            .padding(.bottom, 16)
-            .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
+        // FloatingSpectateButton moved to HomeView
         .sheet(isPresented: $showNotifications) {
             NavigationStack {
                 NotificationCenterView()
@@ -63,6 +59,10 @@ struct LiveDashboardView: View {
         .sheet(isPresented: $showGymSelector) {
             GymSelectorView(selectedGymName: $selectedGymName)
                 .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showRouteRecorder) {
+            RouteRecorderView()
+                .environmentObject(climbSession)
         }
         .sheet(isPresented: $showGymLive) {
             if let gym = locationService.nearbyGym {
@@ -156,19 +156,41 @@ struct LiveDashboardView: View {
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
 
-            heartRateDisplay
+            if viewModel.isConnected {
+                heartRateDisplay
+                    .offset(y: elementsAppeared[1] ? 0 : 20)
+                    .opacity(elementsAppeared[1] ? 1 : 0)
+
+                heartRateChartOrEmpty
+                    .frame(height: size.height * 0.20)
+                    .padding(.horizontal, 4)
+                    .offset(y: elementsAppeared[3] ? 0 : 20)
+                    .opacity(elementsAppeared[3] ? 1 : 0)
+            } else {
+                // No watch — show route count prominently
+                VStack(spacing: 4) {
+                    Text("\(climbSession.routeRecords.count)")
+                        .font(.system(size: 64, weight: .bold, design: .rounded))
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                    Text("已爬条数")
+                        .font(.subheadline)
+                        .foregroundStyle(TopOutTheme.textSecondary)
+                }
                 .offset(y: elementsAppeared[1] ? 0 : 20)
                 .opacity(elementsAppeared[1] ? 1 : 0)
-
-            heartRateChartOrEmpty
-                .frame(height: size.height * 0.20)
-                .padding(.horizontal, 4)
-                .offset(y: elementsAppeared[3] ? 0 : 20)
-                .opacity(elementsAppeared[3] ? 1 : 0)
+            }
 
             todayStats
                 .offset(y: elementsAppeared[4] ? 0 : 20)
                 .opacity(elementsAppeared[4] ? 1 : 0)
+
+            // Route recorder button
+            routeRecorderButton
+            
+            // Recorded routes list
+            if !climbSession.routeRecords.isEmpty {
+                recordedRoutesList
+            }
 
             Spacer()
             bottomBar
@@ -398,6 +420,70 @@ struct LiveDashboardView: View {
         }
     }
 
+    // MARK: - Route Recorder
+
+    private var routeRecorderButton: some View {
+        Button { showRouteRecorder = true } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "video.fill")
+                    .font(.title3)
+                Text("📹 记录这条线")
+                    .font(.headline)
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(TopOutTheme.accentGreen, in: RoundedRectangle(cornerRadius: 14))
+        }
+    }
+
+    private var recordedRoutesList: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("已爬 \(climbSession.routeRecords.count) 条")
+                .font(.headline)
+                .foregroundStyle(TopOutTheme.textPrimary)
+            
+            ForEach(climbSession.routeRecords) { record in
+                HStack(spacing: 10) {
+                    // Media thumbnail placeholder
+                    if record.mediaType != nil {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(TopOutTheme.backgroundElevated)
+                            .frame(width: 44, height: 44)
+                            .overlay {
+                                Image(systemName: record.mediaType == .video ? "video.fill" : "photo.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(TopOutTheme.textTertiary)
+                            }
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            Text(record.difficulty)
+                                .font(.system(size: 14, weight: .bold, design: .rounded))
+                                .foregroundStyle(TopOutTheme.accentGreen)
+                            Text(record.sendStatus.emoji + " " + record.sendStatus.rawValue)
+                                .font(.caption)
+                                .foregroundStyle(TopOutTheme.textSecondary)
+                            if record.isStarred {
+                                Image(systemName: "star.fill")
+                                    .font(.system(size: 10))
+                                    .foregroundStyle(TopOutTheme.warningAmber)
+                            }
+                        }
+                        Text(record.timestamp, style: .time)
+                            .font(.caption2)
+                            .foregroundStyle(TopOutTheme.textTertiary)
+                    }
+                    
+                    Spacer()
+                }
+                .padding(.vertical, 4)
+            }
+        }
+        .topOutCard()
+    }
+
     // MARK: - Bottom Bar
 
     private var bottomBar: some View {
@@ -454,4 +540,5 @@ private struct DashStatItem: View {
 
 #Preview {
     LiveDashboardView()
+        .environmentObject(ClimbSessionState())
 }
