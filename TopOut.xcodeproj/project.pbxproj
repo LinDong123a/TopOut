@@ -763,7 +763,7 @@
 				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.markma.TopOut;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.markma.TopOutWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.markma.TopOut.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -808,7 +808,7 @@
 				INFOPLIST_KEY_NSMotionUsageDescription = "TopOut 需要使用运动传感器来自动检测攀爬动作";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.markma.TopOut;
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.markma.TopOutWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.markma.TopOut.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
