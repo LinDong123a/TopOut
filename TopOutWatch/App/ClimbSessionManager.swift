@@ -106,7 +106,10 @@ final class ClimbSessionManager: ObservableObject {
     // Notification demo
     @Published var showNotification = false
     @Published var notificationText = ""
-    
+
+    // No heart rate prompt
+    @Published var showNoHRPrompt = false
+
     // Services
     private let climbDetection = ClimbDetectionService()
     private let workoutService = WorkoutService()
@@ -114,6 +117,8 @@ final class ClimbSessionManager: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var realtimeTimer: Timer?
     private var notificationTimer: Timer?
+    private var noHRTimer: Timer?
+    private var lastValidHRTime: Date?
     
     // Difficulty scales
     static let boulderGrades = (0...16).map { "V\($0)" }
@@ -170,6 +175,7 @@ final class ClimbSessionManager: ObservableObject {
         connectivity.sendSessionStarted()
         startRealtimeUpdates()
         startNotificationDemo()
+        startNoHRMonitoring()
         appState = .climbing
         WKInterfaceDevice.current().play(.start)
     }
@@ -199,6 +205,7 @@ final class ClimbSessionManager: ObservableObject {
         workoutService.endWorkout()
         stopRealtimeUpdates()
         stopNotificationDemo()
+        stopNoHRMonitoring()
         isSessionActive = false
         climbState = .idle
         
@@ -281,7 +288,14 @@ final class ClimbSessionManager: ObservableObject {
         
         workoutService.onHeartRateUpdate = { [weak self] hr in
             Task { @MainActor in
-                self?.heartRate = hr
+                guard let self else { return }
+                self.heartRate = hr
+                if hr > 0 {
+                    self.lastValidHRTime = Date()
+                    if self.showNoHRPrompt {
+                        self.showNoHRPrompt = false
+                    }
+                }
             }
         }
         
@@ -338,5 +352,37 @@ final class ClimbSessionManager: ObservableObject {
         notificationTimer?.invalidate()
         notificationTimer = nil
         showNotification = false
+    }
+
+    // MARK: - No Heart Rate Monitoring
+
+    func dismissNoHRPrompt() {
+        showNoHRPrompt = false
+        lastValidHRTime = Date()
+    }
+
+    private func startNoHRMonitoring() {
+        lastValidHRTime = Date()
+        showNoHRPrompt = false
+        noHRTimer?.invalidate()
+        noHRTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard let self, self.isSessionActive, !self.isPaused else { return }
+                guard let lastTime = self.lastValidHRTime else { return }
+                // If no valid heart rate for 30 seconds, prompt
+                if self.heartRate == 0 && Date().timeIntervalSince(lastTime) > 30 {
+                    if !self.showNoHRPrompt {
+                        self.showNoHRPrompt = true
+                        WKInterfaceDevice.current().play(.notification)
+                    }
+                }
+            }
+        }
+    }
+
+    private func stopNoHRMonitoring() {
+        noHRTimer?.invalidate()
+        noHRTimer = nil
+        showNoHRPrompt = false
     }
 }

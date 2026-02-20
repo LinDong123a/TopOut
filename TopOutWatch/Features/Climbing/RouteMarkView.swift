@@ -94,16 +94,16 @@ struct RouteMarkView: View {
                     Button {
                         isStarred.toggle()
                     } label: {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 6) {
                             Image(systemName: isStarred ? "star.fill" : "star")
                                 .foregroundStyle(isStarred ? amberYellow : warmGray)
-                                .font(.system(size: 12))
+                                .font(.system(size: 16))
                             Text("好线")
-                                .font(.system(size: 11))
+                                .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(isStarred ? amberYellow : warmGray)
                         }
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
                         .background(
                             isStarred ? amberYellow.opacity(0.15) : Color.white.opacity(0.06),
                             in: Capsule()
