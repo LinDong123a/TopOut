@@ -5,6 +5,7 @@ import SwiftData
 struct RecordsListView: View {
     @Query(sort: \ClimbRecord.startTime, order: .reverse)
     private var records: [ClimbRecord]
+    @State private var appeared = false
 
     private var groupedRecords: [(String, [ClimbRecord])] {
         let fmt = DateFormatter()
@@ -17,15 +18,25 @@ struct RecordsListView: View {
         ScrollView {
             if records.isEmpty {
                 emptyState
+                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
             } else {
                 LazyVStack(spacing: 20) {
-                    ForEach(groupedRecords, id: \.0) { date, dayRecords in
+                    ForEach(Array(groupedRecords.enumerated()), id: \.element.0) { groupIndex, group in
+                        let (date, dayRecords) = group
                         Section {
-                            ForEach(dayRecords, id: \.id) { record in
+                            ForEach(Array(dayRecords.enumerated()), id: \.element.id) { itemIndex, record in
+                                let totalIndex = groupIndex * 3 + itemIndex
                                 NavigationLink(destination: RecordDetailView(record: record)) {
                                     RecordCard(record: record)
                                 }
                                 .buttonStyle(.plain)
+                                .opacity(appeared ? 1 : 0)
+                                .offset(y: appeared ? 0 : 20)
+                                .animation(
+                                    .spring(response: 0.5, dampingFraction: 0.8)
+                                    .delay(Double(min(totalIndex, 10)) * 0.06),
+                                    value: appeared
+                                )
                             }
                         } header: {
                             HStack {
@@ -39,10 +50,17 @@ struct RecordsListView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
         }
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: records.isEmpty)
         .topOutBackground()
         .navigationTitle("攀爬记录")
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                appeared = true
+            }
+        }
     }
 
     private var emptyState: some View {
@@ -51,6 +69,8 @@ struct RecordsListView: View {
             Image(systemName: "figure.climbing")
                 .font(.system(size: 52))
                 .foregroundStyle(TopOutTheme.textTertiary.opacity(0.4))
+                .scaleEffect(appeared ? 1 : 0.6)
+                .animation(.spring(response: 0.6, dampingFraction: 0.7), value: appeared)
             Text("暂无攀爬记录")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(TopOutTheme.textSecondary)
@@ -67,6 +87,7 @@ struct RecordsListView: View {
 
 private struct RecordCard: View {
     let record: ClimbRecord
+    @State private var pressed = false
 
     var body: some View {
         HStack(spacing: 14) {
@@ -104,6 +125,13 @@ private struct RecordCard: View {
             }
         }
         .topOutCard()
+        .scaleEffect(pressed ? 0.97 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: pressed)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in pressed = true }
+                .onEnded { _ in pressed = false }
+        )
     }
 }
 

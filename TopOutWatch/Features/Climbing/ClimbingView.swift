@@ -3,6 +3,7 @@ import SwiftUI
 /// Watch climbing interface — big HR, clear status, compact layout
 struct ClimbingView: View {
     @StateObject private var viewModel = ClimbingViewModel()
+    @State private var buttonPressed = false
 
     // Earth-tone colors for watch (no theme import needed)
     private let forestGreen = Color(red: 0.30, green: 0.65, blue: 0.32)
@@ -19,10 +20,13 @@ struct ClimbingView: View {
             VStack(spacing: 6) {
                 if viewModel.isSessionActive {
                     activeView
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 } else {
                     idleView
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
             }
+            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.isSessionActive)
         }
         .task { await viewModel.setup() }
     }
@@ -37,9 +41,12 @@ struct ClimbingView: View {
                     .fill(viewModel.climbState == .climbing
                           ? forestGreen : amberYellow)
                     .frame(width: 7, height: 7)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: viewModel.climbState)
                 Text(viewModel.climbState.displayName)
                     .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(warmGray)
+                    .contentTransition(.interpolate)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.climbState)
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
@@ -59,12 +66,16 @@ struct ClimbingView: View {
                     .foregroundStyle(viewModel.heartRate > 0
                                      ? heartRed : warmGray)
                     .contentTransition(.numericText())
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8),
+                               value: Int(viewModel.heartRate))
             }
 
             // Timer
             Text(viewModel.elapsedTime.formattedDuration)
                 .font(.system(size: 20, weight: .semibold, design: .monospaced))
                 .foregroundStyle(warmWhite)
+                .contentTransition(.numericText(countsDown: false))
+                .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.elapsedTime)
 
             Spacer().frame(height: 4)
 
@@ -76,6 +87,13 @@ struct ClimbingView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(heartRed)
+            .scaleEffect(buttonPressed ? 0.9 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonPressed)
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in buttonPressed = true }
+                    .onEnded { _ in buttonPressed = false }
+            )
         }
     }
 
@@ -95,6 +113,7 @@ struct ClimbingView: View {
                             .font(.system(size: 22, weight: .bold,
                                           design: .rounded))
                             .foregroundStyle(warmWhite)
+                            .contentTransition(.numericText())
                         Text("次")
                             .font(.system(size: 10))
                             .foregroundStyle(warmGray)
@@ -105,6 +124,7 @@ struct ClimbingView: View {
                             .font(.system(size: 22, weight: .bold,
                                           design: .rounded))
                             .foregroundStyle(warmWhite)
+                            .contentTransition(.numericText())
                         Text("时长")
                             .font(.system(size: 10))
                             .foregroundStyle(warmGray)

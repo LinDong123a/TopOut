@@ -11,10 +11,13 @@ struct ContentView: View {
         Group {
             if authService.isLoggedIn {
                 mainTabView
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
             } else {
                 LoginView()
+                    .transition(.move(edge: .leading).combined(with: .opacity))
             }
         }
+        .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
         .preferredColorScheme(.dark)
     }
 
@@ -57,6 +60,7 @@ struct ContentView: View {
             .tag(4)
         }
         .tint(TopOutTheme.accentGreen)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: selectedTab)
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()

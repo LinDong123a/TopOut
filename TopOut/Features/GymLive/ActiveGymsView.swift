@@ -9,6 +9,7 @@ struct ActiveGymsView: View {
         Set(UserDefaults.standard.stringArray(forKey: "favoriteGyms") ?? [])
     }()
     @State private var selectedGym: Gym?
+    @State private var appeared = false
 
     private var sortedGyms: [Gym] {
         activeGyms.sorted { g1, g2 in
@@ -28,10 +29,14 @@ struct ActiveGymsView: View {
                     errorState(errorMessage)
                 } else if activeGyms.isEmpty {
                     emptyState
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 } else {
                     gymList
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
             }
+            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: activeGyms.isEmpty)
+            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: isLoading)
             .topOutBackground()
             .navigationTitle("围观")
             .toolbar {
@@ -39,6 +44,13 @@ struct ActiveGymsView: View {
                     Button(action: loadGyms) {
                         Image(systemName: "arrow.clockwise")
                             .foregroundStyle(TopOutTheme.textSecondary)
+                            .rotationEffect(.degrees(isLoading ? 360 : 0))
+                            .animation(
+                                isLoading
+                                    ? .linear(duration: 1).repeatForever(autoreverses: false)
+                                    : .default,
+                                value: isLoading
+                            )
                     }
                 }
             }
@@ -54,7 +66,12 @@ struct ActiveGymsView: View {
                         }
                 }
             }
-            .task { await loadGymsAsync() }
+            .task {
+                await loadGymsAsync()
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                    appeared = true
+                }
+            }
         }
     }
 
@@ -62,7 +79,7 @@ struct ActiveGymsView: View {
 
     private var gymList: some View {
         LazyVStack(spacing: 12) {
-            ForEach(sortedGyms) { gym in
+            ForEach(Array(sortedGyms.enumerated()), id: \.element.id) { index, gym in
                 Button { selectedGym = gym } label: {
                     GymCard(
                         gym: gym,
@@ -71,6 +88,13 @@ struct ActiveGymsView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .opacity(appeared ? 1 : 0)
+                .offset(y: appeared ? 0 : 20)
+                .animation(
+                    .spring(response: 0.5, dampingFraction: 0.8)
+                    .delay(Double(min(index, 8)) * 0.06),
+                    value: appeared
+                )
             }
         }
         .padding(.horizontal, 16)
@@ -90,6 +114,7 @@ struct ActiveGymsView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
+        .transition(.opacity)
     }
 
     private func errorState(_ msg: String) -> some View {
@@ -113,6 +138,7 @@ struct ActiveGymsView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 32)
+        .transition(.opacity.combined(with: .scale(scale: 0.95)))
     }
 
     private var emptyState: some View {
@@ -147,21 +173,39 @@ struct ActiveGymsView: View {
     }
 
     private func loadGymsAsync() async {
-        isLoading = activeGyms.isEmpty
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            isLoading = activeGyms.isEmpty
+        }
         errorMessage = nil
         do {
-            activeGyms = try await APIService.shared.getActiveGyms()
+            let gyms = try await APIService.shared.getActiveGyms()
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                activeGyms = gyms
+                appeared = false
+            }
+            // Re-trigger staggered entrance
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                appeared = true
+            }
         } catch {
-            if activeGyms.isEmpty { errorMessage = error.localizedDescription }
+            if activeGyms.isEmpty {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    errorMessage = error.localizedDescription
+                }
+            }
         }
-        isLoading = false
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            isLoading = false
+        }
     }
 
     private func toggleFavorite(_ id: String) {
-        if favoriteGymIds.contains(id) {
-            favoriteGymIds.remove(id)
-        } else {
-            favoriteGymIds.insert(id)
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+            if favoriteGymIds.contains(id) {
+                favoriteGymIds.remove(id)
+            } else {
+                favoriteGymIds.insert(id)
+            }
         }
         UserDefaults.standard.set(Array(favoriteGymIds), forKey: "favoriteGyms")
     }
@@ -173,6 +217,7 @@ private struct GymCard: View {
     let gym: Gym
     let isFavorite: Bool
     let onToggleFavorite: () -> Void
+    @State private var pressed = false
 
     var body: some View {
         HStack(spacing: 14) {
@@ -208,6 +253,8 @@ private struct GymCard: View {
                     .foregroundStyle(isFavorite
                                      ? TopOutTheme.warningAmber
                                      : TopOutTheme.textTertiary)
+                    .scaleEffect(isFavorite ? 1.15 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: isFavorite)
             }
             .buttonStyle(.plain)
 
@@ -216,6 +263,13 @@ private struct GymCard: View {
                 .foregroundStyle(TopOutTheme.textTertiary)
         }
         .topOutCard()
+        .scaleEffect(pressed ? 0.97 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: pressed)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in pressed = true }
+                .onEnded { _ in pressed = false }
+        )
     }
 }
 

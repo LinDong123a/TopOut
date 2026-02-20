@@ -7,6 +7,9 @@ struct StatisticsView: View {
     @Query(sort: \ClimbRecord.startTime, order: .reverse)
     private var allRecords: [ClimbRecord]
     @State private var selectedPeriod: StatsPeriod = .week
+    @State private var appeared = false
+    @State private var cardsAppeared = [false, false, false]
+    @State private var heatmapAppeared = false
 
     enum StatsPeriod: String, CaseIterable {
         case week = "本周", month = "本月", all = "全部"
@@ -37,16 +40,33 @@ struct StatisticsView: View {
 
                 if filtered.isEmpty {
                     statsEmptyState
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 } else {
                     heartRateTrendChart
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
 
                 calendarHeatmap
             }
             .padding(16)
         }
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: selectedPeriod)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: filtered.isEmpty)
         .topOutBackground()
         .navigationTitle("统计")
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                appeared = true
+            }
+            for i in cardsAppeared.indices {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1 + Double(i) * 0.08)) {
+                    cardsAppeared[i] = true
+                }
+            }
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4)) {
+                heatmapAppeared = true
+            }
+        }
     }
 
     // MARK: - Period Picker
@@ -67,14 +87,22 @@ struct StatisticsView: View {
             SCard(title: "攀爬次数", value: "\(totalClimbs)",
                   icon: "figure.climbing",
                   color: TopOutTheme.accentGreen)
+                .scaleEffect(cardsAppeared[0] ? 1 : 0.6)
+                .opacity(cardsAppeared[0] ? 1 : 0)
+
             SCard(title: "总时长",
                   value: totalDuration.formattedShortDuration,
                   icon: "clock.fill",
                   color: TopOutTheme.rockBrown)
+                .scaleEffect(cardsAppeared[1] ? 1 : 0.6)
+                .opacity(cardsAppeared[1] ? 1 : 0)
+
             SCard(title: "平均时长",
                   value: avgDuration.formattedShortDuration,
                   icon: "timer",
                   color: TopOutTheme.sageGreen)
+                .scaleEffect(cardsAppeared[2] ? 1 : 0.6)
+                .opacity(cardsAppeared[2] ? 1 : 0)
         }
     }
 
@@ -180,12 +208,19 @@ struct StatisticsView: View {
                 // Grid of weeks
                 LazyHGrid(rows: Array(repeating: GridItem(.fixed(14), spacing: 2),
                                       count: 7), spacing: 2) {
-                    ForEach(weeks, id: \.self) { day in
+                    ForEach(Array(weeks.enumerated()), id: \.offset) { index, day in
                         let count = dailyCounts[
                             Calendar.current.startOfDay(for: day)] ?? 0
                         RoundedRectangle(cornerRadius: 3)
                             .fill(heatColor(count))
                             .frame(width: 14, height: 14)
+                            .opacity(heatmapAppeared ? 1 : 0)
+                            .scaleEffect(heatmapAppeared ? 1 : 0.3)
+                            .animation(
+                                .spring(response: 0.4, dampingFraction: 0.7)
+                                .delay(Double(index) * 0.005),
+                                value: heatmapAppeared
+                            )
                     }
                 }
             }
@@ -242,6 +277,7 @@ private struct SCard: View {
             Text(value)
                 .font(.title2.bold())
                 .foregroundStyle(TopOutTheme.textPrimary)
+                .contentTransition(.numericText())
             Text(title)
                 .font(.caption)
                 .foregroundStyle(TopOutTheme.textSecondary)

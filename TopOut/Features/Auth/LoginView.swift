@@ -11,6 +11,9 @@ struct LoginView: View {
     @State private var errorMessage: String?
     @State private var countdown = 0
     @State private var appeared = false
+    @State private var logoAppeared = false
+    @State private var formItemsAppeared = [false, false, false, false, false]
+    @State private var buttonPressed = false
 
     private var isPhoneValid: Bool {
         phone.count == 11 && phone.allSatisfy(\.isNumber)
@@ -41,7 +44,16 @@ struct LoginView: View {
         }
         .ignoresSafeArea(.container)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.7)) { appeared = true }
+            // Staggered entrance: logo first, then form items
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
+                appeared = true
+                logoAppeared = true
+            }
+            for i in formItemsAppeared.indices {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.15 + Double(i) * 0.08)) {
+                    formItemsAppeared[i] = true
+                }
+            }
         }
     }
 
@@ -50,7 +62,6 @@ struct LoginView: View {
     private var background: some View {
         ZStack {
             TopOutTheme.backgroundPrimary
-            // Warm radial glow at top
             RadialGradient(
                 colors: [
                     TopOutTheme.earthBrown.opacity(0.12),
@@ -59,7 +70,6 @@ struct LoginView: View {
                 center: .top,
                 startRadius: 80, endRadius: 450
             )
-            // Subtle green glow center
             RadialGradient(
                 colors: [
                     TopOutTheme.mossGreen.opacity(0.06),
@@ -109,8 +119,8 @@ struct LoginView: View {
                 .font(.subheadline)
                 .foregroundStyle(TopOutTheme.textTertiary)
         }
-        .scaleEffect(appeared ? 1.0 : 0.85)
-        .opacity(appeared ? 1.0 : 0)
+        .scaleEffect(logoAppeared ? 1.0 : 0.5)
+        .opacity(logoAppeared ? 1.0 : 0)
     }
 
     // MARK: - Form
@@ -120,14 +130,21 @@ struct LoginView: View {
             inputField(icon: "phone.fill", placeholder: "手机号",
                        text: $phone, keyboard: .phonePad,
                        contentType: .telephoneNumber)
+                .offset(y: formItemsAppeared[0] ? 0 : 30)
+                .opacity(formItemsAppeared[0] ? 1 : 0)
 
             codeField
+                .offset(y: formItemsAppeared[1] ? 0 : 30)
+                .opacity(formItemsAppeared[1] ? 1 : 0)
 
             if isRegistering {
                 inputField(icon: "person.fill", placeholder: "昵称",
                            text: $nickname, keyboard: .default,
                            contentType: .nickname)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity).combined(with: .scale(scale: 0.95)),
+                        removal: .opacity.combined(with: .scale(scale: 0.95))
+                    ))
             }
 
             if let errorMessage {
@@ -138,18 +155,23 @@ struct LoginView: View {
                 }
                 .foregroundStyle(TopOutTheme.heartRed)
                 .padding(.top, 2)
+                .transition(.opacity.combined(with: .scale(scale: 0.9)))
             }
 
             submitButton.padding(.top, 8)
+                .offset(y: formItemsAppeared[2] ? 0 : 30)
+                .opacity(formItemsAppeared[2] ? 1 : 0)
 
             Button(isRegistering ? "已有账号？登录" : "没有账号？注册") {
-                withAnimation(.spring(response: 0.35)) {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                     isRegistering.toggle()
                 }
             }
             .font(.subheadline)
             .foregroundStyle(TopOutTheme.textTertiary)
             .padding(.top, 4)
+            .offset(y: formItemsAppeared[3] ? 0 : 30)
+            .opacity(formItemsAppeared[3] ? 1 : 0)
         }
     }
 
@@ -208,6 +230,7 @@ struct LoginView: View {
                             : Color.clear),
                         in: Capsule()
                     )
+                    .contentTransition(.numericText())
             }
             .disabled(!isPhoneValid || countdown > 0)
         }
@@ -241,7 +264,14 @@ struct LoginView: View {
             .foregroundStyle(canSubmit ? .white : TopOutTheme.textTertiary)
         }
         .disabled(!canSubmit)
-        .animation(.easeInOut(duration: 0.2), value: canSubmit)
+        .scaleEffect(buttonPressed ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: buttonPressed)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in buttonPressed = true }
+                .onEnded { _ in buttonPressed = false }
+        )
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: canSubmit)
     }
 
     // MARK: - Actions
@@ -249,14 +279,22 @@ struct LoginView: View {
     private func sendCode() {
         countdown = 60
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            countdown -= 1
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                countdown -= 1
+            }
             if countdown <= 0 { timer.invalidate() }
         }
     }
 
     private func submit() {
+        // Haptic feedback
+        let impact = UIImpactFeedbackGenerator(style: .medium)
+        impact.impactOccurred()
+
         if code == "888" {
-            authService.isLoggedIn = true
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                authService.isLoggedIn = true
+            }
             return
         }
         isLoading = true
@@ -270,7 +308,9 @@ struct LoginView: View {
                     try await authService.login(phone: phone, code: code)
                 }
             } catch {
-                errorMessage = error.localizedDescription
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                    errorMessage = error.localizedDescription
+                }
             }
             isLoading = false
         }

@@ -7,6 +7,8 @@ struct LiveDashboardView: View {
     @StateObject private var locationService = LocationService.shared
     @State private var privacySettings = PrivacySettings.load()
     @State private var showGymLive = false
+    @State private var appeared = false
+    @State private var elementsAppeared = [false, false, false, false, false]
 
     var body: some View {
         GeometryReader { geo in
@@ -22,7 +24,18 @@ struct LiveDashboardView: View {
         .preferredColorScheme(.dark)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
-        .onAppear { locationService.requestPermission() }
+        .onAppear {
+            locationService.requestPermission()
+            // Staggered entrance
+            for i in elementsAppeared.indices {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(Double(i) * 0.08)) {
+                    elementsAppeared[i] = true
+                }
+            }
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                appeared = true
+            }
+        }
         .sheet(isPresented: $showGymLive) {
             if let gym = locationService.nearbyGym {
                 NavigationStack {
@@ -48,6 +61,7 @@ struct LiveDashboardView: View {
                 if viewModel.climbState == .idle {
                     PrivacySettingsView(settings: $privacySettings)
                         .padding(.horizontal, 8)
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
                 todayStats
                 Spacer()
@@ -71,16 +85,33 @@ struct LiveDashboardView: View {
     private func portraitLayout(size: CGSize) -> some View {
         VStack(spacing: 16) {
             statusIndicator
+                .offset(y: elementsAppeared[0] ? 0 : -20)
+                .opacity(elementsAppeared[0] ? 1 : 0)
+
             if viewModel.climbState == .idle {
                 PrivacySettingsView(settings: $privacySettings)
                     .padding(.horizontal)
+                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
+
             timerDisplay
+                .offset(y: elementsAppeared[1] ? 0 : 20)
+                .opacity(elementsAppeared[1] ? 1 : 0)
+
             heartRateDisplay
+                .offset(y: elementsAppeared[2] ? 0 : 20)
+                .opacity(elementsAppeared[2] ? 1 : 0)
+
             heartRateChartOrEmpty
                 .frame(height: size.height * 0.28)
                 .padding(.horizontal, 4)
+                .offset(y: elementsAppeared[3] ? 0 : 20)
+                .opacity(elementsAppeared[3] ? 1 : 0)
+
             todayStats
+                .offset(y: elementsAppeared[4] ? 0 : 20)
+                .opacity(elementsAppeared[4] ? 1 : 0)
+
             Spacer()
             bottomBar
         }
@@ -95,10 +126,13 @@ struct LiveDashboardView: View {
                 .fill(viewModel.stateColor)
                 .frame(width: 14, height: 14)
                 .shadow(color: viewModel.stateColor.opacity(0.6), radius: 6)
+                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: viewModel.climbState)
 
             Text(viewModel.climbState.displayName)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(TopOutTheme.textPrimary)
+                .contentTransition(.interpolate)
+                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.climbState)
 
             Spacer()
 
@@ -116,6 +150,7 @@ struct LiveDashboardView: View {
                         in: Capsule()
                     )
                 }
+                .transition(.scale.combined(with: .opacity))
             }
 
             Image(systemName: viewModel.isConnected
@@ -125,7 +160,9 @@ struct LiveDashboardView: View {
                                  ? TopOutTheme.accentGreen
                                  : TopOutTheme.textTertiary)
                 .font(.caption)
+                .contentTransition(.symbolEffect(.replace))
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.climbState)
     }
 
     // MARK: - Timer
@@ -135,6 +172,8 @@ struct LiveDashboardView: View {
             .font(.system(size: 64, weight: .bold, design: .monospaced))
             .foregroundStyle(TopOutTheme.textPrimary)
             .minimumScaleFactor(0.5)
+            .contentTransition(.numericText(countsDown: false))
+            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.duration)
     }
 
     // MARK: - Heart rate
@@ -152,7 +191,7 @@ struct LiveDashboardView: View {
                     .font(.system(size: 52, weight: .bold, design: .rounded))
                     .foregroundStyle(TopOutTheme.heartRed)
                     .contentTransition(.numericText())
-                    .animation(.easeInOut(duration: 0.3),
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8),
                                value: Int(viewModel.heartRate))
             } else {
                 Text("--")
@@ -172,8 +211,10 @@ struct LiveDashboardView: View {
     private var heartRateChartOrEmpty: some View {
         if viewModel.heartRateHistory.isEmpty {
             emptyChartPlaceholder
+                .transition(.opacity.combined(with: .scale(scale: 0.95)))
         } else {
             heartRateChart
+                .transition(.opacity.combined(with: .scale(scale: 0.98)))
         }
     }
 
@@ -239,6 +280,7 @@ struct LiveDashboardView: View {
             }
         }
         .topOutCard()
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.heartRateHistory.count)
     }
 
     // MARK: - Today Stats
@@ -266,12 +308,14 @@ struct LiveDashboardView: View {
                 Text("连续 \(viewModel.streakDays) 天")
                     .foregroundStyle(TopOutTheme.streakOrange)
                     .font(.subheadline.weight(.medium))
+                    .contentTransition(.numericText())
             }
             Spacer()
             HStack(spacing: 6) {
                 Image(systemName: privacySettings.isVisible
                       ? "eye" : "eye.slash")
                     .font(.caption)
+                    .contentTransition(.symbolEffect(.replace))
                 if privacySettings.isVisible && privacySettings.isAnonymous {
                     Text("匿名").font(.caption)
                 }
@@ -298,6 +342,7 @@ private struct DashStatItem: View {
                 Text(value)
                     .font(.title3.bold())
                     .foregroundStyle(TopOutTheme.textPrimary)
+                    .contentTransition(.numericText())
             }
             Text(label)
                 .font(.caption)
