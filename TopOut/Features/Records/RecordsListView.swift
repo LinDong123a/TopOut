@@ -1,82 +1,109 @@
 import SwiftUI
 import SwiftData
 
-/// P1: Climb records list grouped by date
+/// Climb records — card-based list grouped by date
 struct RecordsListView: View {
-    @Query(sort: \ClimbRecord.startTime, order: .reverse) private var records: [ClimbRecord]
-    
+    @Query(sort: \ClimbRecord.startTime, order: .reverse)
+    private var records: [ClimbRecord]
+
     private var groupedRecords: [(String, [ClimbRecord])] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy年MM月dd日"
-        
-        let grouped = Dictionary(grouping: records) { record in
-            formatter.string(from: record.startTime)
-        }
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy年MM月dd日"
+        let grouped = Dictionary(grouping: records) { fmt.string(from: $0.startTime) }
         return grouped.sorted { $0.key > $1.key }
     }
-    
+
     var body: some View {
-        List {
+        ScrollView {
             if records.isEmpty {
-                ContentUnavailableView(
-                    "暂无攀爬记录",
-                    systemImage: "figure.climbing",
-                    description: Text("戴上 Apple Watch 去攀爬吧！")
-                )
+                emptyState
             } else {
-                ForEach(groupedRecords, id: \.0) { date, dayRecords in
-                    Section(header: Text(date)) {
-                        ForEach(dayRecords, id: \.id) { record in
-                            NavigationLink(destination: RecordDetailView(record: record)) {
-                                RecordRowView(record: record)
+                LazyVStack(spacing: 20) {
+                    ForEach(groupedRecords, id: \.0) { date, dayRecords in
+                        Section {
+                            ForEach(dayRecords, id: \.id) { record in
+                                NavigationLink(destination: RecordDetailView(record: record)) {
+                                    RecordCard(record: record)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        } header: {
+                            HStack {
+                                Text(date)
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundStyle(TopOutTheme.textSecondary)
+                                Spacer()
                             }
                         }
                     }
                 }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
             }
         }
+        .topOutBackground()
         .navigationTitle("攀爬记录")
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 16) {
+            Spacer().frame(height: 80)
+            Image(systemName: "figure.climbing")
+                .font(.system(size: 52))
+                .foregroundStyle(TopOutTheme.textTertiary.opacity(0.4))
+            Text("暂无攀爬记录")
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(TopOutTheme.textSecondary)
+            Text("戴上 Apple Watch 去攀爬吧！")
+                .font(.subheadline)
+                .foregroundStyle(TopOutTheme.textTertiary)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
-// MARK: - Record Row
+// MARK: - Record Card
 
-struct RecordRowView: View {
+private struct RecordCard: View {
     let record: ClimbRecord
-    
+
     var body: some View {
-        HStack {
+        HStack(spacing: 14) {
+            // Left accent bar
+            RoundedRectangle(cornerRadius: 2)
+                .fill(TopOutTheme.accentGreen)
+                .frame(width: 4, height: 48)
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(record.startTime.timeString)
                     .font(.headline)
+                    .foregroundStyle(TopOutTheme.textPrimary)
                 Text(record.duration.formattedShortDuration)
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(TopOutTheme.textSecondary)
             }
-            
+
             Spacer()
-            
-            HStack(spacing: 16) {
-                VStack(alignment: .trailing) {
-                    HStack(spacing: 2) {
-                        Image(systemName: "heart.fill")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                        Text("avg \(Int(record.averageHeartRate))")
-                            .font(.caption)
-                    }
-                    HStack(spacing: 2) {
-                        Image(systemName: "heart.fill")
-                            .font(.caption)
-                            .foregroundStyle(.orange)
-                        Text("max \(Int(record.maxHeartRate))")
-                            .font(.caption)
-                    }
+
+            HStack(spacing: 18) {
+                VStack(alignment: .trailing, spacing: 2) {
+                    Label("avg \(Int(record.averageHeartRate))",
+                          systemImage: "heart.fill")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.heartRed.opacity(0.8))
+                    Label("max \(Int(record.maxHeartRate))",
+                          systemImage: "heart.fill")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.warningAmber.opacity(0.8))
                 }
-                .foregroundStyle(.secondary)
+
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(TopOutTheme.textTertiary)
             }
         }
-        .padding(.vertical, 4)
+        .topOutCard()
     }
 }
 

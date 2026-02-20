@@ -6,7 +6,7 @@ struct ContentView: View {
     @EnvironmentObject var connectivity: WatchConnectivityService
     @EnvironmentObject var authService: AuthService
     @State private var selectedTab = 0
-    
+
     var body: some View {
         Group {
             if authService.isLoggedIn {
@@ -15,52 +15,54 @@ struct ContentView: View {
                 LoginView()
             }
         }
+        .preferredColorScheme(.dark)
     }
-    
+
     private var mainTabView: some View {
         TabView(selection: $selectedTab) {
-            // Live Dashboard
             LiveDashboardView()
                 .tabItem {
                     Label("实时", systemImage: "waveform.path.ecg")
                 }
                 .tag(0)
-            
-            // Active Gyms (Remote Spectating)
+
             ActiveGymsView()
                 .tabItem {
-                    Label("围观", systemImage: "binoculars")
+                    Label("围观", systemImage: "binoculars.fill")
                 }
                 .tag(1)
-            
-            // Records
+
             NavigationStack {
                 RecordsListView()
             }
             .tabItem {
-                Label("记录", systemImage: "list.bullet")
+                Label("记录", systemImage: "list.bullet.rectangle.portrait.fill")
             }
             .tag(2)
-            
-            // Statistics
+
             NavigationStack {
                 StatisticsView()
             }
             .tabItem {
-                Label("统计", systemImage: "chart.bar")
+                Label("统计", systemImage: "chart.bar.fill")
             }
             .tag(3)
-            
-            // Settings
+
             NavigationStack {
                 SettingsView()
             }
             .tabItem {
-                Label("设置", systemImage: "gearshape")
+                Label("设置", systemImage: "gearshape.fill")
             }
             .tag(4)
         }
+        .tint(TopOutTheme.accentGreen)
         .onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(TopOutTheme.backgroundPrimary)
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
             connectivity.setModelContext(modelContext)
         }
     }

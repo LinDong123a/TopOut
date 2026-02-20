@@ -1,177 +1,201 @@
 import SwiftUI
 import Charts
 
-/// P1: Detailed view of a single climb record with heart rate chart
+/// Climb detail — heart rate chart + metric cards + intervals
 struct RecordDetailView: View {
     let record: ClimbRecord
-    
+
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Summary cards
-                summarySection
-                
-                // Heart rate chart
+            VStack(spacing: 16) {
+                headerSection
+                metricCards
                 if !record.heartRateSamples.isEmpty {
                     heartRateChartSection
                 }
-                
-                // Climb intervals
                 if !record.climbIntervals.isEmpty {
                     intervalsSection
                 }
             }
-            .padding()
+            .padding(16)
         }
+        .topOutBackground()
         .navigationTitle("攀爬详情")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 ShareLink(item: shareText) {
                     Image(systemName: "square.and.arrow.up")
+                        .foregroundStyle(TopOutTheme.textSecondary)
                 }
             }
         }
     }
-    
-    // MARK: - Summary
-    
-    private var summarySection: some View {
-        VStack(spacing: 12) {
-            HStack {
+
+    // MARK: - Header
+
+    private var headerSection: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(record.startTime.fullDateTimeString)
                     .font(.headline)
-                Spacer()
-            }
-            
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 16) {
-                SummaryCard(title: "时长", value: record.duration.formattedShortDuration, icon: "clock", color: .blue)
-                SummaryCard(title: "平均心率", value: "\(Int(record.averageHeartRate))", icon: "heart.fill", color: .red)
-                SummaryCard(title: "最高心率", value: "\(Int(record.maxHeartRate))", icon: "heart.fill", color: .orange)
-            }
-            
-            if record.calories > 0 {
-                HStack {
-                    Image(systemName: "flame.fill")
-                        .foregroundStyle(.orange)
-                    Text("\(Int(record.calories)) 千卡")
+                    .foregroundStyle(TopOutTheme.textPrimary)
+                if record.calories > 0 {
+                    Label("\(Int(record.calories)) 千卡",
+                          systemImage: "flame.fill")
                         .font(.subheadline)
-                    Spacer()
+                        .foregroundStyle(TopOutTheme.streakOrange)
                 }
-                .padding(.top, 4)
             }
+            Spacer()
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
     }
-    
+
+    // MARK: - Metric Cards
+
+    private var metricCards: some View {
+        HStack(spacing: 12) {
+            MetricCard(title: "时长",
+                       value: record.duration.formattedShortDuration,
+                       icon: "clock.fill",
+                       color: TopOutTheme.rockBrown)
+            MetricCard(title: "平均心率",
+                       value: "\(Int(record.averageHeartRate))",
+                       icon: "heart.fill",
+                       color: TopOutTheme.heartRed)
+            MetricCard(title: "最高心率",
+                       value: "\(Int(record.maxHeartRate))",
+                       icon: "heart.fill",
+                       color: TopOutTheme.warningAmber)
+        }
+    }
+
     // MARK: - Heart Rate Chart
-    
+
     private var heartRateChartSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("心率曲线")
                 .font(.headline)
-            
+                .foregroundStyle(TopOutTheme.textPrimary)
+
             Chart {
-                ForEach(Array(record.heartRateSamples.enumerated()), id: \.offset) { _, sample in
-                    LineMark(
-                        x: .value("Time", sample.timestamp),
-                        y: .value("BPM", sample.bpm)
-                    )
-                    .foregroundStyle(.red)
-                    .lineStyle(StrokeStyle(lineWidth: 2))
-                    
-                    AreaMark(
-                        x: .value("Time", sample.timestamp),
-                        y: .value("BPM", sample.bpm)
-                    )
-                    .foregroundStyle(
-                        .linearGradient(
-                            colors: [.red.opacity(0.0), .red.opacity(0.15)],
-                            startPoint: .bottom,
-                            endPoint: .top
+                ForEach(Array(record.heartRateSamples.enumerated()),
+                        id: \.offset) { _, s in
+                    LineMark(x: .value("Time", s.timestamp),
+                             y: .value("BPM", s.bpm))
+                        .foregroundStyle(TopOutTheme.heartRed)
+                        .lineStyle(StrokeStyle(lineWidth: 2))
+                        .interpolationMethod(.catmullRom)
+
+                    AreaMark(x: .value("Time", s.timestamp),
+                             y: .value("BPM", s.bpm))
+                        .foregroundStyle(
+                            .linearGradient(
+                                colors: [
+                                    TopOutTheme.heartRed.opacity(0.2),
+                                    TopOutTheme.heartRed.opacity(0.0)
+                                ],
+                                startPoint: .top, endPoint: .bottom
+                            )
                         )
-                    )
+                        .interpolationMethod(.catmullRom)
                 }
-                
-                // Average line
+
                 RuleMark(y: .value("Avg", record.averageHeartRate))
-                    .foregroundStyle(.red.opacity(0.5))
+                    .foregroundStyle(TopOutTheme.heartRed.opacity(0.4))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
                     .annotation(position: .top, alignment: .trailing) {
                         Text("avg \(Int(record.averageHeartRate))")
                             .font(.caption2)
-                            .foregroundStyle(.red.opacity(0.7))
+                            .foregroundStyle(TopOutTheme.textSecondary)
                     }
             }
             .frame(height: 200)
             .chartXAxis {
                 AxisMarks(values: .automatic(desiredCount: 5)) { _ in
-                    AxisGridLine()
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.4, dash: [4]))
+                        .foregroundStyle(TopOutTheme.textTertiary.opacity(0.25))
                     AxisValueLabel(format: .dateTime.hour().minute())
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                }
+            }
+            .chartYAxis {
+                AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.4, dash: [4]))
+                        .foregroundStyle(TopOutTheme.textTertiary.opacity(0.25))
+                    AxisValueLabel()
+                        .foregroundStyle(TopOutTheme.textTertiary)
                 }
             }
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .topOutCard()
     }
-    
+
     // MARK: - Intervals
-    
+
     private var intervalsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("攀爬区间")
                 .font(.headline)
-            
-            ForEach(Array(record.climbIntervals.enumerated()), id: \.offset) { _, interval in
-                HStack {
+                .foregroundStyle(TopOutTheme.textPrimary)
+
+            ForEach(Array(record.climbIntervals.enumerated()),
+                    id: \.offset) { _, interval in
+                HStack(spacing: 10) {
                     Circle()
-                        .fill(interval.isClimbing ? .green : .yellow)
+                        .fill(interval.isClimbing
+                              ? TopOutTheme.accentGreen
+                              : TopOutTheme.warningAmber)
                         .frame(width: 8, height: 8)
                     Text(interval.isClimbing ? "攀爬" : "休息")
-                        .font(.subheadline)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(TopOutTheme.textPrimary)
                     Spacer()
-                    Text("\(interval.startTime.timeString) - \(interval.endTime.timeString)")
+                    Text("\(interval.startTime.timeString) – \(interval.endTime.timeString)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Text(interval.endTime.timeIntervalSince(interval.startTime).formattedShortDuration)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                    Text(interval.endTime
+                            .timeIntervalSince(interval.startTime)
+                            .formattedShortDuration)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(TopOutTheme.textSecondary)
                 }
             }
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .topOutCard()
     }
-    
+
     private var shareText: String {
-        "🧗 TopOut 攀爬记录\n📅 \(record.startTime.fullDateTimeString)\n⏱️ 时长: \(record.duration.formattedShortDuration)\n❤️ 平均心率: \(Int(record.averageHeartRate)) BPM\n🔥 最高心率: \(Int(record.maxHeartRate)) BPM"
+        """
+        🧗 TopOut 攀爬记录
+        📅 \(record.startTime.fullDateTimeString)
+        ⏱️ \(record.duration.formattedShortDuration)
+        ❤️ avg \(Int(record.averageHeartRate)) / max \(Int(record.maxHeartRate)) BPM
+        """
     }
 }
 
-// MARK: - Summary Card
+// MARK: - Metric Card
 
-private struct SummaryCard: View {
+private struct MetricCard: View {
     let title: String
     let value: String
     let icon: String
     let color: Color
-    
+
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.title3)
                 .foregroundStyle(color)
             Text(value)
                 .font(.title2.bold())
+                .foregroundStyle(TopOutTheme.textPrimary)
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(TopOutTheme.textSecondary)
         }
         .frame(maxWidth: .infinity)
+        .topOutCard()
     }
 }

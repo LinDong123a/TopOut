@@ -22,9 +22,9 @@ final class LiveDashboardViewModel: ObservableObject {
     
     var stateColor: Color {
         switch climbState {
-        case .idle: return .gray
-        case .climbing: return .green
-        case .resting: return .yellow
+        case .idle: return TopOutTheme.textTertiary
+        case .climbing: return TopOutTheme.accentGreen
+        case .resting: return TopOutTheme.warningAmber
         }
     }
     
