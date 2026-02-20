@@ -21,9 +21,7 @@ struct RecordDetailView: View {
                 publicToggle
                 headerSection
                 metricCards
-                if !record.videoURLs.isEmpty {
-                    videoSection
-                }
+                videoSection
                 if !record.heartRateSamples.isEmpty {
                     heartRateChartSection
                 }
@@ -42,15 +40,9 @@ struct RecordDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 12) {
-                    Button { showVideoSourceSheet = true } label: {
-                        Image(systemName: "video.badge.plus")
-                            .foregroundStyle(TopOutTheme.accentGreen)
-                    }
-                    ShareLink(item: shareText) {
-                        Image(systemName: "square.and.arrow.up")
-                            .foregroundStyle(TopOutTheme.textSecondary)
-                    }
+                ShareLink(item: shareText) {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundStyle(TopOutTheme.textSecondary)
                 }
             }
         }
@@ -110,14 +102,34 @@ struct RecordDetailView: View {
                     .font(.headline)
                     .foregroundStyle(TopOutTheme.textPrimary)
                 Spacer()
-                Text("\(record.videoURLs.count) 个")
-                    .font(.caption)
-                    .foregroundStyle(TopOutTheme.textTertiary)
+                if !record.videoURLs.isEmpty {
+                    Text("\(record.videoURLs.count) 个")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                }
+                Button { showVideoSourceSheet = true } label: {
+                    Label("添加", systemImage: "plus.circle.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                }
             }
 
-            VideoThumbnailGrid(videoPaths: record.videoURLs) { path in
-                VideoStorageService.deleteVideo(at: path)
-                record.videoURLs.removeAll { $0 == path }
+            if record.videoURLs.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "video.badge.plus")
+                        .font(.system(size: 28))
+                        .foregroundStyle(TopOutTheme.textTertiary.opacity(0.5))
+                    Text("还没有视频，点击上方添加")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+            } else {
+                VideoThumbnailGrid(videoPaths: record.videoURLs) { path in
+                    VideoStorageService.deleteVideo(at: path)
+                    record.videoURLs.removeAll { $0 == path }
+                }
             }
         }
         .topOutCard()
