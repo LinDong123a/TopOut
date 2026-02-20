@@ -16,6 +16,7 @@ struct SettingsView: View {
         Form {
             profileSection
             notificationSection
+            privacySection
             devicesSection
             detectionSection
             dataSection
@@ -69,6 +70,31 @@ struct SettingsView: View {
             .listRowBackground(TopOutTheme.backgroundCard)
         } header: {
             Text("通知")
+                .foregroundStyle(TopOutTheme.textSecondary)
+        }
+    }
+
+    // MARK: - Privacy
+
+    private var privacySection: some View {
+        Section {
+            NavigationLink(destination: PrivacySettingsView()) {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(TopOutTheme.sandBeige.opacity(0.15))
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "lock.fill")
+                            .font(.subheadline)
+                            .foregroundStyle(TopOutTheme.sandBeige)
+                    }
+                    Text("隐私设置")
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                }
+            }
+            .listRowBackground(TopOutTheme.backgroundCard)
+        } header: {
+            Text("隐私")
                 .foregroundStyle(TopOutTheme.textSecondary)
         }
     }
