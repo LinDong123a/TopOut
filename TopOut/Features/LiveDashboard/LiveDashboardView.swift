@@ -22,8 +22,6 @@ struct LiveDashboardView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .statusBarHidden(true)
-        .persistentSystemOverlays(.hidden)
         .onAppear {
             locationService.requestPermission()
             // Staggered entrance
@@ -115,7 +113,9 @@ struct LiveDashboardView: View {
             Spacer()
             bottomBar
         }
-        .padding()
+        .padding(.horizontal)
+        .padding(.top, 8)
+        .padding(.bottom, 4)
     }
 
     // MARK: - Status

@@ -112,7 +112,7 @@ struct LoginView: View {
                         )
                         .foregroundStyle(canSubmit ? .white : TopOutTheme.textTertiary)
                     }
-                    .disabled(!canSubmit)
+                    // .disabled(!canSubmit) // Dev mode: always enabled
                     .scaleEffect(buttonPressed ? 0.95 : 1.0)
                     .simultaneousGesture(
                         DragGesture(minimumDistance: 0)
@@ -168,12 +168,11 @@ struct LoginView: View {
     }
     
     private func submit() {
-        guard canSubmit else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        if code == "888" {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) { authService.isLoggedIn = true }
-            return
-        }
+        // Dev mode: tap login to enter directly
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) { authService.isLoggedIn = true }
+        return
+        // --- production code below ---
         isLoading = true; errorMessage = nil
         Task {
             do {
