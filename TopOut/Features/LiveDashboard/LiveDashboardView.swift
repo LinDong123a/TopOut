@@ -7,6 +7,7 @@ struct LiveDashboardView: View {
     @ObservedObject private var locationService = LocationService.shared
     @State private var privacySettings = PrivacySettings.load()
     @State private var showGymLive = false
+    @State private var showSpectate = false
     @State private var appeared = false
     @State private var elementsAppeared = [false, false, false, false, false]
 
@@ -33,6 +34,16 @@ struct LiveDashboardView: View {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                 appeared = true
             }
+        }
+        .overlay(alignment: .bottom) {
+            FloatingSpectateButton(totalCount: 17) {
+                showSpectate = true
+            }
+            .padding(.bottom, 16)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+        .sheet(isPresented: $showSpectate) {
+            SpectateView()
         }
         .sheet(isPresented: $showGymLive) {
             if let gym = locationService.nearbyGym {

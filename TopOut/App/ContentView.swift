@@ -35,19 +35,13 @@ struct ContentView: View {
                 }
                 .tag(0)
 
-            ActiveGymsView()
-                .tabItem {
-                    Label("围观", systemImage: "binoculars.fill")
-                }
-                .tag(1)
-
             NavigationStack {
                 RecordsListView()
             }
             .tabItem {
                 Label("记录", systemImage: "list.bullet.rectangle.portrait.fill")
             }
-            .tag(2)
+            .tag(1)
 
             NavigationStack {
                 StatisticsView()
@@ -55,7 +49,7 @@ struct ContentView: View {
             .tabItem {
                 Label("统计", systemImage: "chart.bar.fill")
             }
-            .tag(3)
+            .tag(2)
 
             NavigationStack {
                 SettingsView()
@@ -63,7 +57,7 @@ struct ContentView: View {
             .tabItem {
                 Label("设置", systemImage: "gearshape.fill")
             }
-            .tag(4)
+            .tag(3)
         }
         .tint(TopOutTheme.accentGreen)
         .animation(.spring(response: 0.4, dampingFraction: 0.85), value: selectedTab)
