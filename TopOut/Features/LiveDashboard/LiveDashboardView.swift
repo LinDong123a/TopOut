@@ -8,6 +8,8 @@ struct LiveDashboardView: View {
     @State private var privacySettings = PrivacySettings.load()
     @State private var showGymLive = false
     @State private var showSpectate = false
+    @State private var showGymSelector = false
+    @State private var selectedGymName = "岩时攀岩馆（望京店）"
     @State private var appeared = false
     @State private var elementsAppeared = [false, false, false, false, false]
 
@@ -44,6 +46,10 @@ struct LiveDashboardView: View {
         }
         .sheet(isPresented: $showSpectate) {
             SpectateView()
+        }
+        .sheet(isPresented: $showGymSelector) {
+            GymSelectorView(selectedGymName: $selectedGymName)
+                .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showGymLive) {
             if let gym = locationService.nearbyGym {
@@ -91,8 +97,39 @@ struct LiveDashboardView: View {
 
     // MARK: - Portrait
 
+    private var gymLocationBar: some View {
+        Button {
+            showGymSelector = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "location.fill")
+                    .font(.system(size: 12))
+                    .foregroundStyle(TopOutTheme.accentGreen)
+                Text("我在")
+                    .font(.system(size: 14))
+                    .foregroundStyle(TopOutTheme.textSecondary)
+                Text(selectedGymName)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .lineLimit(1)
+                Text("攀岩")
+                    .font(.system(size: 14))
+                    .foregroundStyle(TopOutTheme.textSecondary)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(TopOutTheme.textTertiary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Color.white.opacity(0.05), in: Capsule())
+            .overlay(Capsule().stroke(TopOutTheme.cardStroke, lineWidth: 1))
+        }
+    }
+
     private func portraitLayout(size: CGSize) -> some View {
         VStack(spacing: 16) {
+            gymLocationBar
+            
             statusIndicator
                 .offset(y: elementsAppeared[0] ? 0 : -20)
                 .opacity(elementsAppeared[0] ? 1 : 0)
