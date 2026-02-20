@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00777F64224552E5DFF56B1D /* ClimbingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F545DC58F03238C5CBDC969 /* ClimbingView.swift */; };
+		A1000001000000000000001A /* ClimbSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000001B /* ClimbSessionManager.swift */; };
+		A1000002000000000000001A /* SceneSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000000000000001B /* SceneSelectionView.swift */; };
+		A1000003000000000000001A /* ReadyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003000000000000001B /* ReadyView.swift */; };
+		A1000004000000000000001A /* ClimbingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004000000000000001B /* ClimbingContainerView.swift */; };
+		A1000005000000000000001A /* LiveDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005000000000000001B /* LiveDataView.swift */; };
+		A1000006000000000000001A /* RouteMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000006000000000000001B /* RouteMarkView.swift */; };
+		A1000007000000000000001A /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000007000000000000001B /* ControlView.swift */; };
+		A1000008000000000000001A /* ClimbSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000008000000000000001B /* ClimbSummaryView.swift */; };
 		015CBE9E751938E641FADADE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED162391E818450D6252847 /* AuthService.swift */; };
 		09CC68961E0BE7A8D2D011A6 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543A247D6B898164380A6DE /* APIService.swift */; };
 		0BD34188D149BDA1DE571C10 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
@@ -27,7 +34,6 @@
 		5EF0A4D305E1975E58B13AE4 /* PrivacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */; };
 		5F47A0E482E249FD1C6B23AC /* ClimbRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F1505365D04FB7CA0811E /* ClimbRecord.swift */; };
 		71F28BD67F9D35A3A6C9FD6C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
-		81E9F75E492B1B5D0A4795BA /* ClimbingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */; };
 		84EE6EBF705BF22285F56A1F /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */; };
 		88EF839BCDB6C6BF18089E91 /* WatchConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */; };
 		8AE5E2A707C16E8F3854B5F7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE49D72B65C204E06C0BAB3 /* LoginView.swift */; };
@@ -84,7 +90,14 @@
 		578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopOutWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutApp.swift; sourceTree = "<group>"; };
 		63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityService.swift; sourceTree = "<group>"; };
-		6F545DC58F03238C5CBDC969 /* ClimbingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingView.swift; sourceTree = "<group>"; };
+		A1000001000000000000001B /* ClimbSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbSessionManager.swift; sourceTree = "<group>"; };
+		A1000002000000000000001B /* SceneSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSelectionView.swift; sourceTree = "<group>"; };
+		A1000003000000000000001B /* ReadyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyView.swift; sourceTree = "<group>"; };
+		A1000004000000000000001B /* ClimbingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingContainerView.swift; sourceTree = "<group>"; };
+		A1000005000000000000001B /* LiveDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDataView.swift; sourceTree = "<group>"; };
+		A1000006000000000000001B /* RouteMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMarkView.swift; sourceTree = "<group>"; };
+		A1000007000000000000001B /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		A1000008000000000000001B /* ClimbSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbSummaryView.swift; sourceTree = "<group>"; };
 		74A1075096D03D4CCAC05121 /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
 		7A26DED48C966D85A4213E89 /* ClimbState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbState.swift; sourceTree = "<group>"; };
 		7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
@@ -96,7 +109,6 @@
 		BE0A28FD4059128A51AF3357 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C25702741F6D8A93AF5D67B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
-		C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingViewModel.swift; sourceTree = "<group>"; };
 		D06DE1A996FCB7BC592CA5FA /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardView.swift; sourceTree = "<group>"; };
 		D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
@@ -169,10 +181,36 @@
 		478D0E2FE1E24B648223D925 /* Climbing */ = {
 			isa = PBXGroup;
 			children = (
-				6F545DC58F03238C5CBDC969 /* ClimbingView.swift */,
-				C7266ABD5FFCDEC5E8CF18B6 /* ClimbingViewModel.swift */,
+				A1000004000000000000001B /* ClimbingContainerView.swift */,
+				A1000005000000000000001B /* LiveDataView.swift */,
+				A1000006000000000000001B /* RouteMarkView.swift */,
+				A1000007000000000000001B /* ControlView.swift */,
 			);
 			path = Climbing;
+			sourceTree = "<group>";
+		};
+		A10000F1000000000000001B /* SceneSelection */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002000000000000001B /* SceneSelectionView.swift */,
+			);
+			path = SceneSelection;
+			sourceTree = "<group>";
+		};
+		A10000F2000000000000001B /* ReadyToClimb */ = {
+			isa = PBXGroup;
+			children = (
+				A1000003000000000000001B /* ReadyView.swift */,
+			);
+			path = ReadyToClimb;
+			sourceTree = "<group>";
+		};
+		A10000F3000000000000001B /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				A1000008000000000000001B /* ClimbSummaryView.swift */,
+			);
+			path = Summary;
 			sourceTree = "<group>";
 		};
 		4838EEC04384F5DD4E386398 /* Auth */ = {
@@ -213,7 +251,10 @@
 		786DE26089534AAD396D9C09 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				A10000F1000000000000001B /* SceneSelection */,
+				A10000F2000000000000001B /* ReadyToClimb */,
 				478D0E2FE1E24B648223D925 /* Climbing */,
+				A10000F3000000000000001B /* Summary */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -300,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */,
+				A1000001000000000000001B /* ClimbSessionManager.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -471,8 +513,14 @@
 				94957C18C5CA9E313E726C70 /* ClimbDetectionService.swift in Sources */,
 				32C4772D14E4DBEB48723627 /* ClimbRecord.swift in Sources */,
 				92A59B0AF697034C5596C5C9 /* ClimbState.swift in Sources */,
-				00777F64224552E5DFF56B1D /* ClimbingView.swift in Sources */,
-				81E9F75E492B1B5D0A4795BA /* ClimbingViewModel.swift in Sources */,
+				A1000001000000000000001A /* ClimbSessionManager.swift in Sources */,
+				A1000002000000000000001A /* SceneSelectionView.swift in Sources */,
+				A1000003000000000000001A /* ReadyView.swift in Sources */,
+				A1000004000000000000001A /* ClimbingContainerView.swift in Sources */,
+				A1000005000000000000001A /* LiveDataView.swift in Sources */,
+				A1000006000000000000001A /* RouteMarkView.swift in Sources */,
+				A1000007000000000000001A /* ControlView.swift in Sources */,
+				A1000008000000000000001A /* ClimbSummaryView.swift in Sources */,
 				84EE6EBF705BF22285F56A1F /* Date+Helpers.swift in Sources */,
 				E7C317266501D71D68708F35 /* Gym.swift in Sources */,
 				10708F1CD1646AF35E16B466 /* PhoneConnectivityService.swift in Sources */,
