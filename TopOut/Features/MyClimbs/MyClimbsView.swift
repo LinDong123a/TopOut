@@ -12,7 +12,7 @@ struct MyClimbsView: View {
     @State private var appeared = false
     @State private var isFollowing = false
     @State private var recordToDelete: ClimbRecord?
-    @State private var likedRecords: Set<String> = []
+    @State private var likedRecords: Set<UUID> = []
     
     private var isSelf: Bool { userId == nil }
     
@@ -137,6 +137,16 @@ struct MyClimbsView: View {
         }
     }
     
+    private func likedBinding(for id: UUID) -> Binding<Bool> {
+        Binding(
+            get: { likedRecords.contains(id) },
+            set: { newVal in
+                if newVal { likedRecords.insert(id) }
+                else { likedRecords.remove(id) }
+            }
+        )
+    }
+
     // MARK: - Profile Card
     
     private var profileCard: some View {
@@ -283,13 +293,7 @@ struct MyClimbsView: View {
                                         MyClimbsRecordCard(record: record)
                                         if !isSelf {
                                             CheerButton(
-                                                isLiked: Binding(
-                                                    get: { likedRecords.contains(record.id) },
-                                                    set: { newVal in
-                                                        if newVal { likedRecords.insert(record.id) }
-                                                        else { likedRecords.remove(record.id) }
-                                                    }
-                                                ),
+                                                isLiked: likedBinding(for: record.id),
                                                 emoji: "❤️",
                                                 likedColor: TopOutTheme.heartRed
                                             )

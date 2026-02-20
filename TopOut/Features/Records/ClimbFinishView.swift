@@ -345,7 +345,7 @@ struct ClimbFinishView: View {
 
     private func saveRecord() {
         let record = ClimbRecord(
-            id: sessionData.id,
+            id: sessionData.recordId,
             startTime: sessionData.startTime,
             endTime: sessionData.endTime,
             duration: sessionData.duration,
@@ -354,7 +354,7 @@ struct ClimbFinishView: View {
             minHeartRate: sessionData.minHeartRate,
             calories: sessionData.calories,
             heartRateSamples: sessionData.heartRateSamples,
-            climbIntervals: sessionData.climbIntervals,
+            climbIntervals: [],
             climbType: climbType,
             difficulty: difficulty.isEmpty ? nil : difficulty,
             completionStatus: completionStatus,
@@ -408,49 +408,3 @@ private struct SummaryItem: View {
     }
 }
 
-// MARK: - Session Data (passed from Watch → Phone)
-
-struct ClimbSessionData {
-    let id: UUID
-    let startTime: Date
-    let endTime: Date
-    let duration: TimeInterval
-    let averageHeartRate: Double
-    let maxHeartRate: Double
-    let minHeartRate: Double
-    let calories: Double
-    let heartRateSamples: [HeartRateSample]
-    let climbIntervals: [ClimbInterval]
-    let locationName: String?
-
-    static func from(message: [String: Any]) -> ClimbSessionData {
-        let recordId = (message["recordId"] as? String).flatMap { UUID(uuidString: $0) } ?? UUID()
-        let startTime = (message["startTime"] as? TimeInterval).map { Date(timeIntervalSince1970: $0) } ?? Date()
-        let endTime = (message["endTime"] as? TimeInterval).map { Date(timeIntervalSince1970: $0) } ?? Date()
-        let duration = message["duration"] as? TimeInterval ?? 0
-        let avgHR = message["averageHeartRate"] as? Double ?? 0
-        let maxHR = message["maxHeartRate"] as? Double ?? 0
-        let minHR = message["minHeartRate"] as? Double ?? 0
-        let calories = message["calories"] as? Double ?? 0
-
-        var samples: [HeartRateSample] = []
-        if let samplesString = message["heartRateSamples"] as? String,
-           let data = samplesString.data(using: .utf8) {
-            samples = (try? JSONDecoder().decode([HeartRateSample].self, from: data)) ?? []
-        }
-
-        return ClimbSessionData(
-            id: recordId,
-            startTime: startTime,
-            endTime: endTime,
-            duration: duration,
-            averageHeartRate: avgHR,
-            maxHeartRate: maxHR,
-            minHeartRate: minHR,
-            calories: calories,
-            heartRateSamples: samples,
-            climbIntervals: [],
-            locationName: nil
-        )
-    }
-}

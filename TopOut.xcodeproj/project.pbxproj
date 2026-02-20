@@ -65,6 +65,19 @@
 		A05A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */; };
 		A06A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */; };
 		A07A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */; };
+		B10100010000000000000001 /* ClimbFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10100010000000000000002 /* ClimbFinishView.swift */; };
+		B10200010000000000000001 /* MyClimbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10200010000000000000002 /* MyClimbsView.swift */; };
+		B10300010000000000000001 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10300010000000000000002 /* DiscoverView.swift */; };
+		B10400010000000000000001 /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10400010000000000000002 /* NotificationCenterView.swift */; };
+		B10500010000000000000001 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10500010000000000000002 /* NotificationModel.swift */; };
+		B10600010000000000000001 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10600010000000000000002 /* NotificationSettingsView.swift */; };
+		B10700010000000000000001 /* FollowingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10700010000000000000002 /* FollowingListView.swift */; };
+		B10800010000000000000001 /* VideoPickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10800010000000000000002 /* VideoPickerViews.swift */; };
+		B10900010000000000000001 /* VideoThumbnailGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10900010000000000000002 /* VideoThumbnailGrid.swift */; };
+		B10A00010000000000000001 /* CelebrationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A00010000000000000002 /* CelebrationModifier.swift */; };
+		B10B00010000000000000001 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B00010000000000000002 /* CelebrationView.swift */; };
+		B10C00010000000000000001 /* CheerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C00010000000000000002 /* CheerButton.swift */; };
+		B10D00010000000000000001 /* VideoStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10D00010000000000000002 /* VideoStorageService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +145,19 @@
 		A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEDeviceManager.swift; sourceTree = "<group>"; };
 		A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataService.swift; sourceTree = "<group>"; };
+		B10100010000000000000002 /* ClimbFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbFinishView.swift; sourceTree = "<group>"; };
+		B10200010000000000000002 /* MyClimbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyClimbsView.swift; sourceTree = "<group>"; };
+		B10300010000000000000002 /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
+		B10400010000000000000002 /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
+		B10500010000000000000002 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
+		B10600010000000000000002 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		B10700010000000000000002 /* FollowingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingListView.swift; sourceTree = "<group>"; };
+		B10800010000000000000002 /* VideoPickerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPickerViews.swift; sourceTree = "<group>"; };
+		B10900010000000000000002 /* VideoThumbnailGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailGrid.swift; sourceTree = "<group>"; };
+		B10A00010000000000000002 /* CelebrationModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelebrationModifier.swift; sourceTree = "<group>"; };
+		B10B00010000000000000002 /* CelebrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelebrationView.swift; sourceTree = "<group>"; };
+		B10C00010000000000000002 /* CheerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheerButton.swift; sourceTree = "<group>"; };
+		B10D00010000000000000002 /* VideoStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStorageService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -155,8 +181,11 @@
 		157407B7D27E2A6CD7458CDD /* Records */ = {
 			isa = PBXGroup;
 			children = (
+				B10100010000000000000002 /* ClimbFinishView.swift */,
 				DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */,
 				11688CC19795E800810FC67D /* RecordsListView.swift */,
+				B10800010000000000000002 /* VideoPickerViews.swift */,
+				B10900010000000000000002 /* VideoThumbnailGrid.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -183,12 +212,16 @@
 			isa = PBXGroup;
 			children = (
 				4838EEC04384F5DD4E386398 /* Auth */,
+				B10300F10000000000000001 /* Discover */,
 				B01A2B3C4D5E6F7A8B9C0D1E /* Following */,
 				9536450C2B7EE76E6775D1D6 /* GymLive */,
 				EE568E25BB57467C03CC259E /* LiveDashboard */,
+				B10200F10000000000000001 /* MyClimbs */,
+				B10400F10000000000000001 /* Notifications */,
 				0AC2330DC53E84E1B22FE3E8 /* Privacy */,
 				157407B7D27E2A6CD7458CDD /* Records */,
 				1A2D2A42EDCB52945C7BAA94 /* Settings */,
+				B10A00F10000000000000001 /* Social */,
 				49A0604B2C53EF5E13D5C866 /* Statistics */,
 			);
 			path = Features;
@@ -348,6 +381,7 @@
 				D06DE1A996FCB7BC592CA5FA /* LocationService.swift */,
 				A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */,
 				8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */,
+				B10D00010000000000000002 /* VideoStorageService.swift */,
 				63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */,
 				74A1075096D03D4CCAC05121 /* WebSocketService.swift */,
 			);
@@ -409,6 +443,43 @@
 				5DAECD9EDA38A9D06D25DDB7 /* TopOutApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		B10200F10000000000000001 /* MyClimbs */ = {
+			isa = PBXGroup;
+			children = (
+				B10700010000000000000002 /* FollowingListView.swift */,
+				B10200010000000000000002 /* MyClimbsView.swift */,
+			);
+			path = MyClimbs;
+			sourceTree = "<group>";
+		};
+		B10300F10000000000000001 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				B10300010000000000000002 /* DiscoverView.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
+		B10400F10000000000000001 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B10400010000000000000002 /* NotificationCenterView.swift */,
+				B10500010000000000000002 /* NotificationModel.swift */,
+				B10600010000000000000002 /* NotificationSettingsView.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		B10A00F10000000000000001 /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				B10A00010000000000000002 /* CelebrationModifier.swift */,
+				B10B00010000000000000002 /* CelebrationView.swift */,
+				B10C00010000000000000002 /* CheerButton.swift */,
+			);
+			path = Social;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -539,6 +610,19 @@
 				A05A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift in Sources */,
 				A06A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift in Sources */,
 				A07A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift in Sources */,
+				B10100010000000000000001 /* ClimbFinishView.swift in Sources */,
+				B10200010000000000000001 /* MyClimbsView.swift in Sources */,
+				B10300010000000000000001 /* DiscoverView.swift in Sources */,
+				B10400010000000000000001 /* NotificationCenterView.swift in Sources */,
+				B10500010000000000000001 /* NotificationModel.swift in Sources */,
+				B10600010000000000000001 /* NotificationSettingsView.swift in Sources */,
+				B10700010000000000000001 /* FollowingListView.swift in Sources */,
+				B10800010000000000000001 /* VideoPickerViews.swift in Sources */,
+				B10900010000000000000001 /* VideoThumbnailGrid.swift in Sources */,
+				B10A00010000000000000001 /* CelebrationModifier.swift in Sources */,
+				B10B00010000000000000001 /* CelebrationView.swift in Sources */,
+				B10C00010000000000000001 /* CheerButton.swift in Sources */,
+				B10D00010000000000000001 /* VideoStorageService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
