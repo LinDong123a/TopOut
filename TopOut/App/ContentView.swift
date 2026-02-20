@@ -6,6 +6,7 @@ struct ContentView: View {
     @EnvironmentObject var connectivity: WatchConnectivityService
     @EnvironmentObject var authService: AuthService
     @State private var selectedTab = 0
+    @State private var showClimbFinish = false
 
     var body: some View {
         ZStack {
@@ -25,6 +26,18 @@ struct ContentView: View {
         .preferredColorScheme(.dark)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
+        .onChange(of: connectivity.pendingSessionData != nil) { _, hasPending in
+            if hasPending { showClimbFinish = true }
+        }
+        .fullScreenCover(isPresented: $showClimbFinish) {
+            if let data = connectivity.pendingSessionData {
+                ClimbFinishView(sessionData: data) {
+                    connectivity.pendingSessionData = nil
+                } onDiscarded: {
+                    connectivity.pendingSessionData = nil
+                }
+            }
+        }
     }
 
     private var mainTabView: some View {

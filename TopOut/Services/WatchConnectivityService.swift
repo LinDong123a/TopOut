@@ -8,6 +8,7 @@ final class WatchConnectivityService: NSObject, ObservableObject {
     @Published var isReachable = false
     @Published var realtimeData: RealtimeData?
     @Published var isSessionActive = false
+    @Published var pendingSessionData: ClimbSessionData?
     
     private var session: WCSession?
     private var modelContext: ModelContext?
@@ -43,9 +44,11 @@ final class WatchConnectivityService: NSObject, ObservableObject {
                 
             case .sessionEnded:
                 self?.isSessionActive = false
-                self?.saveRecord(from: message)
+                // Instead of auto-saving, store pending data for ClimbFinishView
+                self?.pendingSessionData = ClimbSessionData.from(message: message)
                 
             case .recordSync:
+                // Background sync — save directly
                 self?.saveRecord(from: message)
             }
         }

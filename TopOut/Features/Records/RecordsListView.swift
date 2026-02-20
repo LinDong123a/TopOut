@@ -1,11 +1,13 @@
 import SwiftUI
 import SwiftData
 
-/// Climb records — card-based list grouped by date
+/// Climb records — card-based list grouped by date with swipe-to-delete
 struct RecordsListView: View {
     @Query(sort: \ClimbRecord.startTime, order: .reverse)
     private var records: [ClimbRecord]
+    @Environment(\.modelContext) private var modelContext
     @State private var appeared = false
+    @State private var recordToDelete: ClimbRecord?
 
     private var groupedRecords: [(String, [ClimbRecord])] {
         let fmt = DateFormatter()
@@ -30,6 +32,13 @@ struct RecordsListView: View {
                                     RecordCard(record: record)
                                 }
                                 .buttonStyle(.plain)
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        recordToDelete = record
+                                    } label: {
+                                        Label("删除", systemImage: "trash")
+                                    }
+                                }
                                 .opacity(appeared ? 1 : 0)
                                 .offset(y: appeared ? 0 : 20)
                                 .animation(
@@ -69,6 +78,22 @@ struct RecordsListView: View {
                 appeared = true
             }
         }
+        .alert("删除这条记录？", isPresented: .init(
+            get: { recordToDelete != nil },
+            set: { if !$0 { recordToDelete = nil } }
+        )) {
+            Button("删除", role: .destructive) {
+                if let record = recordToDelete {
+                    for path in record.videoURLs { VideoStorageService.deleteVideo(at: path) }
+                    modelContext.delete(record)
+                    try? modelContext.save()
+                }
+                recordToDelete = nil
+            }
+            Button("取消", role: .cancel) { recordToDelete = nil }
+        } message: {
+            Text("删除后无法恢复")
+        }
     }
 
     private var emptyState: some View {
@@ -99,7 +124,6 @@ private struct RecordCard: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            // Left accent bar
             RoundedRectangle(cornerRadius: 2)
                 .fill(TopOutTheme.accentGreen)
                 .frame(width: 4, height: 48)

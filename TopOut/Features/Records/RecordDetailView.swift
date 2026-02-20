@@ -1,16 +1,29 @@
 import SwiftUI
 import Charts
+import AVKit
 
-/// Climb detail — heart rate chart + metric cards + intervals
+/// Climb detail — heart rate chart + metric cards + intervals + videos
 struct RecordDetailView: View {
-    let record: ClimbRecord
+    @Bindable var record: ClimbRecord
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var showDeleteAlert = false
+    @State private var showVideoSourceSheet = false
+    @State private var showPhotoPicker = false
+    @State private var showDocumentPicker = false
+    @State private var showCamera = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 climbInfoHeader
+                publicToggle
                 headerSection
                 metricCards
+                if !record.videoURLs.isEmpty {
+                    videoSection
+                }
                 if !record.heartRateSamples.isEmpty {
                     heartRateChartSection
                 }
@@ -20,6 +33,7 @@ struct RecordDetailView: View {
                 if !record.climbIntervals.isEmpty {
                     intervalsSection
                 }
+                deleteButton
             }
             .padding(16)
         }
@@ -28,21 +42,111 @@ struct RecordDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(item: shareText) {
-                    Image(systemName: "square.and.arrow.up")
-                        .foregroundStyle(TopOutTheme.textSecondary)
+                HStack(spacing: 12) {
+                    Button { showVideoSourceSheet = true } label: {
+                        Image(systemName: "video.badge.plus")
+                            .foregroundStyle(TopOutTheme.accentGreen)
+                    }
+                    ShareLink(item: shareText) {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundStyle(TopOutTheme.textSecondary)
+                    }
                 }
             }
         }
+        .alert("删除这条记录？", isPresented: $showDeleteAlert) {
+            Button("删除", role: .destructive) {
+                // Delete associated videos
+                for path in record.videoURLs {
+                    VideoStorageService.deleteVideo(at: path)
+                }
+                modelContext.delete(record)
+                try? modelContext.save()
+                dismiss()
+            }
+            Button("取消", role: .cancel) {}
+        } message: {
+            Text("删除后无法恢复")
+        }
+        .confirmationDialog("添加视频", isPresented: $showVideoSourceSheet) {
+            Button("从相册选择") { showPhotoPicker = true }
+            Button("从文件导入") { showDocumentPicker = true }
+            Button("拍摄视频") { showCamera = true }
+            Button("取消", role: .cancel) {}
+        }
+        .sheet(isPresented: $showPhotoPicker) {
+            VideoPhotoPickerView { url in importVideo(from: url) }
+        }
+        .sheet(isPresented: $showDocumentPicker) {
+            VideoDocumentPickerView { url in importVideo(from: url) }
+        }
+        .fullScreenCover(isPresented: $showCamera) {
+            VideoCameraView { url in importVideo(from: url) }
+        }
+    }
+
+    // MARK: - Public Toggle
+
+    private var publicToggle: some View {
+        Toggle(isOn: $record.isPublic) {
+            HStack(spacing: 8) {
+                Image(systemName: record.isPublic ? "eye" : "eye.slash")
+                    .foregroundStyle(record.isPublic ? TopOutTheme.accentGreen : TopOutTheme.textTertiary)
+                Text("公开这条记录")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(TopOutTheme.textPrimary)
+            }
+        }
+        .tint(TopOutTheme.accentGreen)
+        .topOutCard()
+    }
+
+    // MARK: - Video Section
+
+    private var videoSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("攀爬视频")
+                    .font(.headline)
+                    .foregroundStyle(TopOutTheme.textPrimary)
+                Spacer()
+                Text("\(record.videoURLs.count) 个")
+                    .font(.caption)
+                    .foregroundStyle(TopOutTheme.textTertiary)
+            }
+
+            VideoThumbnailGrid(videoPaths: record.videoURLs) { path in
+                VideoStorageService.deleteVideo(at: path)
+                record.videoURLs.removeAll { $0 == path }
+            }
+        }
+        .topOutCard()
+    }
+
+    // MARK: - Delete Button
+
+    private var deleteButton: some View {
+        Button {
+            showDeleteAlert = true
+        } label: {
+            HStack {
+                Image(systemName: "trash")
+                Text("删除这条记录")
+            }
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(TopOutTheme.heartRed)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(TopOutTheme.heartRed.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+        }
+        .padding(.top, 8)
     }
 
     // MARK: - Climb Info Header (new fields)
 
     private var climbInfoHeader: some View {
         VStack(spacing: 12) {
-            // Type tag + difficulty + star
             HStack(spacing: 10) {
-                // Climb type tag
                 Text(climbTypeDisplayName)
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.white)
@@ -50,7 +154,6 @@ struct RecordDetailView: View {
                     .padding(.vertical, 5)
                     .background(climbTypeColor, in: Capsule())
 
-                // Difficulty
                 if let diff = record.difficulty {
                     Text(diff)
                         .font(.title3.weight(.bold))
@@ -59,19 +162,16 @@ struct RecordDetailView: View {
 
                 Spacer()
 
-                // Star
                 if record.isStarred {
                     Image(systemName: "star.fill")
                         .font(.title3)
                         .foregroundStyle(.yellow)
                 }
 
-                // Completion status icon
                 Text(completionStatusIcon)
                     .font(.title2)
             }
 
-            // Location
             if let loc = record.locationName {
                 HStack(spacing: 6) {
                     Image(systemName: record.isOutdoor ? "mountain.2.fill" : "building.2.fill")
@@ -84,7 +184,6 @@ struct RecordDetailView: View {
                 }
             }
 
-            // Feeling stars
             HStack(spacing: 4) {
                 Text("感受")
                     .font(.caption)
@@ -282,6 +381,17 @@ struct RecordDetailView: View {
         ⏱️ \(record.duration.formattedShortDuration)
         ❤️ avg \(Int(record.averageHeartRate)) / max \(Int(record.maxHeartRate)) BPM
         """
+    }
+
+    private func importVideo(from url: URL) {
+        Task {
+            do {
+                let path = try await VideoStorageService.importVideo(from: url)
+                await MainActor.run { record.videoURLs.append(path) }
+            } catch {
+                print("Video import failed: \(error)")
+            }
+        }
     }
 }
 

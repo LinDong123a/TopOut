@@ -6,10 +6,12 @@ struct MyClimbsView: View {
     let userId: String?
     
     @EnvironmentObject var authService: AuthService
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \ClimbRecord.startTime, order: .reverse)
     private var allRecords: [ClimbRecord]
     @State private var appeared = false
     @State private var isFollowing = false
+    @State private var recordToDelete: ClimbRecord?
     
     private var isSelf: Bool { userId == nil }
     
@@ -37,8 +39,12 @@ struct MyClimbsView: View {
     }
     
     private var records: [ClimbRecord] {
-        // For other users we'd filter; for now show all (mock)
-        allRecords
+        if isSelf {
+            return allRecords
+        } else {
+            // Other users: only show public records
+            return allRecords.filter { $0.isPublic }
+        }
     }
     
     private var groupedRecords: [(String, [ClimbRecord])] {
@@ -57,18 +63,15 @@ struct MyClimbsView: View {
         return records.filter { cal.isDate($0.startTime, equalTo: now, toGranularity: .month) }.count
     }
     private var maxDifficulty: String {
-        // Find highest difficulty from records
         let diffs = records.compactMap(\.difficulty)
         return diffs.first ?? "V4"
     }
     private var streakDays: Int {
-        // Simple streak calc
         let cal = Calendar.current
         let dates = Set(records.map { cal.startOfDay(for: $0.startTime) }).sorted(by: >)
         guard let first = dates.first else { return 0 }
         var streak = 0
         var check = cal.startOfDay(for: Date())
-        // Allow today or yesterday as start
         if first < cal.date(byAdding: .day, value: -1, to: check)! { return 0 }
         for date in dates {
             if date == check {
@@ -80,11 +83,16 @@ struct MyClimbsView: View {
         }
         return max(streak, 1)
     }
+
+    // Mock social data
+    private var followingCount: Int { isSelf ? 12 : 8 }
+    private var followersCount: Int { isSelf ? 8 : 15 }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 profileCard
+                socialBar
                 statsOverview
                 recordsList
             }
@@ -110,13 +118,28 @@ struct MyClimbsView: View {
                 appeared = true
             }
         }
+        .alert("删除这条记录？", isPresented: .init(
+            get: { recordToDelete != nil },
+            set: { if !$0 { recordToDelete = nil } }
+        )) {
+            Button("删除", role: .destructive) {
+                if let record = recordToDelete {
+                    for path in record.videoURLs { VideoStorageService.deleteVideo(at: path) }
+                    modelContext.delete(record)
+                    try? modelContext.save()
+                }
+                recordToDelete = nil
+            }
+            Button("取消", role: .cancel) { recordToDelete = nil }
+        } message: {
+            Text("删除后无法恢复")
+        }
     }
     
     // MARK: - Profile Card
     
     private var profileCard: some View {
         HStack(spacing: 16) {
-            // Avatar
             ZStack {
                 Circle()
                     .fill(TopOutTheme.accentGreen.opacity(0.15))
@@ -171,6 +194,46 @@ struct MyClimbsView: View {
         .opacity(appeared ? 1 : 0)
         .offset(y: appeared ? 0 : 20)
     }
+
+    // MARK: - Social Bar (Following / Followers)
+
+    private var socialBar: some View {
+        HStack(spacing: 0) {
+            NavigationLink(destination: FollowingListView()) {
+                VStack(spacing: 2) {
+                    Text("\(followingCount)")
+                        .font(.headline.bold())
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                    Text("关注")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textSecondary)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
+
+            Divider()
+                .frame(height: 28)
+                .background(TopOutTheme.textTertiary.opacity(0.3))
+
+            NavigationLink(destination: FollowersListView()) {
+                VStack(spacing: 2) {
+                    Text("\(followersCount)")
+                        .font(.headline.bold())
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                    Text("粉丝")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textSecondary)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
+        }
+        .topOutCard()
+        .opacity(appeared ? 1 : 0)
+        .offset(y: appeared ? 0 : 20)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.05), value: appeared)
+    }
     
     // MARK: - Stats Overview
     
@@ -218,6 +281,15 @@ struct MyClimbsView: View {
                                     MyClimbsRecordCard(record: record)
                                 }
                                 .buttonStyle(.plain)
+                                .contextMenu {
+                                    if isSelf {
+                                        Button(role: .destructive) {
+                                            recordToDelete = record
+                                        } label: {
+                                            Label("删除", systemImage: "trash")
+                                        }
+                                    }
+                                }
                                 .opacity(appeared ? 1 : 0)
                                 .offset(y: appeared ? 0 : 20)
                                 .animation(
@@ -245,7 +317,7 @@ struct MyClimbsView: View {
             Image(systemName: "figure.climbing")
                 .font(.system(size: 44))
                 .foregroundStyle(TopOutTheme.textTertiary.opacity(0.4))
-            Text("暂无攀爬记录")
+            Text(isSelf ? "暂无攀爬记录" : "暂无公开记录")
                 .font(.subheadline)
                 .foregroundStyle(TopOutTheme.textSecondary)
         }
@@ -321,7 +393,6 @@ private struct MyClimbsRecordCard: View {
     
     var body: some View {
         HStack(spacing: 14) {
-            // Left accent bar
             RoundedRectangle(cornerRadius: 2)
                 .fill(record.isOutdoor ? TopOutTheme.rockBrown : TopOutTheme.accentGreen)
                 .frame(width: 4, height: 56)
@@ -356,6 +427,12 @@ private struct MyClimbsRecordCard: View {
                             .font(.caption2)
                             .foregroundStyle(.yellow)
                     }
+
+                    if !record.videoURLs.isEmpty {
+                        Image(systemName: "video.fill")
+                            .font(.caption2)
+                            .foregroundStyle(TopOutTheme.accentGreen.opacity(0.7))
+                    }
                 }
                 
                 HStack(spacing: 8) {
@@ -379,7 +456,6 @@ private struct MyClimbsRecordCard: View {
                     .font(.caption)
                     .foregroundStyle(TopOutTheme.heartRed.opacity(0.8))
                 
-                // Feeling stars
                 HStack(spacing: 1) {
                     ForEach(1...5, id: \.self) { i in
                         Image(systemName: i <= record.feeling ? "star.fill" : "star")

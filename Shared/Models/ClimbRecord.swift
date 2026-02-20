@@ -24,6 +24,10 @@ final class ClimbRecord {
     var locationName: String?
     var isOutdoor: Bool
     
+    // Public / Video fields
+    var isPublic: Bool
+    var videoURLs: [String]
+    
     init(
         id: UUID = UUID(),
         startTime: Date = Date(),
@@ -42,7 +46,9 @@ final class ClimbRecord {
         feeling: Int = 3,
         notes: String? = nil,
         locationName: String? = nil,
-        isOutdoor: Bool = false
+        isOutdoor: Bool = false,
+        isPublic: Bool = false,
+        videoURLs: [String] = []
     ) {
         self.id = id
         self.startTime = startTime
@@ -62,6 +68,8 @@ final class ClimbRecord {
         self.notes = notes
         self.locationName = locationName
         self.isOutdoor = isOutdoor
+        self.isPublic = isPublic
+        self.videoURLs = videoURLs
     }
 }
 
