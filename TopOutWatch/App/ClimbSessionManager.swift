@@ -243,7 +243,10 @@ final class ClimbSessionManager: ObservableObject {
             self?.syncedToPhone = true
         }
         
-        appState = .summary
+        appState = .ready
+        routeLogs.removeAll()
+        heartRate = 0
+        elapsedTime = 0
         WKInterfaceDevice.current().play(.success)
     }
     
