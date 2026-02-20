@@ -58,6 +58,13 @@
 		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
 		AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */; };
 		DD4E5F6A7B8C9D0E1F2A3B4C /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */; };
+		A01A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */; };
+		A02A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift */; };
+		A03A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift */; };
+		A04A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift */; };
+		A05A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */; };
+		A06A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */; };
+		A07A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +125,13 @@
 		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutTheme.swift; sourceTree = "<group>"; };
 		EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
+		A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingView.swift; sourceTree = "<group>"; };
+		A12A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectateView.swift; sourceTree = "<group>"; };
+		A13A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymSelectorView.swift; sourceTree = "<group>"; };
+		A14A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDevicesView.swift; sourceTree = "<group>"; };
+		A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEDeviceManager.swift; sourceTree = "<group>"; };
+		A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -150,15 +164,26 @@
 		1A2D2A42EDCB52945C7BAA94 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A14A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift */,
+				A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */,
 				06C5F7D119C0B3B6766D4264 /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		B01A2B3C4D5E6F7A8B9C0D1E /* Following */ = {
+			isa = PBXGroup;
+			children = (
+				A11A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift */,
+			);
+			path = Following;
 			sourceTree = "<group>";
 		};
 		2100D0A859C5F2E6E2778458 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				4838EEC04384F5DD4E386398 /* Auth */,
+				B01A2B3C4D5E6F7A8B9C0D1E /* Following */,
 				9536450C2B7EE76E6775D1D6 /* GymLive */,
 				EE568E25BB57467C03CC259E /* LiveDashboard */,
 				0AC2330DC53E84E1B22FE3E8 /* Privacy */,
@@ -264,6 +289,7 @@
 			children = (
 				29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */,
 				05E4103F2EB7BE1B0370235F /* GymLiveScreenView.swift */,
+				A12A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift */,
 			);
 			path = GymLive;
 			sourceTree = "<group>";
@@ -317,8 +343,10 @@
 			children = (
 				4543A247D6B898164380A6DE /* APIService.swift */,
 				8ED162391E818450D6252847 /* AuthService.swift */,
+				A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */,
 				EDC9A891A58A28C337FC853D /* HealthKitService.swift */,
 				D06DE1A996FCB7BC592CA5FA /* LocationService.swift */,
+				A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */,
 				8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */,
 				63EBA0139D8724DEFF22F636 /* WatchConnectivityService.swift */,
 				74A1075096D03D4CCAC05121 /* WebSocketService.swift */,
@@ -349,6 +377,7 @@
 		EE568E25BB57467C03CC259E /* LiveDashboard */ = {
 			isa = PBXGroup;
 			children = (
+				A13A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift */,
 				D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */,
 				B83841E89EC17DB6A6720DDC /* LiveDashboardViewModel.swift */,
 			);
@@ -503,6 +532,13 @@
 				F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */,
 				AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */,
 				DD4E5F6A7B8C9D0E1F2A3B4C /* LogoView.swift in Sources */,
+				A01A2B3C4D5E6F7A8B9C0D1E /* FollowingView.swift in Sources */,
+				A02A2B3C4D5E6F7A8B9C0D1E /* SpectateView.swift in Sources */,
+				A03A2B3C4D5E6F7A8B9C0D1E /* GymSelectorView.swift in Sources */,
+				A04A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift in Sources */,
+				A05A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift in Sources */,
+				A06A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift in Sources */,
+				A07A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
