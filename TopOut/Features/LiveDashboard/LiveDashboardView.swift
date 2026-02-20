@@ -85,7 +85,6 @@ struct LiveDashboardView: View {
         HStack(spacing: 0) {
             VStack(spacing: 14) {
                 statusIndicator
-                timerDisplay
                 if viewModel.climbState == .idle {
                     ClimbPrivacySettingsView(settings: $privacySettings)
                         .padding(.horizontal, 8)
@@ -157,13 +156,9 @@ struct LiveDashboardView: View {
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
 
-            timerDisplay
+            heartRateDisplay
                 .offset(y: elementsAppeared[1] ? 0 : 20)
                 .opacity(elementsAppeared[1] ? 1 : 0)
-
-            heartRateDisplay
-                .offset(y: elementsAppeared[2] ? 0 : 20)
-                .opacity(elementsAppeared[2] ? 1 : 0)
 
             heartRateChartOrEmpty
                 .frame(height: size.height * 0.20)
@@ -439,20 +434,21 @@ private struct DashStatItem: View {
     let color: Color
 
     var body: some View {
-        VStack(spacing: 4) {
-            HStack(spacing: 5) {
+        VStack(spacing: 6) {
+            HStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.caption)
+                    .font(.title3)
                     .foregroundStyle(color)
                 Text(value)
-                    .font(.title3.bold())
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundStyle(TopOutTheme.textPrimary)
                     .contentTransition(.numericText())
             }
             Text(label)
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundStyle(TopOutTheme.textSecondary)
         }
+        .frame(maxWidth: .infinity)
     }
 }
 
