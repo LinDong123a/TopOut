@@ -4,9 +4,20 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var connectivity: WatchConnectivityService
+    @EnvironmentObject var authService: AuthService
     @State private var selectedTab = 0
     
     var body: some View {
+        Group {
+            if authService.isLoggedIn {
+                mainTabView
+            } else {
+                LoginView()
+            }
+        }
+    }
+    
+    private var mainTabView: some View {
         TabView(selection: $selectedTab) {
             // Live Dashboard
             LiveDashboardView()
@@ -15,6 +26,13 @@ struct ContentView: View {
                 }
                 .tag(0)
             
+            // Active Gyms (Remote Spectating)
+            ActiveGymsView()
+                .tabItem {
+                    Label("围观", systemImage: "binoculars")
+                }
+                .tag(1)
+            
             // Records
             NavigationStack {
                 RecordsListView()
@@ -22,7 +40,7 @@ struct ContentView: View {
             .tabItem {
                 Label("记录", systemImage: "list.bullet")
             }
-            .tag(1)
+            .tag(2)
             
             // Statistics
             NavigationStack {
@@ -31,7 +49,7 @@ struct ContentView: View {
             .tabItem {
                 Label("统计", systemImage: "chart.bar")
             }
-            .tag(2)
+            .tag(3)
             
             // Settings
             NavigationStack {
@@ -40,7 +58,7 @@ struct ContentView: View {
             .tabItem {
                 Label("设置", systemImage: "gearshape")
             }
-            .tag(3)
+            .tag(4)
         }
         .onAppear {
             connectivity.setModelContext(modelContext)
@@ -51,5 +69,6 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(WatchConnectivityService.shared)
+        .environmentObject(AuthService.shared)
         .modelContainer(for: ClimbRecord.self, inMemory: true)
 }

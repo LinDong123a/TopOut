@@ -3,6 +3,7 @@ import SwiftUI
 import Combine
 
 /// ViewModel for the live dashboard, fed by WatchConnectivityService
+/// Phase 1.5: also pushes data via WebSocket to backend
 @MainActor
 final class LiveDashboardViewModel: ObservableObject {
     @Published var heartRate: Double = 0
@@ -15,7 +16,9 @@ final class LiveDashboardViewModel: ObservableObject {
     @Published var streakDays: Int = 1
     
     private let connectivity = WatchConnectivityService.shared
+    private let wsService = WebSocketService.shared
     private var cancellables = Set<AnyCancellable>()
+    private var wasSessionActive = false
     
     var stateColor: Color {
         switch climbState {
@@ -55,9 +58,21 @@ final class LiveDashboardViewModel: ObservableObject {
         connectivity.$isSessionActive
             .receive(on: DispatchQueue.main)
             .sink { [weak self] active in
-                if !active {
-                    self?.climbState = .idle
+                guard let self else { return }
+                if active && !self.wasSessionActive {
+                    // Session just started - connect WebSocket
+                    self.wsService.connectClimbSocket()
+                    // Send climb start with privacy & gym
+                    let privacy = PrivacySettings.load()
+                    let gymId = LocationService.shared.nearbyGym?.id ?? "unknown"
+                    self.wsService.sendClimbStart(gymId: gymId, privacy: privacy)
+                } else if !active && self.wasSessionActive {
+                    // Session ended
+                    self.wsService.sendClimbEnd()
+                    self.wsService.disconnectClimbSocket()
+                    self.climbState = .idle
                 }
+                self.wasSessionActive = active
             }
             .store(in: &cancellables)
     }
@@ -68,6 +83,11 @@ final class LiveDashboardViewModel: ObservableObject {
         duration = data.duration
         todayClimbCount = data.todayClimbCount
         todayTotalDuration = data.todayTotalDuration
+        
+        // Push heart rate to backend via WebSocket
+        if data.heartRate > 0 {
+            wsService.sendHeartRate(data.heartRate, state: data.climbState)
+        }
         
         // Add to history
         if data.heartRate > 0 {

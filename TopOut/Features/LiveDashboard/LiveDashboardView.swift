@@ -1,9 +1,12 @@
 import SwiftUI
 import Charts
 
-/// P0: Full-screen landscape live dashboard - the core selling point
+/// P0: Full-screen landscape live dashboard with privacy settings & gym live screen
 struct LiveDashboardView: View {
     @StateObject private var viewModel = LiveDashboardViewModel()
+    @StateObject private var locationService = LocationService.shared
+    @State private var privacySettings = PrivacySettings.load()
+    @State private var showGymLive = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -23,19 +26,42 @@ struct LiveDashboardView: View {
         .preferredColorScheme(.dark)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
+        .onAppear {
+            locationService.requestPermission()
+        }
+        .sheet(isPresented: $showGymLive) {
+            if let gym = locationService.nearbyGym {
+                NavigationStack {
+                    GymLiveScreenView(gym: gym)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarLeading) {
+                                Button("关闭") { showGymLive = false }
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                }
+            }
+        }
     }
     
     // MARK: - Landscape Layout (Primary)
     
     private func landscapeLayout(size: CGSize) -> some View {
         HStack(spacing: 0) {
-            // Left: Timer + Status
+            // Left: Timer + Status + Privacy
             VStack(spacing: 16) {
                 statusIndicator
                 timerDisplay
+                
+                // Privacy settings (when idle)
+                if viewModel.climbState == .idle {
+                    PrivacySettingsView(settings: $privacySettings)
+                        .padding(.horizontal, 8)
+                }
+                
                 todayStats
                 Spacer()
-                streakDisplay
+                bottomBar
             }
             .frame(width: size.width * 0.35)
             .padding()
@@ -56,13 +82,20 @@ struct LiveDashboardView: View {
     private func portraitLayout(size: CGSize) -> some View {
         VStack(spacing: 16) {
             statusIndicator
+            
+            // Privacy settings (when idle)
+            if viewModel.climbState == .idle {
+                PrivacySettingsView(settings: $privacySettings)
+                    .padding(.horizontal)
+            }
+            
             timerDisplay
             heartRateDisplay
             heartRateChart
-                .frame(height: size.height * 0.35)
+                .frame(height: size.height * 0.3)
             todayStats
             Spacer()
-            streakDisplay
+            bottomBar
         }
         .padding()
     }
@@ -81,6 +114,25 @@ struct LiveDashboardView: View {
                 .foregroundStyle(.white)
             
             Spacer()
+            
+            // Gym indicator
+            if let gym = locationService.nearbyGym {
+                Button {
+                    showGymLive = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "building.2.fill")
+                            .font(.caption)
+                        Text(gym.name)
+                            .font(.caption)
+                            .lineLimit(1)
+                    }
+                    .foregroundStyle(.green)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(.green.opacity(0.15), in: Capsule())
+                }
+            }
             
             // Connection status
             Image(systemName: viewModel.isConnected ? "applewatch.radiowaves.left.and.right" : "applewatch.slash")
@@ -169,13 +221,29 @@ struct LiveDashboardView: View {
         }
     }
     
-    private var streakDisplay: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "flame.fill")
-                .foregroundStyle(.orange)
-            Text("连续 \(viewModel.streakDays) 天")
-                .foregroundStyle(.orange)
-                .font(.subheadline.weight(.medium))
+    private var bottomBar: some View {
+        HStack {
+            // Streak
+            HStack(spacing: 4) {
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(.orange)
+                Text("连续 \(viewModel.streakDays) 天")
+                    .foregroundStyle(.orange)
+                    .font(.subheadline.weight(.medium))
+            }
+            
+            Spacer()
+            
+            // Privacy status indicator
+            HStack(spacing: 6) {
+                Image(systemName: privacySettings.isVisible ? "eye" : "eye.slash")
+                    .font(.caption)
+                if privacySettings.isVisible && privacySettings.isAnonymous {
+                    Text("匿名")
+                        .font(.caption)
+                }
+            }
+            .foregroundStyle(.secondary)
         }
     }
 }

@@ -1,16 +1,40 @@
 import SwiftUI
 
-/// P2: Settings - detection sensitivity, stop timeout, HealthKit authorization
+/// Settings - detection sensitivity, stop timeout, HealthKit, API config, logout
 struct SettingsView: View {
+    @EnvironmentObject var authService: AuthService
     @AppStorage("climbSensitivity") private var sensitivity: Double = 0.5
     @AppStorage("stopTimeout") private var stopTimeout: Double = 30
     @AppStorage("autoDetectEnabled") private var autoDetectEnabled = true
+    @AppStorage("apiBaseURL") private var apiBaseURL = ""
     @State private var healthKitAuthorized = false
     
     private let healthKitService = HealthKitService()
     
     var body: some View {
         Form {
+            // User info
+            if let user = authService.currentUser {
+                Section("用户") {
+                    HStack {
+                        Image(systemName: "person.circle.fill")
+                            .font(.title)
+                            .foregroundStyle(.blue)
+                        VStack(alignment: .leading) {
+                            Text(user.nickname)
+                                .font(.headline)
+                            Text(user.phone)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
+                    Button("退出登录", role: .destructive) {
+                        Task { await authService.logout() }
+                    }
+                }
+            }
+            
             Section("攀爬检测") {
                 Toggle("自动检测", isOn: $autoDetectEnabled)
                 
@@ -54,11 +78,23 @@ struct SettingsView: View {
                 }
             }
             
+            Section("服务器") {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("API 地址")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    TextField("默认: \(NetworkConfig.apiBaseURL)", text: $apiBaseURL)
+                        .font(.system(.body, design: .monospaced))
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                }
+            }
+            
             Section("关于") {
                 HStack {
                     Text("版本")
                     Spacer()
-                    Text("1.0.0 MVP")
+                    Text("1.5.0")
                         .foregroundStyle(.secondary)
                 }
                 
@@ -87,5 +123,6 @@ struct SettingsView: View {
 #Preview {
     NavigationStack {
         SettingsView()
+            .environmentObject(AuthService.shared)
     }
 }
