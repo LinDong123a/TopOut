@@ -7,7 +7,7 @@ enum MockDataService {
     static func insertIfEmpty(context: ModelContext) {
         let descriptor = FetchDescriptor<ClimbRecord>()
         let count = (try? context.fetchCount(descriptor)) ?? 0
-        guard count == 0 else { return }
+        guard count < 5 else { return }  // Re-seed if too few records
 
         let now = Date()
         let records = generateRecords(around: now)
