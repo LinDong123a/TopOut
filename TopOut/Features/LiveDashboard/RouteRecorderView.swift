@@ -1,7 +1,8 @@
 import SwiftUI
 import PhotosUI
+import AVFoundation
 
-/// Route recording sheet — capture media + log route info
+/// Route recording sheet — single page: media buttons at top, route info below
 struct RouteRecorderView: View {
     @EnvironmentObject var sessionState: ClimbSessionState
     @Environment(\.dismiss) private var dismiss
@@ -10,18 +11,11 @@ struct RouteRecorderView: View {
     @State private var sendStatus: RouteRecord.SendStatus = .sent
     @State private var isStarred = false
     @State private var note = ""
-    @State private var showMediaPicker = false
     @State private var showCamera = false
-    @State private var showVideoCam = false
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var mediaPath: String?
     @State private var mediaType: RouteRecord.MediaType?
-    @State private var showMediaActionSheet = false
-    @State private var step: RecordStep = .media
-    
-    enum RecordStep {
-        case media, info
-    }
+    @State private var thumbnailImage: UIImage?
     
     private let boulderGrades = (0...16).map { "V\($0)" }
     private let ropeGrades = [
@@ -42,14 +36,24 @@ struct RouteRecorderView: View {
                 TopOutTheme.backgroundPrimary.ignoresSafeArea()
                 
                 ScrollView {
-                    VStack(spacing: 24) {
-                        if step == .media {
-                            mediaStep
-                        } else {
-                            infoStep
-                        }
+                    VStack(spacing: 20) {
+                        // MARK: - Media buttons + preview
+                        mediaSection
+                        
+                        // MARK: - Difficulty
+                        difficultySection
+                        
+                        // MARK: - Send status
+                        sendStatusSection
+                        
+                        // MARK: - Star + Note
+                        extrasSection
+                        
+                        // MARK: - Confirm
+                        confirmButton
                     }
                     .padding()
+                    .padding(.bottom, 20)
                 }
             }
             .navigationTitle("记录这条线")
@@ -60,170 +64,185 @@ struct RouteRecorderView: View {
                         .foregroundStyle(TopOutTheme.textSecondary)
                 }
             }
-            .confirmationDialog("添加照片/视频", isPresented: $showMediaActionSheet) {
-                Button("📷 拍照") { showCamera = true }
-                Button("🎬 录像") { showVideoCam = true }
-                Button("📂 从相册选择") { showMediaPicker = true }
-                Button("⏭️ 跳过", role: .cancel) {
-                    step = .info
-                }
-            }
             .sheet(isPresented: $showCamera) {
-                ImagePickerView(sourceType: .camera, mediaTypes: ["public.image"]) { url in
+                ImagePickerView(sourceType: .camera, mediaTypes: ["public.image", "public.movie"]) { url in
                     if let url {
-                        mediaPath = saveToDocuments(url: url, type: .photo)
-                        mediaType = .photo
+                        handleMediaURL(url)
                     }
-                    step = .info
                 }
-            }
-            .sheet(isPresented: $showVideoCam) {
-                ImagePickerView(sourceType: .camera, mediaTypes: ["public.movie"]) { url in
-                    if let url {
-                        mediaPath = saveToDocuments(url: url, type: .video)
-                        mediaType = .video
-                    }
-                    step = .info
-                }
-            }
-        }
-    }
-    
-    // MARK: - Media Step
-    
-    private var mediaStep: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "camera.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(TopOutTheme.accentGreen)
-            
-            Text("记录你的攀爬")
-                .font(.title2.bold())
-                .foregroundStyle(TopOutTheme.textPrimary)
-            
-            Text("拍照、录像或从相册选择")
-                .font(.subheadline)
-                .foregroundStyle(TopOutTheme.textSecondary)
-            
-            Button {
-                showMediaActionSheet = true
-            } label: {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("添加照片/视频")
-                }
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(TopOutTheme.accentGreen, in: RoundedRectangle(cornerRadius: 14))
-            }
-            
-            PhotosPicker(selection: $selectedPhotoItem, matching: .any(of: [.images, .videos])) {
-                HStack {
-                    Image(systemName: "photo.on.rectangle")
-                    Text("从相册选择")
-                }
-                .font(.headline)
-                .foregroundStyle(TopOutTheme.accentGreen)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(TopOutTheme.accentGreen.opacity(0.15), in: RoundedRectangle(cornerRadius: 14))
             }
             .onChange(of: selectedPhotoItem) { _, item in
-                if item != nil {
-                    // For simplicity, treat as photo
-                    mediaType = .photo
-                    step = .info
+                Task {
+                    guard let item else { return }
+                    // Try loading as video first, then image
+                    if let movie = try? await item.loadTransferable(type: VideoTransferable.self) {
+                        handleMediaURL(movie.url)
+                    } else if let data = try? await item.loadTransferable(type: Data.self),
+                              let image = UIImage(data: data) {
+                        let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).jpg")
+                        try? image.jpegData(compressionQuality: 0.8)?.write(to: tmp)
+                        handleMediaURL(tmp)
+                    }
                 }
-            }
-            
-            Button {
-                step = .info
-            } label: {
-                Text("⏭️ 跳过，直接记录")
-                    .font(.subheadline)
-                    .foregroundStyle(TopOutTheme.textTertiary)
             }
         }
-        .padding(.top, 40)
     }
     
-    // MARK: - Info Step
+    // MARK: - Media Section
     
-    private var infoStep: some View {
-        VStack(spacing: 24) {
-            // Difficulty picker
-            VStack(alignment: .leading, spacing: 8) {
-                Text("难度")
-                    .font(.headline)
-                    .foregroundStyle(TopOutTheme.textPrimary)
-                
-                Picker("难度", selection: $difficulty) {
-                    ForEach(allGrades, id: \.self) { grade in
-                        Text(grade).tag(grade)
-                    }
+    private var mediaSection: some View {
+        VStack(spacing: 12) {
+            // Two text buttons side by side
+            HStack(spacing: 16) {
+                Button {
+                    showCamera = true
+                } label: {
+                    Text("拍照")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                 }
-                .pickerStyle(.wheel)
-                .frame(height: 120)
-                .topOutCard()
+                
+                PhotosPicker(selection: $selectedPhotoItem, matching: .any(of: [.images, .videos])) {
+                    Text("从相册")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                }
             }
             
-            // Send status
-            VStack(alignment: .leading, spacing: 8) {
-                Text("完攀状态")
-                    .font(.headline)
-                    .foregroundStyle(TopOutTheme.textPrimary)
-                
-                HStack(spacing: 12) {
-                    ForEach(RouteRecord.SendStatus.allCases, id: \.rawValue) { status in
-                        Button {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                sendStatus = status
-                            }
-                        } label: {
-                            VStack(spacing: 4) {
-                                Text(status.emoji)
-                                    .font(.title)
-                                Text(status.rawValue)
+            // Preview thumbnail if media selected
+            if let thumbnailImage {
+                ZStack(alignment: .topTrailing) {
+                    Image(uiImage: thumbnailImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 180)
+                        .clipped()
+                        .cornerRadius(12)
+                    
+                    // Remove button
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            self.thumbnailImage = nil
+                            self.mediaPath = nil
+                            self.mediaType = nil
+                        }
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                            .shadow(radius: 4)
+                    }
+                    .padding(8)
+                    
+                    // Video badge
+                    if mediaType == .video {
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Image(systemName: "video.fill")
+                                    .font(.caption)
+                                Text("视频")
                                     .font(.caption.bold())
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(
-                                sendStatus == status
-                                    ? TopOutTheme.accentGreen.opacity(0.2)
-                                    : TopOutTheme.backgroundCard,
-                                in: RoundedRectangle(cornerRadius: 12)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(
-                                        sendStatus == status
-                                            ? TopOutTheme.accentGreen
-                                            : TopOutTheme.cardStroke,
-                                        lineWidth: sendStatus == status ? 2 : 1
-                                    )
-                            )
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(.black.opacity(0.6), in: Capsule())
+                            .padding(8)
                         }
-                        .foregroundStyle(TopOutTheme.textPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
+                .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
+        }
+    }
+    
+    // MARK: - Difficulty
+    
+    private var difficultySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("难度")
+                .font(.headline)
+                .foregroundStyle(TopOutTheme.textPrimary)
             
-            // Star toggle
+            Picker("难度", selection: $difficulty) {
+                ForEach(allGrades, id: \.self) { grade in
+                    Text(grade).tag(grade)
+                }
+            }
+            .pickerStyle(.wheel)
+            .frame(height: 120)
+            .topOutCard()
+        }
+    }
+    
+    // MARK: - Send Status
+    
+    private var sendStatusSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("完攀状态")
+                .font(.headline)
+                .foregroundStyle(TopOutTheme.textPrimary)
+            
+            HStack(spacing: 12) {
+                ForEach(RouteRecord.SendStatus.allCases, id: \.rawValue) { status in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            sendStatus = status
+                        }
+                    } label: {
+                        VStack(spacing: 4) {
+                            Text(status.emoji)
+                                .font(.title)
+                            Text(status.rawValue)
+                                .font(.caption.bold())
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(
+                            sendStatus == status
+                                ? TopOutTheme.accentGreen.opacity(0.2)
+                                : TopOutTheme.backgroundCard,
+                            in: RoundedRectangle(cornerRadius: 12)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(
+                                    sendStatus == status
+                                        ? TopOutTheme.accentGreen
+                                        : TopOutTheme.cardStroke,
+                                    lineWidth: sendStatus == status ? 2 : 1
+                                )
+                        )
+                    }
+                    .foregroundStyle(TopOutTheme.textPrimary)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Extras
+    
+    private var extrasSection: some View {
+        VStack(spacing: 12) {
             Toggle(isOn: $isStarred) {
                 HStack(spacing: 6) {
                     Image(systemName: isStarred ? "star.fill" : "star")
                         .foregroundStyle(isStarred ? TopOutTheme.warningAmber : TopOutTheme.textTertiary)
-                    Text("标记好线 ⭐")
+                    Text("标记好线")
                         .foregroundStyle(TopOutTheme.textPrimary)
                 }
             }
             .tint(TopOutTheme.warningAmber)
             .topOutCard()
             
-            // Note
             VStack(alignment: .leading, spacing: 8) {
                 Text("一句话感受（可选）")
                     .font(.subheadline)
@@ -234,42 +253,84 @@ struct RouteRecorderView: View {
                     .background(TopOutTheme.backgroundCard, in: RoundedRectangle(cornerRadius: 12))
                     .foregroundStyle(TopOutTheme.textPrimary)
             }
-            
-            // Confirm button
-            Button {
-                let record = RouteRecord(
-                    difficulty: difficulty,
-                    sendStatus: sendStatus,
-                    isStarred: isStarred,
-                    note: note.isEmpty ? nil : note,
-                    mediaPath: mediaPath,
-                    mediaType: mediaType,
-                    timestamp: Date()
-                )
-                sessionState.addRecord(record)
-                dismiss()
-            } label: {
-                HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text("记录")
-                }
-                .font(.headline)
+        }
+    }
+    
+    // MARK: - Confirm
+    
+    private var confirmButton: some View {
+        Button {
+            let record = RouteRecord(
+                difficulty: difficulty,
+                sendStatus: sendStatus,
+                isStarred: isStarred,
+                note: note.isEmpty ? nil : note,
+                mediaPath: mediaPath,
+                mediaType: mediaType,
+                timestamp: Date()
+            )
+            sessionState.addRecord(record)
+            dismiss()
+        } label: {
+            Text("记录")
+                .font(.system(size: 17, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .padding()
+                .padding(.vertical, 16)
                 .background(TopOutTheme.accentGreen, in: RoundedRectangle(cornerRadius: 14))
-            }
         }
     }
     
     // MARK: - Helpers
     
-    private func saveToDocuments(url: URL, type: RouteRecord.MediaType) -> String {
+    private func handleMediaURL(_ url: URL) {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let ext = type == .photo ? "jpg" : "mov"
+        let isVideo = url.pathExtension.lowercased() == "mov" || url.pathExtension.lowercased() == "mp4"
+        let ext = isVideo ? "mov" : "jpg"
         let dest = docs.appendingPathComponent("route_\(UUID().uuidString).\(ext)")
         try? FileManager.default.copyItem(at: url, to: dest)
-        return dest.path
+        
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            mediaPath = dest.path
+            mediaType = isVideo ? .video : .photo
+            
+            if isVideo {
+                // Generate video thumbnail
+                generateVideoThumbnail(url: dest)
+            } else {
+                thumbnailImage = UIImage(contentsOfFile: dest.path)
+            }
+        }
+    }
+    
+    private func generateVideoThumbnail(url: URL) {
+        let asset = AVURLAsset(url: url)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        generator.maximumSize = CGSize(width: 400, height: 400)
+        
+        Task {
+            if let cgImage = try? await generator.image(at: .zero).image {
+                await MainActor.run {
+                    thumbnailImage = UIImage(cgImage: cgImage)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Video transferable for PhotosPicker
+
+struct VideoTransferable: Transferable {
+    let url: URL
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(contentType: .movie) { video in
+            SentTransferredFile(video.url)
+        } importing: { received in
+            let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mov")
+            try FileManager.default.copyItem(at: received.file, to: tmp)
+            return Self(url: tmp)
+        }
     }
 }
 

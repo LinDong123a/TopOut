@@ -424,16 +424,12 @@ struct LiveDashboardView: View {
 
     private var routeRecorderButton: some View {
         Button { showRouteRecorder = true } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "video.fill")
-                    .font(.title3)
-                Text("📹 记录这条线")
-                    .font(.headline)
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(TopOutTheme.accentGreen, in: RoundedRectangle(cornerRadius: 14))
+            Text("记录这条线")
+                .font(.system(size: 17, weight: .bold))
+                .foregroundStyle(TopOutTheme.accentGreen)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
         }
     }
 
