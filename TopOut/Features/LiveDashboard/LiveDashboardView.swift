@@ -97,20 +97,24 @@ struct LiveDashboardView: View {
 
     // MARK: - Portrait
 
+    private var isOutdoorLocation: Bool {
+        selectedGymName.contains("岩场")
+    }
+
     private var gymLocationBar: some View {
         Button {
             showGymSelector = true
         } label: {
             HStack(spacing: 6) {
-                Image(systemName: "location.fill")
+                Image(systemName: isOutdoorLocation ? "mountain.2.fill" : "location.fill")
                     .font(.system(size: 12))
-                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .foregroundStyle(isOutdoorLocation ? TopOutTheme.rockBrown : TopOutTheme.accentGreen)
                 Text("我在")
                     .font(.system(size: 14))
                     .foregroundStyle(TopOutTheme.textSecondary)
                 Text(selectedGymName)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .foregroundStyle(isOutdoorLocation ? TopOutTheme.rockBrown : TopOutTheme.accentGreen)
                     .lineLimit(1)
                 Text("攀岩")
                     .font(.system(size: 14))

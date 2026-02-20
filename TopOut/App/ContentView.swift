@@ -36,18 +36,18 @@ struct ContentView: View {
                 .tag(0)
 
             NavigationStack {
-                RecordsListView()
+                MyClimbsView()
             }
             .tabItem {
-                Label("记录", systemImage: "list.bullet.rectangle.portrait.fill")
+                Label("我的攀爬", systemImage: "person.crop.rectangle.stack.fill")
             }
             .tag(1)
 
             NavigationStack {
-                FollowingView()
+                DiscoverView()
             }
             .tabItem {
-                Label("关注", systemImage: "person.2.fill")
+                Label("发现", systemImage: "safari.fill")
             }
             .tag(2)
 

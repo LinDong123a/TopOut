@@ -8,10 +8,14 @@ struct RecordDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                climbInfoHeader
                 headerSection
                 metricCards
                 if !record.heartRateSamples.isEmpty {
                     heartRateChartSection
+                }
+                if let notes = record.notes, !notes.isEmpty {
+                    notesSection(notes)
                 }
                 if !record.climbIntervals.isEmpty {
                     intervalsSection
@@ -30,6 +34,112 @@ struct RecordDetailView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Climb Info Header (new fields)
+
+    private var climbInfoHeader: some View {
+        VStack(spacing: 12) {
+            // Type tag + difficulty + star
+            HStack(spacing: 10) {
+                // Climb type tag
+                Text(climbTypeDisplayName)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(climbTypeColor, in: Capsule())
+
+                // Difficulty
+                if let diff = record.difficulty {
+                    Text(diff)
+                        .font(.title3.weight(.bold))
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                }
+
+                Spacer()
+
+                // Star
+                if record.isStarred {
+                    Image(systemName: "star.fill")
+                        .font(.title3)
+                        .foregroundStyle(.yellow)
+                }
+
+                // Completion status icon
+                Text(completionStatusIcon)
+                    .font(.title2)
+            }
+
+            // Location
+            if let loc = record.locationName {
+                HStack(spacing: 6) {
+                    Image(systemName: record.isOutdoor ? "mountain.2.fill" : "building.2.fill")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                    Text(loc)
+                        .font(.subheadline)
+                        .foregroundStyle(TopOutTheme.textSecondary)
+                    Spacer()
+                }
+            }
+
+            // Feeling stars
+            HStack(spacing: 4) {
+                Text("感受")
+                    .font(.caption)
+                    .foregroundStyle(TopOutTheme.textTertiary)
+                ForEach(1...5, id: \.self) { i in
+                    Image(systemName: i <= record.feeling ? "star.fill" : "star")
+                        .font(.caption)
+                        .foregroundStyle(i <= record.feeling ? .yellow : TopOutTheme.textTertiary)
+                }
+                Spacer()
+            }
+        }
+        .topOutCard()
+    }
+
+    private var climbTypeDisplayName: String {
+        switch record.climbType {
+        case "indoorBoulder": return "室内抱石"
+        case "indoorLead": return "室内先锋"
+        case "indoorTopRope": return "室内顶绳"
+        case "outdoorBoulder": return "户外抱石"
+        case "outdoorLead": return "户外先锋"
+        case "outdoorTrad": return "户外传统"
+        case "outdoorBigWall": return "大岩壁"
+        default: return record.climbType
+        }
+    }
+
+    private var climbTypeColor: Color {
+        record.isOutdoor ? TopOutTheme.rockBrown : TopOutTheme.accentGreen
+    }
+
+    private var completionStatusIcon: String {
+        switch record.completionStatus {
+        case "completed": return "✅"
+        case "failed": return "❌"
+        case "flash": return "⚡"
+        case "onsight": return "👁️"
+        default: return "✅"
+        }
+    }
+
+    // MARK: - Notes
+
+    private func notesSection(_ notes: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("备注")
+                .font(.headline)
+                .foregroundStyle(TopOutTheme.textPrimary)
+            Text(notes)
+                .font(.subheadline)
+                .foregroundStyle(TopOutTheme.textSecondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .topOutCard()
     }
 
     // MARK: - Header

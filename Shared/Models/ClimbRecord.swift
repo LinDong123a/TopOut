@@ -14,6 +14,16 @@ final class ClimbRecord {
     var heartRateSamples: [HeartRateSample]
     var climbIntervals: [ClimbInterval]
     
+    // New fields
+    var climbType: String
+    var difficulty: String?
+    var completionStatus: String
+    var isStarred: Bool
+    var feeling: Int
+    var notes: String?
+    var locationName: String?
+    var isOutdoor: Bool
+    
     init(
         id: UUID = UUID(),
         startTime: Date = Date(),
@@ -24,7 +34,15 @@ final class ClimbRecord {
         minHeartRate: Double = 0,
         calories: Double = 0,
         heartRateSamples: [HeartRateSample] = [],
-        climbIntervals: [ClimbInterval] = []
+        climbIntervals: [ClimbInterval] = [],
+        climbType: String = "indoorBoulder",
+        difficulty: String? = nil,
+        completionStatus: String = "completed",
+        isStarred: Bool = false,
+        feeling: Int = 3,
+        notes: String? = nil,
+        locationName: String? = nil,
+        isOutdoor: Bool = false
     ) {
         self.id = id
         self.startTime = startTime
@@ -36,6 +54,14 @@ final class ClimbRecord {
         self.calories = calories
         self.heartRateSamples = heartRateSamples
         self.climbIntervals = climbIntervals
+        self.climbType = climbType
+        self.difficulty = difficulty
+        self.completionStatus = completionStatus
+        self.isStarred = isStarred
+        self.feeling = feeling
+        self.notes = notes
+        self.locationName = locationName
+        self.isOutdoor = isOutdoor
     }
 }
 

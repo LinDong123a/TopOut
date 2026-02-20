@@ -16,21 +16,48 @@ enum MockDataService {
         print("[MockData] Inserted \(records.count) climb records")
     }
 
+    // Per-record metadata
+    private struct RecordMeta {
+        let daysAgo: Int
+        let hour: Int
+        let climbType: String
+        let difficulty: String?
+        let completionStatus: String
+        let isStarred: Bool
+        let feeling: Int
+        let notes: String?
+        let locationName: String?
+        let isOutdoor: Bool
+    }
+
     private static func generateRecords(around now: Date) -> [ClimbRecord] {
-        // 18 records spread over the last 30 days
         let calendar = Calendar.current
         var results: [ClimbRecord] = []
 
-        let entries: [(daysAgo: Int, hour: Int)] = [
-            (0, 19), (1, 10), (1, 15),
-            (3, 18), (4, 9), (5, 20),
-            (7, 14), (8, 17), (10, 11),
-            (12, 19), (14, 10), (15, 16),
-            (18, 13), (20, 18), (22, 9),
-            (25, 15), (27, 20), (29, 11),
+        let entries: [RecordMeta] = [
+            // 14 indoor
+            RecordMeta(daysAgo: 0, hour: 19, climbType: "indoorBoulder", difficulty: "V4", completionStatus: "completed", isStarred: true, feeling: 5, notes: "手感超好，红线一把过", locationName: "岩时攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 1, hour: 10, climbType: "indoorBoulder", difficulty: "V5", completionStatus: "flash", isStarred: true, feeling: 5, notes: nil, locationName: "岩时攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 1, hour: 15, climbType: "indoorLead", difficulty: "5.11a", completionStatus: "completed", isStarred: false, feeling: 4, notes: nil, locationName: "岩舞空间（三里屯）", isOutdoor: false),
+            RecordMeta(daysAgo: 3, hour: 18, climbType: "indoorBoulder", difficulty: "V6", completionStatus: "failed", isStarred: false, feeling: 2, notes: "指皮磨破了", locationName: "奥攀攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 4, hour: 9, climbType: "indoorTopRope", difficulty: "5.10c", completionStatus: "completed", isStarred: false, feeling: 3, notes: nil, locationName: "首攀攀岩（朝阳大悦城）", isOutdoor: false),
+            RecordMeta(daysAgo: 5, hour: 20, climbType: "indoorBoulder", difficulty: "V3", completionStatus: "onsight", isStarred: false, feeling: 4, notes: nil, locationName: "岩时攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 7, hour: 14, climbType: "indoorLead", difficulty: "5.11c", completionStatus: "failed", isStarred: false, feeling: 2, notes: "第三把脱落", locationName: "岩舞空间（三里屯）", isOutdoor: false),
+            RecordMeta(daysAgo: 8, hour: 17, climbType: "indoorBoulder", difficulty: "V4", completionStatus: "flash", isStarred: true, feeling: 5, notes: "新线首攀！", locationName: "岩时攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 10, hour: 11, climbType: "indoorBoulder", difficulty: "V5", completionStatus: "completed", isStarred: false, feeling: 3, notes: nil, locationName: "奥攀攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 12, hour: 19, climbType: "indoorTopRope", difficulty: "5.10a", completionStatus: "completed", isStarred: false, feeling: 4, notes: nil, locationName: "首攀攀岩（朝阳大悦城）", isOutdoor: false),
+            RecordMeta(daysAgo: 14, hour: 10, climbType: "indoorBoulder", difficulty: "V3", completionStatus: "onsight", isStarred: false, feeling: 3, notes: nil, locationName: "岩时攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 18, hour: 16, climbType: "indoorLead", difficulty: "5.11a", completionStatus: "completed", isStarred: false, feeling: 4, notes: nil, locationName: "岩舞空间（三里屯）", isOutdoor: false),
+            RecordMeta(daysAgo: 22, hour: 13, climbType: "indoorBoulder", difficulty: "V4", completionStatus: "completed", isStarred: false, feeling: 3, notes: nil, locationName: "奥攀攀岩馆", isOutdoor: false),
+            RecordMeta(daysAgo: 25, hour: 18, climbType: "indoorBoulder", difficulty: "V2", completionStatus: "flash", isStarred: false, feeling: 4, notes: nil, locationName: "岩时攀岩馆", isOutdoor: false),
+            // 4 outdoor
+            RecordMeta(daysAgo: 15, hour: 9, climbType: "outdoorLead", difficulty: "5.10d", completionStatus: "completed", isStarred: true, feeling: 5, notes: "白河经典线路，风景绝美", locationName: "白河岩场", isOutdoor: true),
+            RecordMeta(daysAgo: 20, hour: 10, climbType: "outdoorBoulder", difficulty: "V5", completionStatus: "flash", isStarred: false, feeling: 4, notes: "岩质很好", locationName: "白河岩场", isOutdoor: true),
+            RecordMeta(daysAgo: 27, hour: 8, climbType: "outdoorTrad", difficulty: "5.9", completionStatus: "completed", isStarred: false, feeling: 3, notes: "第一次放传统保护", locationName: "后白河岩场", isOutdoor: true),
+            RecordMeta(daysAgo: 29, hour: 9, climbType: "outdoorLead", difficulty: "5.11a", completionStatus: "failed", isStarred: false, feeling: 2, notes: "crux 过不去，下次再来", locationName: "白河岩场", isOutdoor: true),
         ]
 
-        for (i, e) in entries.enumerated() {
+        for e in entries {
             let start = calendar.date(byAdding: .day, value: -e.daysAgo,
                                       to: calendar.date(bySettingHour: e.hour, minute: Int.random(in: 0...59), second: 0, of: now)!)!
             let durationMin = Double(Int.random(in: 15...90))
@@ -40,7 +67,6 @@ enum MockDataService {
             let minHR = Double(Int.random(in: 85...Int(avgHR) - 10))
             let calories = Double(Int.random(in: 100...500))
 
-            // Generate some heart rate samples
             let sampleCount = Int(durationMin / 2)
             var samples: [HeartRateSample] = []
             for s in 0..<sampleCount {
@@ -49,7 +75,6 @@ enum MockDataService {
                 samples.append(HeartRateSample(timestamp: t, bpm: bpm))
             }
 
-            // Generate climb intervals
             var intervals: [ClimbInterval] = []
             var offset: TimeInterval = 0
             while offset < duration {
@@ -76,7 +101,15 @@ enum MockDataService {
                 minHeartRate: minHR,
                 calories: calories,
                 heartRateSamples: samples,
-                climbIntervals: intervals
+                climbIntervals: intervals,
+                climbType: e.climbType,
+                difficulty: e.difficulty,
+                completionStatus: e.completionStatus,
+                isStarred: e.isStarred,
+                feeling: e.feeling,
+                notes: e.notes,
+                locationName: e.locationName,
+                isOutdoor: e.isOutdoor
             )
             results.append(record)
         }
