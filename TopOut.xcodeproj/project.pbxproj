@@ -50,6 +50,7 @@
 		E7C317266501D71D68708F35 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
 		F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25702741F6D8A93AF5D67B4 /* Assets.xcassets */; };
 		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
+		AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		EDC9A891A58A28C337FC853D /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettings.swift; sourceTree = "<group>"; };
 		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutTheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -262,6 +264,7 @@
 				2100D0A859C5F2E6E2778458 /* Features */,
 				5556F833B11127A8B88C448E /* Resources */,
 				C03E921B98282E2F8D0E8BDE /* Services */,
+				CC3D4E5F6A7B8C9D0E1F2A3B /* Theme */,
 			);
 			path = TopOut;
 			sourceTree = "<group>";
@@ -315,6 +318,14 @@
 				41EEE7C28FC4C95AE74D6BEA /* TopOutWatch.entitlements */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CC3D4E5F6A7B8C9D0E1F2A3B /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		F358874B880E263E8CCCD2C5 /* App */ = {
@@ -445,6 +456,7 @@
 				88EF839BCDB6C6BF18089E91 /* WatchConnectivityService.swift in Sources */,
 				3BF5228CBCBD42D1A53EA80F /* WatchMessage.swift in Sources */,
 				F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */,
+				AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,7 +4,7 @@ import Charts
 /// P0: Full-screen live dashboard — portrait & landscape
 struct LiveDashboardView: View {
     @StateObject private var viewModel = LiveDashboardViewModel()
-    @StateObject private var locationService = LocationService.shared
+    @ObservedObject private var locationService = LocationService.shared
     @State private var privacySettings = PrivacySettings.load()
     @State private var showGymLive = false
     @State private var appeared = false
