@@ -8,13 +8,14 @@ struct ContentView: View {
     @State private var selectedTab = 0
 
     var body: some View {
-        Group {
+        ZStack {
             if authService.isLoggedIn {
                 mainTabView
                     .transition(.move(edge: .trailing).combined(with: .opacity))
             } else {
                 LoginView()
                     .transition(.move(edge: .leading).combined(with: .opacity))
+                    .ignoresSafeArea()
             }
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
