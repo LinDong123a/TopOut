@@ -1,0 +1,79 @@
+name: TopOut
+options:
+  bundleIdPrefix: com.topout
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+  xcodeVersion: "15.0"
+  minimumXcodeGenVersion: "2.38.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  TopOut:
+    type: application
+    platform: iOS
+    sources:
+      - path: TopOut
+        excludes:
+          - "**/.DS_Store"
+      - path: Shared
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "TopOut 需要读取您的健康数据以显示攀爬时的心率信息"
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "TopOut 需要写入运动数据以记录您的攀爬活动"
+    entitlements:
+      path: TopOut/Resources/TopOut.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access:
+          - health-records
+
+  TopOutWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: TopOutWatch
+        excludes:
+          - "**/.DS_Store"
+      - path: Shared
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: com.topout.TopOut
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "TopOut 需要读取心率数据以记录攀爬"
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "TopOut 需要写入运动数据以记录攀爬"
+        INFOPLIST_KEY_NSMotionUsageDescription: "TopOut 需要使用运动传感器来自动检测攀爬动作"
+    entitlements:
+      path: TopOutWatch/Resources/TopOutWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access:
+          - health-records
+    dependencies:
+      - target: TopOut
+        embed: false
+        link: false
+
+schemes:
+  TopOut:
+    build:
+      targets:
+        TopOut: all
+    run:
+      config: Debug
+  
+  TopOutWatch:
+    build:
+      targets:
+        TopOutWatch: all
+    run:
+      config: Debug
