@@ -56,6 +56,14 @@ struct RecordsListView: View {
         .animation(.spring(response: 0.5, dampingFraction: 0.8), value: records.isEmpty)
         .topOutBackground()
         .navigationTitle("攀爬记录")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(destination: StatisticsView()) {
+                    Image(systemName: "chart.bar.fill")
+                        .foregroundStyle(TopOutTheme.accentGreen)
+                }
+            }
+        }
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                 appeared = true

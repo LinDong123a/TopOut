@@ -3,6 +3,7 @@ import SwiftUI
 /// Settings — standard iOS grouped form with outdoor theme
 struct SettingsView: View {
     @EnvironmentObject var authService: AuthService
+    @StateObject private var profile = UserProfile.shared
     @AppStorage("climbSensitivity") private var sensitivity: Double = 0.5
     @AppStorage("stopTimeout") private var stopTimeout: Double = 30
     @AppStorage("autoDetectEnabled") private var autoDetectEnabled = true
@@ -13,7 +14,8 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            userSection
+            profileSection
+            devicesSection
             detectionSection
             dataSection
             serverSection
@@ -24,40 +26,49 @@ struct SettingsView: View {
         .navigationTitle("设置")
     }
 
-    // MARK: - User
+    // MARK: - Profile
 
-    @ViewBuilder
-    private var userSection: some View {
-        if let user = authService.currentUser {
-            Section {
-                HStack(spacing: 14) {
-                    ZStack {
-                        Circle()
-                            .fill(TopOutTheme.accentGreen.opacity(0.15))
-                            .frame(width: 48, height: 48)
-                        Image(systemName: "person.fill")
-                            .font(.title3)
-                            .foregroundStyle(TopOutTheme.accentGreen)
-                    }
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(user.nickname)
-                            .font(.headline)
-                            .foregroundStyle(TopOutTheme.textPrimary)
-                        Text(user.phone)
-                            .font(.caption)
-                            .foregroundStyle(TopOutTheme.textTertiary)
-                    }
-                }
-                .listRowBackground(TopOutTheme.backgroundCard)
+    private var profileSection: some View {
+        Section {
+            NavigationLink(destination: ProfileEditView(profile: profile)) {
+                ProfileCardView(profile: profile)
+            }
+            .listRowBackground(TopOutTheme.backgroundCard)
 
+            if authService.currentUser != nil {
                 Button("退出登录", role: .destructive) {
                     Task { await authService.logout() }
                 }
                 .listRowBackground(TopOutTheme.backgroundCard)
-            } header: {
-                Text("用户")
-                    .foregroundStyle(TopOutTheme.textSecondary)
             }
+        } header: {
+            Text("个人信息")
+                .foregroundStyle(TopOutTheme.textSecondary)
+        }
+    }
+
+    // MARK: - Devices
+
+    private var devicesSection: some View {
+        Section {
+            NavigationLink(destination: MyDevicesView()) {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(TopOutTheme.rockBrown.opacity(0.15))
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "applewatch.and.arrow.forward")
+                            .font(.subheadline)
+                            .foregroundStyle(TopOutTheme.rockBrown)
+                    }
+                    Text("我的设备")
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                }
+            }
+            .listRowBackground(TopOutTheme.backgroundCard)
+        } header: {
+            Text("设备")
+                .foregroundStyle(TopOutTheme.textSecondary)
         }
     }
 

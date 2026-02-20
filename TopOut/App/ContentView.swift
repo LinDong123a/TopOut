@@ -44,10 +44,10 @@ struct ContentView: View {
             .tag(1)
 
             NavigationStack {
-                StatisticsView()
+                FollowingView()
             }
             .tabItem {
-                Label("统计", systemImage: "chart.bar.fill")
+                Label("关注", systemImage: "person.2.fill")
             }
             .tag(2)
 
@@ -68,6 +68,7 @@ struct ContentView: View {
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance
             connectivity.setModelContext(modelContext)
+            MockDataService.insertIfEmpty(context: modelContext)
         }
     }
 }
