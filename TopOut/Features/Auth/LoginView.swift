@@ -158,6 +158,9 @@ struct LoginView: View {
                 Spacer()
             }
         }
+        .preferredColorScheme(.dark)
+        .statusBarHidden(true)
+        .persistentSystemOverlays(.hidden)
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) { logoAppeared = true }
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.2)) { formAppeared = true }

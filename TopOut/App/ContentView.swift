@@ -23,6 +23,8 @@ struct ContentView: View {
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
         .preferredColorScheme(.dark)
+        .statusBarHidden(true)
+        .persistentSystemOverlays(.hidden)
     }
 
     private var mainTabView: some View {
