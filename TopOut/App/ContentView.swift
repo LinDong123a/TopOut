@@ -8,7 +8,13 @@ struct ContentView: View {
     @State private var selectedTab = 0
     
     var body: some View {
-        mainTabView
+        Group {
+            if authService.isLoggedIn {
+                mainTabView
+            } else {
+                LoginView()
+            }
+        }
     }
     
     private var mainTabView: some View {

@@ -17,105 +17,154 @@ struct LoginView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 32) {
-                Spacer()
-                
-                // Logo
-                VStack(spacing: 12) {
-                    Image(systemName: "figure.climbing")
-                        .font(.system(size: 64))
-                        .foregroundStyle(.green)
-                    Text("TopOut")
-                        .font(.largeTitle.bold())
-                    Text("攀岩实时记录")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-                
-                Spacer()
-                
-                // Form
-                VStack(spacing: 16) {
-                    // Phone
-                    HStack {
-                        Image(systemName: "phone")
-                            .foregroundStyle(.secondary)
-                        TextField("手机号", text: $phone)
-                            .keyboardType(.phonePad)
-                            .textContentType(.telephoneNumber)
-                    }
-                    .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        ZStack {
+            // Full-screen gradient background
+            LinearGradient(
+                colors: [Color.black, Color(red: 0.05, green: 0.15, blue: 0.05)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 0) {
+                    // Top spacing
+                    Spacer().frame(height: 80)
                     
-                    // Verification code
-                    HStack {
-                        Image(systemName: "lock")
-                            .foregroundStyle(.secondary)
-                        TextField("验证码", text: $code)
-                            .keyboardType(.numberPad)
-                            .textContentType(.oneTimeCode)
+                    // Logo section
+                    VStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(.green.opacity(0.15))
+                                .frame(width: 120, height: 120)
+                            Image(systemName: "figure.climbing")
+                                .font(.system(size: 56, weight: .medium))
+                                .foregroundStyle(.green)
+                        }
                         
-                        Button(action: sendCode) {
-                            Text(countdown > 0 ? "\(countdown)s" : "获取验证码")
-                                .font(.caption)
+                        Text("TopOut")
+                            .font(.system(size: 36, weight: .bold))
+                            .foregroundStyle(.white)
+                        
+                        Text("攀岩实时记录")
+                            .font(.body)
+                            .foregroundStyle(.gray)
+                    }
+                    .padding(.bottom, 48)
+                    
+                    // Form section
+                    VStack(spacing: 16) {
+                        // Phone input
+                        HStack(spacing: 12) {
+                            Image(systemName: "phone.fill")
+                                .foregroundStyle(.green)
+                                .frame(width: 20)
+                            TextField("手机号", text: $phone)
+                                .keyboardType(.phonePad)
+                                .textContentType(.telephoneNumber)
+                                .foregroundStyle(.white)
                         }
-                        .disabled(!isPhoneValid || countdown > 0)
-                        .buttonStyle(.bordered)
-                    }
-                    .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                    
-                    // Nickname (register mode)
-                    if isRegistering {
-                        HStack {
-                            Image(systemName: "person")
-                                .foregroundStyle(.secondary)
-                            TextField("昵称", text: $nickname)
-                                .textContentType(.nickname)
-                        }
-                        .padding()
-                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                    }
-                    
-                    if let errorMessage {
-                        Text(errorMessage)
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                    }
-                    
-                    // Login / Register button
-                    Button(action: submit) {
-                        HStack {
-                            if isLoading {
-                                ProgressView()
-                                    .tint(.white)
+                        .padding(16)
+                        .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                        )
+                        
+                        // Verification code input
+                        HStack(spacing: 12) {
+                            Image(systemName: "lock.fill")
+                                .foregroundStyle(.green)
+                                .frame(width: 20)
+                            TextField("验证码", text: $code)
+                                .keyboardType(.numberPad)
+                                .textContentType(.oneTimeCode)
+                                .foregroundStyle(.white)
+                            
+                            Button(action: sendCode) {
+                                Text(countdown > 0 ? "\(countdown)s" : "获取验证码")
+                                    .font(.caption.weight(.medium))
+                                    .foregroundStyle(isPhoneValid && countdown == 0 ? .green : .gray)
                             }
-                            Text(isRegistering ? "注册" : "登录")
+                            .disabled(!isPhoneValid || countdown > 0)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.green, in: RoundedRectangle(cornerRadius: 12))
-                        .foregroundStyle(.white)
-                        .font(.headline)
+                        .padding(16)
+                        .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                        )
+                        
+                        // Nickname (register mode)
+                        if isRegistering {
+                            HStack(spacing: 12) {
+                                Image(systemName: "person.fill")
+                                    .foregroundStyle(.green)
+                                    .frame(width: 20)
+                                TextField("昵称", text: $nickname)
+                                    .textContentType(.nickname)
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(16)
+                            .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                            )
+                        }
+                        
+                        // Error message
+                        if let errorMessage {
+                            Text(errorMessage)
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                                .padding(.top, 4)
+                        }
+                        
+                        // Login button
+                        Button(action: submit) {
+                            HStack(spacing: 8) {
+                                if isLoading {
+                                    ProgressView()
+                                        .tint(.white)
+                                }
+                                Text(isRegistering ? "注册" : "登录")
+                                    .font(.headline)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                LinearGradient(
+                                    colors: [.green, Color(red: 0.1, green: 0.7, blue: 0.3)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ),
+                                in: RoundedRectangle(cornerRadius: 14)
+                            )
+                            .foregroundStyle(.white)
+                        }
+                        .disabled(isLoading || !isPhoneValid || code.isEmpty || (isRegistering && nickname.isEmpty))
+                        .opacity(isLoading || !isPhoneValid || code.isEmpty || (isRegistering && nickname.isEmpty) ? 0.5 : 1)
+                        .padding(.top, 8)
+                        
+                        // Toggle register/login
+                        Button(isRegistering ? "已有账号？登录" : "没有账号？注册") {
+                            withAnimation(.easeInOut(duration: 0.3)) { isRegistering.toggle() }
+                        }
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                        .padding(.top, 4)
                     }
-                    .disabled(isLoading || !isPhoneValid || code.isEmpty || (isRegistering && nickname.isEmpty))
+                    .padding(.horizontal, 28)
                     
-                    Button(isRegistering ? "已有账号？登录" : "没有账号？注册") {
-                        withAnimation { isRegistering.toggle() }
-                    }
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    Spacer().frame(height: 40)
                 }
-                .padding(.horizontal)
-                
-                Spacer()
             }
+            .scrollDismissesKeyboard(.interactively)
         }
     }
     
     private func sendCode() {
-        // In MVP, we just start a countdown. Backend sends SMS.
         codeSent = true
         countdown = 60
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -125,6 +174,12 @@ struct LoginView: View {
     }
     
     private func submit() {
+        // Test mode: code 888 bypasses backend
+        if code == "888" {
+            authService.isLoggedIn = true
+            return
+        }
+        
         isLoading = true
         errorMessage = nil
         Task {
