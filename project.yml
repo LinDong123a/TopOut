@@ -1,6 +1,6 @@
 name: TopOut
 options:
-  bundleIdPrefix: com.topout
+  bundleIdPrefix: com.markma.topout
   deploymentTarget:
     iOS: "17.0"
     watchOS: "10.0"
@@ -30,13 +30,6 @@ targets:
         INFOPLIST_KEY_NSHealthShareUsageDescription: "TopOut 需要读取您的健康数据以显示攀爬时的心率信息"
         INFOPLIST_KEY_NSHealthUpdateUsageDescription: "TopOut 需要写入运动数据以记录您的攀爬活动"
         INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "TopOut 需要您的位置来自动匹配附近的攀岩场馆"
-    entitlements:
-      path: TopOut/Resources/TopOut.entitlements
-      properties:
-        com.apple.developer.healthkit: true
-        com.apple.developer.healthkit.access:
-          - health-records
-
   TopOutWatch:
     type: application
     platform: watchOS
@@ -49,16 +42,10 @@ targets:
           - "**/.DS_Store"
     settings:
       base:
-        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: com.topout.TopOut
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: com.markma.topout.TopOut
         INFOPLIST_KEY_NSHealthShareUsageDescription: "TopOut 需要读取心率数据以记录攀爬"
         INFOPLIST_KEY_NSHealthUpdateUsageDescription: "TopOut 需要写入运动数据以记录攀爬"
         INFOPLIST_KEY_NSMotionUsageDescription: "TopOut 需要使用运动传感器来自动检测攀爬动作"
-    entitlements:
-      path: TopOutWatch/Resources/TopOutWatch.entitlements
-      properties:
-        com.apple.developer.healthkit: true
-        com.apple.developer.healthkit.access:
-          - health-records
     dependencies:
       - target: TopOut
         embed: false
