@@ -166,7 +166,7 @@ struct LiveDashboardView: View {
                 .opacity(elementsAppeared[2] ? 1 : 0)
 
             heartRateChartOrEmpty
-                .frame(height: size.height * 0.28)
+                .frame(height: size.height * 0.20)
                 .padding(.horizontal, 4)
                 .offset(y: elementsAppeared[3] ? 0 : 20)
                 .opacity(elementsAppeared[3] ? 1 : 0)
@@ -259,28 +259,28 @@ struct LiveDashboardView: View {
     // MARK: - Heart rate
 
     private var heartRateDisplay: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
             Image(systemName: "heart.fill")
-                .font(.title2)
+                .font(.body)
                 .foregroundStyle(TopOutTheme.heartRed)
                 .symbolEffect(.pulse, options: .repeating,
                               isActive: viewModel.heartRate > 0)
 
             if viewModel.heartRate > 0 {
                 Text("\(Int(viewModel.heartRate))")
-                    .font(.system(size: 52, weight: .bold, design: .rounded))
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(TopOutTheme.heartRed)
                     .contentTransition(.numericText())
                     .animation(.spring(response: 0.4, dampingFraction: 0.8),
                                value: Int(viewModel.heartRate))
             } else {
                 Text("--")
-                    .font(.system(size: 52, weight: .bold, design: .rounded))
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(TopOutTheme.textTertiary)
             }
 
             Text("BPM")
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundStyle(TopOutTheme.heartRed.opacity(0.6))
         }
     }
