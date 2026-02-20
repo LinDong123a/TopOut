@@ -4,7 +4,7 @@ struct RouteMarkView: View {
     @EnvironmentObject var session: ClimbSessionManager
     
     @State private var selectedType: ClimbSessionManager.ClimbType = .boulder
-    @State private var gradeIndex: Int = 3
+    @State private var gradeIndex: Double = 3
     @State private var isStarred: Bool = false
     @State private var showConfirmation = false
     
@@ -23,7 +23,7 @@ struct RouteMarkView: View {
     }
     
     private var currentGrade: String {
-        let idx = min(max(gradeIndex, 0), grades.count - 1)
+        let idx = min(max(Int(gradeIndex), 0), grades.count - 1)
         return grades.isEmpty ? "" : grades[idx]
     }
     
@@ -38,7 +38,7 @@ struct RouteMarkView: View {
                         ForEach(availableTypes, id: \.self) { type in
                             Button {
                                 selectedType = type
-                                gradeIndex = min(gradeIndex, session.gradesForType(type).count - 1)
+                                gradeIndex = min(gradeIndex, Double(session.gradesForType(type).count - 1))
                             } label: {
                                 Text(type.rawValue)
                                     .font(.system(size: 11, weight: .medium))
@@ -70,9 +70,9 @@ struct RouteMarkView: View {
                     .focusable()
                     .digitalCrownRotation(
                         $gradeIndex,
-                        from: 0,
-                        through: max(grades.count - 1, 0),
-                        by: 1,
+                        from: 0.0,
+                        through: Double(max(grades.count - 1, 0)),
+                        by: 1.0,
                         sensitivity: .medium,
                         isContinuous: false,
                         isHapticFeedbackEnabled: true
