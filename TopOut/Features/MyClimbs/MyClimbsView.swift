@@ -12,6 +12,7 @@ struct MyClimbsView: View {
     @State private var appeared = false
     @State private var isFollowing = false
     @State private var recordToDelete: ClimbRecord?
+    @State private var likedRecords: Set<String> = []
     
     private var isSelf: Bool { userId == nil }
     
@@ -278,7 +279,22 @@ struct MyClimbsView: View {
                             ForEach(Array(dayRecords.enumerated()), id: \.element.id) { itemIndex, record in
                                 let totalIndex = groupIndex * 3 + itemIndex
                                 NavigationLink(destination: RecordDetailView(record: record)) {
-                                    MyClimbsRecordCard(record: record)
+                                    HStack {
+                                        MyClimbsRecordCard(record: record)
+                                        if !isSelf {
+                                            CheerButton(
+                                                isLiked: Binding(
+                                                    get: { likedRecords.contains(record.id) },
+                                                    set: { newVal in
+                                                        if newVal { likedRecords.insert(record.id) }
+                                                        else { likedRecords.remove(record.id) }
+                                                    }
+                                                ),
+                                                emoji: "❤️",
+                                                likedColor: TopOutTheme.heartRed
+                                            )
+                                        }
+                                    }
                                 }
                                 .buttonStyle(.plain)
                                 .contextMenu {

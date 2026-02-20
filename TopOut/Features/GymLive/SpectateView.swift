@@ -59,6 +59,8 @@ private var mockTotalCount: Int {
 struct SpectateView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var appeared = false
+    @State private var cheeredClimbers: Set<String> = []
+    @State private var showCelebration = false
     
     var body: some View {
         NavigationStack {
@@ -102,6 +104,7 @@ struct SpectateView: View {
                     appeared = true
                 }
             }
+            .cheerCelebration(isPresented: $showCelebration, fromUser: "攀岩小王子")
         }
         .preferredColorScheme(.dark)
     }
@@ -224,6 +227,24 @@ struct SpectateView: View {
                     .font(.subheadline.bold().monospacedDigit())
                     .foregroundStyle(TopOutTheme.heartRed)
             }
+            
+            // Cheer button
+            CheerButton(
+                isLiked: Binding(
+                    get: { cheeredClimbers.contains(climber.id) },
+                    set: { newVal in
+                        if newVal {
+                            cheeredClimbers.insert(climber.id)
+                            // Demo: simulate receiving a cheer after 2s
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                showCelebration = true
+                            }
+                        } else {
+                            cheeredClimbers.remove(climber.id)
+                        }
+                    }
+                )
+            )
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

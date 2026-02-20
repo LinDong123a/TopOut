@@ -4,17 +4,32 @@ import SwiftUI
 struct FollowingListView: View {
     @State private var climbers = MockSocialData.followingList()
     @State private var appeared = false
+    @State private var cheeredClimbers: Set<UUID> = []
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 10) {
                 ForEach(Array(climbers.enumerated()), id: \.element.id) { index, climber in
-                    NavigationLink(destination: MyClimbsView(userId: climber.id.uuidString)) {
-                        SocialClimberRow(climber: climber) {
-                            climbers[index].isFollowed.toggle()
+                    HStack {
+                        NavigationLink(destination: MyClimbsView(userId: climber.id.uuidString)) {
+                            SocialClimberRow(climber: climber) {
+                                climbers[index].isFollowed.toggle()
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        
+                        if climber.isLive {
+                            CheerButton(
+                                isLiked: Binding(
+                                    get: { cheeredClimbers.contains(climber.id) },
+                                    set: { newVal in
+                                        if newVal { cheeredClimbers.insert(climber.id) }
+                                        else { cheeredClimbers.remove(climber.id) }
+                                    }
+                                )
+                            )
                         }
                     }
-                    .buttonStyle(.plain)
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 20)
                     .animation(

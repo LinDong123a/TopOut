@@ -100,6 +100,7 @@ private func mockDiscoverClimbers(outdoor: Bool) -> [DiscoverClimber] {
 struct DiscoverView: View {
     @State private var selectedMode = 0 // 0 = indoor, 1 = outdoor
     @State private var appeared = false
+    @State private var cheeredClimbers: Set<UUID> = []
 
     var body: some View {
         ScrollView {
@@ -381,6 +382,18 @@ struct DiscoverView: View {
                         .font(.subheadline.bold().monospacedDigit())
                         .foregroundStyle(TopOutTheme.heartRed)
                 }
+            }
+            
+            if climber.isLive {
+                CheerButton(
+                    isLiked: Binding(
+                        get: { cheeredClimbers.contains(climber.id) },
+                        set: { newVal in
+                            if newVal { cheeredClimbers.insert(climber.id) }
+                            else { cheeredClimbers.remove(climber.id) }
+                        }
+                    )
+                )
             }
         }
         .topOutCard()
