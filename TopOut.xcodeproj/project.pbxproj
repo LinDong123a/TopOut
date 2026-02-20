@@ -72,7 +72,7 @@
 		C5C77224F14D8407AE01AB58 /* ActiveGymsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */; };
 		C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */; };
 		D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */; };
-		DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */; };
+		DBE8A5720B39BEBDF58216DA /* ClimbPrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141885927A3F3B239A71B67 /* ClimbPrivacySettingsView.swift */; };
 		DD4E5F6A7B8C9D0E1F2A3B4C /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */; };
 		E043F3E2D9307A82C81C6C52 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
 		E20B4A917EB757344E79B2EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B0F8503CD7B1395E27733FC /* Assets.xcassets */; };
@@ -97,7 +97,7 @@
 		11688CC19795E800810FC67D /* RecordsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsListView.swift; sourceTree = "<group>"; };
 		1D2571614148D8A4347F13AF /* Gym.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gym.swift; sourceTree = "<group>"; };
 		213AC6D31349B0A0E478872D /* PhoneConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConnectivityService.swift; sourceTree = "<group>"; };
-		2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
+		2141885927A3F3B239A71B67 /* ClimbPrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbPrivacySettingsView.swift; sourceTree = "<group>"; };
 		287F1505365D04FB7CA0811E /* ClimbRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbRecord.swift; sourceTree = "<group>"; };
 		29480123ECDC2B5D356C0D5B /* ActiveGymsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveGymsView.swift; sourceTree = "<group>"; };
 		311A05F71B0DCD6C55508D50 /* TopOut.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TopOut.entitlements; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 		0AC2330DC53E84E1B22FE3E8 /* Privacy */ = {
 			isa = PBXGroup;
 			children = (
-				2141885927A3F3B239A71B67 /* PrivacySettingsView.swift */,
+				2141885927A3F3B239A71B67 /* ClimbPrivacySettingsView.swift */,
 			);
 			path = Privacy;
 			sourceTree = "<group>";
@@ -593,7 +593,7 @@
 				8AE5E2A707C16E8F3854B5F7 /* LoginView.swift in Sources */,
 				1759F2A7B1D4D322AC73D7BE /* NetworkConfig.swift in Sources */,
 				5EF0A4D305E1975E58B13AE4 /* PrivacySettings.swift in Sources */,
-				DBE8A5720B39BEBDF58216DA /* PrivacySettingsView.swift in Sources */,
+				DBE8A5720B39BEBDF58216DA /* ClimbPrivacySettingsView.swift in Sources */,
 				C77EF8C977F1FC933FF8693B /* RecordDetailView.swift in Sources */,
 				C05220209EC39C0794C04A0B /* RecordsListView.swift in Sources */,
 				927646D137F8790543C48272 /* SettingsView.swift in Sources */,
