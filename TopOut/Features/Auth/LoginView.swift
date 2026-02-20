@@ -28,29 +28,28 @@ struct LoginView: View {
             
             ScrollView {
                 VStack(spacing: 0) {
-                    // Top spacing
-                    Spacer().frame(height: 80)
+                    Spacer().frame(height: 20)
                     
                     // Logo section
-                    VStack(spacing: 16) {
+                    VStack(spacing: 12) {
                         ZStack {
                             Circle()
                                 .fill(.green.opacity(0.15))
-                                .frame(width: 120, height: 120)
+                                .frame(width: 100, height: 100)
                             Image(systemName: "figure.climbing")
-                                .font(.system(size: 56, weight: .medium))
+                                .font(.system(size: 48, weight: .medium))
                                 .foregroundStyle(.green)
                         }
                         
                         Text("TopOut")
-                            .font(.system(size: 36, weight: .bold))
+                            .font(.system(size: 34, weight: .bold))
                             .foregroundStyle(.white)
                         
                         Text("攀岩实时记录")
-                            .font(.body)
+                            .font(.subheadline)
                             .foregroundStyle(.gray)
                     }
-                    .padding(.bottom, 48)
+                    .padding(.bottom, 40)
                     
                     // Form section
                     VStack(spacing: 16) {
