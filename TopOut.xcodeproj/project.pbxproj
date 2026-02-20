@@ -79,6 +79,10 @@
 		E7C317266501D71D68708F35 /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
 		F054CD564FB049691ACFD299 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C25702741F6D8A93AF5D67B4 /* Assets.xcassets */; };
 		F6D0D56B4F62B2B9EEC134D6 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A1075096D03D4CCAC05121 /* WebSocketService.swift */; };
+		8441838CE5BC49C4AACF0787 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2664ED0AB6EC4172B1F71280 /* HomeView.swift */; };
+		EDBE20FBAA104CA094332A41 /* ClimbSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DDEA50DA648EE9FC4BC28 /* ClimbSessionState.swift */; };
+		CDF866B25899487FB777B893 /* RouteRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB7024FFAE4801A09F646E /* RouteRecord.swift */; };
+		3F4BD297A2BB4B3D96BC64CC /* RouteRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571580693E7B4482877A6548 /* RouteRecorderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +164,10 @@
 		EE5F6A7B8C9D0E1F2A3B4C5D /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettings.swift; sourceTree = "<group>"; };
 		FFE49D72B65C204E06C0BAB3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		2664ED0AB6EC4172B1F71280 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/Home/HomeView.swift"; sourceTree = "<group>"; };
+		999DDEA50DA648EE9FC4BC28 /* ClimbSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/ClimbSessionState.swift"; sourceTree = "<group>"; };
+		07FB7024FFAE4801A09F646E /* RouteRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/RouteRecord.swift"; sourceTree = "<group>"; };
+		571580693E7B4482877A6548 /* RouteRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/RouteRecorderView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -627,7 +635,11 @@
 				B10C00010000000000000001 /* CheerButton.swift in Sources */,
 				B10D00010000000000000001 /* VideoStorageService.swift in Sources */,
 				B10E00010000000000000001 /* PrivacySettingsView.swift in Sources */,
-			);
+							8441838CE5BC49C4AACF0787 /* HomeView.swift in Sources */,
+				EDBE20FBAA104CA094332A41 /* ClimbSessionState.swift in Sources */,
+				CDF866B25899487FB777B893 /* RouteRecord.swift in Sources */,
+				3F4BD297A2BB4B3D96BC64CC /* RouteRecorderView.swift in Sources */,
+);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B5EEB20F699CB64912D07777 /* Sources */ = {
