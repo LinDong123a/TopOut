@@ -386,8 +386,7 @@ private struct StatMiniCard: View {
 
 private struct MyClimbsRecordCard: View {
     let record: ClimbRecord
-    @State private var pressed = false
-    
+
     private var climbTypeShort: String {
         switch record.climbType {
         case "indoorBoulder": return "抱石"
@@ -490,13 +489,6 @@ private struct MyClimbsRecordCard: View {
                 .foregroundStyle(TopOutTheme.textTertiary)
         }
         .topOutCard()
-        .scaleEffect(pressed ? 0.97 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: pressed)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in pressed = true }
-                .onEnded { _ in pressed = false }
-        )
     }
 }
 
