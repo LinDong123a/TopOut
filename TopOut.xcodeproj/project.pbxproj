@@ -53,6 +53,7 @@
 		AA1B2C3D4E5F6A7B8C9D0E1F /* TopOutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2C3D4E5F6A7B8C9D0E1F2A /* TopOutTheme.swift */; };
 		AB615E0C14B6EAFDA18D1212 /* TopOutWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D7538A872D6B5095BC79B3 /* TopOutWatchApp.swift */; };
 		ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3424661951A288A3961A54B5 /* ContentView.swift */; };
+		B10E00010000000000000001 /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10E00010000000000000002 /* PrivacySettingsView.swift */; };
 		B10100010000000000000001 /* ClimbFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10100010000000000000002 /* ClimbFinishView.swift */; };
 		B10200010000000000000001 /* MyClimbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10200010000000000000002 /* MyClimbsView.swift */; };
 		B10300010000000000000001 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10300010000000000000002 /* DiscoverView.swift */; };
@@ -132,6 +133,7 @@
 		A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEDeviceManager.swift; sourceTree = "<group>"; };
 		A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataService.swift; sourceTree = "<group>"; };
+		B10E00010000000000000002 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		B10100010000000000000002 /* ClimbFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbFinishView.swift; sourceTree = "<group>"; };
 		B10200010000000000000002 /* MyClimbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyClimbsView.swift; sourceTree = "<group>"; };
 		B10300010000000000000002 /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				A14A2B3C4D5E6F7A8B9C0D1E /* MyDevicesView.swift */,
+				B10E00010000000000000002 /* PrivacySettingsView.swift */,
 				A15A2B3C4D5E6F7A8B9C0D1E /* ProfileEditView.swift */,
 				06C5F7D119C0B3B6766D4264 /* SettingsView.swift */,
 			);
@@ -623,6 +626,7 @@
 				B10B00010000000000000001 /* CelebrationView.swift in Sources */,
 				B10C00010000000000000001 /* CheerButton.swift in Sources */,
 				B10D00010000000000000001 /* VideoStorageService.swift in Sources */,
+				B10E00010000000000000001 /* PrivacySettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
