@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// I-6: Privacy settings before starting a climb
-struct PrivacySettingsView: View {
+struct ClimbPrivacySettingsView: View {
     @Binding var settings: PrivacySettings
     
     var body: some View {
@@ -63,6 +63,6 @@ struct PrivacySettingsView: View {
 }
 
 #Preview {
-    PrivacySettingsView(settings: .constant(.default))
+    ClimbPrivacySettingsView(settings: .constant(.default))
         .padding()
 }

@@ -87,7 +87,7 @@ struct LiveDashboardView: View {
                 statusIndicator
                 timerDisplay
                 if viewModel.climbState == .idle {
-                    PrivacySettingsView(settings: $privacySettings)
+                    ClimbPrivacySettingsView(settings: $privacySettings)
                         .padding(.horizontal, 8)
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
@@ -152,7 +152,7 @@ struct LiveDashboardView: View {
                 .opacity(elementsAppeared[0] ? 1 : 0)
 
             if viewModel.climbState == .idle {
-                PrivacySettingsView(settings: $privacySettings)
+                ClimbPrivacySettingsView(settings: $privacySettings)
                     .padding(.horizontal)
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
             }
