@@ -11,6 +11,7 @@ final class LiveDashboardViewModel: ObservableObject {
     @Published var duration: TimeInterval = 0
     @Published var todayClimbCount: Int = 0
     @Published var todayTotalDuration: TimeInterval = 0
+    @Published var todayDifficultyBreakdown: [String: Int] = ["V2": 3, "V3": 2, "V4": 4, "V5": 1, "5.10a": 2]
     @Published var heartRateHistory: [HeartRateSample] = []
     @Published var isConnected = false
     @Published var streakDays: Int = 1

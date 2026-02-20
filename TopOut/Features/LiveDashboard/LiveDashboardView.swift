@@ -366,15 +366,40 @@ struct LiveDashboardView: View {
     // MARK: - Today Stats
 
     private var todayStats: some View {
-        HStack(spacing: 20) {
-            DashStatItem(value: "\(viewModel.todayClimbCount)",
-                         label: "今日攀爬",
-                         icon: "figure.climbing",
-                         color: TopOutTheme.accentGreen)
-            DashStatItem(value: viewModel.todayTotalDuration.formattedShortDuration,
-                         label: "累计时长",
-                         icon: "clock",
-                         color: TopOutTheme.rockBrown)
+        VStack(spacing: 12) {
+            // Primary stats row
+            HStack(spacing: 16) {
+                DashStatItem(value: "\(viewModel.todayClimbCount)",
+                             label: "今日条数",
+                             icon: "figure.climbing",
+                             color: TopOutTheme.accentGreen)
+                DashStatItem(value: viewModel.todayTotalDuration.formattedShortDuration,
+                             label: "累计时长",
+                             icon: "clock",
+                             color: TopOutTheme.rockBrown)
+            }
+            
+            // Difficulty breakdown
+            if !viewModel.todayDifficultyBreakdown.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(viewModel.todayDifficultyBreakdown.sorted(by: { $0.key < $1.key }), id: \.key) { difficulty, count in
+                            HStack(spacing: 4) {
+                                Text(difficulty)
+                                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                                    .foregroundStyle(TopOutTheme.accentGreen)
+                                Text("×\(count)")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(TopOutTheme.textSecondary)
+                            }
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(TopOutTheme.accentGreen.opacity(0.1), in: Capsule())
+                            .overlay(Capsule().stroke(TopOutTheme.accentGreen.opacity(0.2), lineWidth: 1))
+                        }
+                    }
+                }
+            }
         }
     }
 
