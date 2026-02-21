@@ -83,6 +83,13 @@
 		EDBE20FBAA104CA094332A41 /* ClimbSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DDEA50DA648EE9FC4BC28 /* ClimbSessionState.swift */; };
 		CDF866B25899487FB777B893 /* RouteRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB7024FFAE4801A09F646E /* RouteRecord.swift */; };
 		3F4BD297A2BB4B3D96BC64CC /* RouteRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571580693E7B4482877A6548 /* RouteRecorderView.swift */; };
+		C10100010000000000000001 /* CheckInAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10100020000000000000001 /* CheckInAlertView.swift */; };
+		C10200010000000000000001 /* CheckInRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10200020000000000000001 /* CheckInRecord.swift */; };
+		C10300010000000000000001 /* CheckInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10300020000000000000001 /* CheckInStore.swift */; };
+		C10400010000000000000001 /* CheckInSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10400020000000000000001 /* CheckInSuccessView.swift */; };
+		C10500010000000000000001 /* GymStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10500020000000000000001 /* GymStickerView.swift */; };
+		C10600010000000000000001 /* HolidayDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10600020000000000000001 /* HolidayDetector.swift */; };
+		C10700010000000000000001 /* StickerWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10700020000000000000001 /* StickerWallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +175,13 @@
 		999DDEA50DA648EE9FC4BC28 /* ClimbSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/ClimbSessionState.swift"; sourceTree = "<group>"; };
 		07FB7024FFAE4801A09F646E /* RouteRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/RouteRecord.swift"; sourceTree = "<group>"; };
 		571580693E7B4482877A6548 /* RouteRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopOut/Features/LiveDashboard/RouteRecorderView.swift"; sourceTree = "<group>"; };
+		C10100020000000000000001 /* CheckInAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInAlertView.swift; sourceTree = "<group>"; };
+		C10200020000000000000001 /* CheckInRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInRecord.swift; sourceTree = "<group>"; };
+		C10300020000000000000001 /* CheckInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInStore.swift; sourceTree = "<group>"; };
+		C10400020000000000000001 /* CheckInSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInSuccessView.swift; sourceTree = "<group>"; };
+		C10500020000000000000001 /* GymStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymStickerView.swift; sourceTree = "<group>"; };
+		C10600020000000000000001 /* HolidayDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayDetector.swift; sourceTree = "<group>"; };
+		C10700020000000000000001 /* StickerWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerWallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -211,10 +225,25 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		C10000F10000000000000001 /* CheckIn */ = {
+			isa = PBXGroup;
+			children = (
+				C10100020000000000000001 /* CheckInAlertView.swift */,
+				C10200020000000000000001 /* CheckInRecord.swift */,
+				C10300020000000000000001 /* CheckInStore.swift */,
+				C10400020000000000000001 /* CheckInSuccessView.swift */,
+				C10500020000000000000001 /* GymStickerView.swift */,
+				C10600020000000000000001 /* HolidayDetector.swift */,
+				C10700020000000000000001 /* StickerWallView.swift */,
+			);
+			path = CheckIn;
+			sourceTree = "<group>";
+		};
 		2100D0A859C5F2E6E2778458 /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				4838EEC04384F5DD4E386398 /* Auth */,
+				C10000F10000000000000001 /* CheckIn */,
 				B10300F10000000000000001 /* Discover */,
 				B01A2B3C4D5E6F7A8B9C0D1E /* Following */,
 				9536450C2B7EE76E6775D1D6 /* GymLive */,
@@ -639,6 +668,13 @@
 				EDBE20FBAA104CA094332A41 /* ClimbSessionState.swift in Sources */,
 				CDF866B25899487FB777B893 /* RouteRecord.swift in Sources */,
 				3F4BD297A2BB4B3D96BC64CC /* RouteRecorderView.swift in Sources */,
+				C10100010000000000000001 /* CheckInAlertView.swift in Sources */,
+				C10200010000000000000001 /* CheckInRecord.swift in Sources */,
+				C10300010000000000000001 /* CheckInStore.swift in Sources */,
+				C10400010000000000000001 /* CheckInSuccessView.swift in Sources */,
+				C10500010000000000000001 /* GymStickerView.swift in Sources */,
+				C10600010000000000000001 /* HolidayDetector.swift in Sources */,
+				C10700010000000000000001 /* StickerWallView.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};

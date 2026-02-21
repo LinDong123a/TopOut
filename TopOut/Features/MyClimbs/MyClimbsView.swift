@@ -6,6 +6,7 @@ struct MyClimbsView: View {
     let userId: String?
     
     @EnvironmentObject var authService: AuthService
+    @EnvironmentObject var checkInStore: CheckInStore
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ClimbRecord.startTime, order: .reverse)
     private var allRecords: [ClimbRecord]
@@ -85,6 +86,12 @@ struct MyClimbsView: View {
         return max(streak, 1)
     }
 
+    // Today's check-in gym
+    private var todayGymName: String? {
+        let cal = Calendar.current
+        return checkInStore.records.first { cal.isDateInToday($0.date) }?.gymName
+    }
+
     // Mock social data
     private var followingCount: Int { isSelf ? 12 : 8 }
     private var followersCount: Int { isSelf ? 8 : 15 }
@@ -92,6 +99,9 @@ struct MyClimbsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                if isSelf, let gym = todayGymName {
+                    gymBanner(gym)
+                }
                 profileCard
                 socialBar
                 stickerWallEntry
@@ -148,8 +158,39 @@ struct MyClimbsView: View {
         )
     }
 
+    // MARK: - Gym Banner
+
+    private func gymBanner(_ gymName: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "mappin.circle.fill")
+                .font(.title3)
+                .foregroundStyle(TopOutTheme.accentGreen)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("今日打卡")
+                    .font(.caption)
+                    .foregroundStyle(TopOutTheme.textTertiary)
+                Text(gymName)
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(TopOutTheme.textPrimary)
+            }
+
+            Spacer()
+
+            Text("🧗")
+                .font(.title2)
+        }
+        .topOutCard()
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(TopOutTheme.accentGreen.opacity(0.3), lineWidth: 1)
+        )
+        .opacity(appeared ? 1 : 0)
+        .offset(y: appeared ? 0 : 20)
+    }
+
     // MARK: - Profile Card
-    
+
     private var profileCard: some View {
         HStack(spacing: 16) {
             ZStack {
