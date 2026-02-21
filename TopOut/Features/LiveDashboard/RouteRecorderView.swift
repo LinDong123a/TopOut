@@ -12,10 +12,12 @@ struct RouteRecorderView: View {
     @State private var isStarred = false
     @State private var note = ""
     @State private var showCamera = false
+    @State private var showVideoCamera = false
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var mediaPath: String?
     @State private var mediaType: RouteRecord.MediaType?
     @State private var thumbnailImage: UIImage?
+    @State private var cameraReady = false
     
     private let boulderGrades = (0...16).map { "V\($0)" }
     private let ropeGrades = [
@@ -64,12 +66,23 @@ struct RouteRecorderView: View {
                         .foregroundStyle(TopOutTheme.textSecondary)
                 }
             }
-            .sheet(isPresented: $showCamera) {
-                ImagePickerView(sourceType: .camera, mediaTypes: ["public.image", "public.movie"]) { url in
-                    if let url {
-                        handleMediaURL(url)
-                    }
+            .onAppear {
+                // Pre-authorize camera so the button responds instantly
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    Task { @MainActor in cameraReady = granted }
                 }
+            }
+            .sheet(isPresented: $showCamera) {
+                ImagePickerView(sourceType: .camera, mediaTypes: ["public.image"]) { url in
+                    if let url { handleMediaURL(url) }
+                }
+                .ignoresSafeArea()
+            }
+            .sheet(isPresented: $showVideoCamera) {
+                ImagePickerView(sourceType: .camera, mediaTypes: ["public.movie"]) { url in
+                    if let url { handleMediaURL(url) }
+                }
+                .ignoresSafeArea()
             }
             .onChange(of: selectedPhotoItem) { _, item in
                 Task {
@@ -92,26 +105,49 @@ struct RouteRecorderView: View {
     
     private var mediaSection: some View {
         VStack(spacing: 12) {
-            // Two text buttons side by side
-            HStack(spacing: 16) {
+            // Three buttons: photo, video, album
+            HStack(spacing: 10) {
                 Button {
                     showCamera = true
                 } label: {
-                    Text("拍照")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(TopOutTheme.accentGreen)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                    VStack(spacing: 4) {
+                        Image(systemName: "camera.fill")
+                            .font(.body)
+                        Text("拍照")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                 }
-                
+
+                Button {
+                    showVideoCamera = true
+                } label: {
+                    VStack(spacing: 4) {
+                        Image(systemName: "video.fill")
+                            .font(.body)
+                        Text("录像")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                }
+
                 PhotosPicker(selection: $selectedPhotoItem, matching: .any(of: [.images, .videos])) {
-                    Text("从相册")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(TopOutTheme.accentGreen)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+                    VStack(spacing: 4) {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.body)
+                        Text("相册")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(TopOutTheme.accentGreen)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(TopOutTheme.accentGreen.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                 }
             }
             
