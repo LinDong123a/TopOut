@@ -90,6 +90,7 @@
 		C10500010000000000000001 /* GymStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10500020000000000000001 /* GymStickerView.swift */; };
 		C10600010000000000000001 /* HolidayDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10600020000000000000001 /* HolidayDetector.swift */; };
 		C10700010000000000000001 /* StickerWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10700020000000000000001 /* StickerWallView.swift */; };
+		C10800010000000000000001 /* ProfilePrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10800020000000000000001 /* ProfilePrivacySettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +183,7 @@
 		C10500020000000000000001 /* GymStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymStickerView.swift; sourceTree = "<group>"; };
 		C10600020000000000000001 /* HolidayDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayDetector.swift; sourceTree = "<group>"; };
 		C10700020000000000000001 /* StickerWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerWallView.swift; sourceTree = "<group>"; };
+		C10800020000000000000001 /* ProfilePrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePrivacySettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -394,6 +396,7 @@
 			children = (
 				B10700010000000000000002 /* FollowingListView.swift */,
 				B10200010000000000000002 /* MyClimbsView.swift */,
+				C10800020000000000000001 /* ProfilePrivacySettingsView.swift */,
 			);
 			path = MyClimbs;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				C10500010000000000000001 /* GymStickerView.swift in Sources */,
 				C10600010000000000000001 /* HolidayDetector.swift in Sources */,
 				C10700010000000000000001 /* StickerWallView.swift in Sources */,
+				C10800010000000000000001 /* ProfilePrivacySettingsView.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};

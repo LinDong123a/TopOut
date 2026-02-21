@@ -118,9 +118,15 @@ struct MyClimbsView: View {
         .toolbar {
             if isSelf {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: StatisticsView()) {
-                        Image(systemName: "chart.bar.fill")
-                            .foregroundStyle(TopOutTheme.accentGreen)
+                    HStack(spacing: 16) {
+                        NavigationLink(destination: ProfilePrivacySettingsView()) {
+                            Image(systemName: "eye.slash")
+                                .foregroundStyle(TopOutTheme.textSecondary)
+                        }
+                        NavigationLink(destination: StatisticsView()) {
+                            Image(systemName: "chart.bar.fill")
+                                .foregroundStyle(TopOutTheme.accentGreen)
+                        }
                     }
                 }
             }
