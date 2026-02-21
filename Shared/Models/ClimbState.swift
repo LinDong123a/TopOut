@@ -7,7 +7,7 @@ enum ClimbState: String, Codable {
     
     var displayName: String {
         switch self {
-        case .idle: return "未开始"
+        case .idle: return "开始攀爬"
         case .climbing: return "攀爬中"
         case .resting: return "休息中"
         }

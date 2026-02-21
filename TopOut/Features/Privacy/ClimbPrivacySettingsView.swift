@@ -1,59 +1,48 @@
 import SwiftUI
 
-/// I-6: Privacy settings before starting a climb
+/// I-6: Privacy settings before starting a climb — compact horizontal layout
 struct ClimbPrivacySettingsView: View {
     @Binding var settings: PrivacySettings
-    
+
     var body: some View {
-        VStack(spacing: 16) {
-            // Visibility toggle
-            HStack {
+        HStack(spacing: 12) {
+            // 场馆大屏可见
+            HStack(spacing: 8) {
                 Image(systemName: settings.isVisible ? "eye" : "eye.slash")
-                    .font(.title3)
+                    .font(.caption)
                     .foregroundStyle(settings.isVisible ? .green : .gray)
-                    .frame(width: 32)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("场馆大屏可见")
-                        .font(.subheadline.weight(.medium))
-                    Text(settings.isVisible ? "其他人可以在大屏看到你" : "不会出现在大屏上")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                
-                Spacer()
-                
+                Text("大屏可见")
+                    .font(.caption)
+                    .foregroundStyle(TopOutTheme.textSecondary)
                 Toggle("", isOn: $settings.isVisible)
                     .labelsHidden()
+                    .scaleEffect(0.75)
+                    .frame(width: 40)
             }
-            .padding()
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-            
-            // Anonymous toggle
-            if settings.isVisible {
-                HStack {
-                    Image(systemName: settings.isAnonymous ? "person.fill.questionmark" : "person.fill")
-                        .font(.title3)
-                        .foregroundStyle(settings.isAnonymous ? .orange : .blue)
-                        .frame(width: 32)
-                    
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("匿名模式")
-                            .font(.subheadline.weight(.medium))
-                        Text(settings.isAnonymous ? "显示为「攀岩者 #XXXX」" : "显示你的昵称和头像")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
-                    
-                    Toggle("", isOn: $settings.isAnonymous)
-                        .labelsHidden()
-                }
-                .padding()
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                .transition(.opacity.combined(with: .move(edge: .top)))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+
+            // 匿名模式
+            HStack(spacing: 8) {
+                Image(systemName: settings.isAnonymous ? "person.fill.questionmark" : "person.fill")
+                    .font(.caption)
+                    .foregroundStyle(settings.isAnonymous ? .orange : .gray)
+                Text("匿名")
+                    .font(.caption)
+                    .foregroundStyle(TopOutTheme.textSecondary)
+                Toggle("", isOn: $settings.isAnonymous)
+                    .labelsHidden()
+                    .scaleEffect(0.75)
+                    .frame(width: 40)
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+            .opacity(settings.isVisible ? 1 : 0.4)
+            .disabled(!settings.isVisible)
         }
         .animation(.easeInOut(duration: 0.2), value: settings.isVisible)
         .onChange(of: settings) { _, newValue in
