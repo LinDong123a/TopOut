@@ -16,6 +16,7 @@ struct LiveDashboardView: View {
     @State private var selectedGymName = "岩时攀岩馆（望京店）"
     @State private var appeared = false
     @State private var elementsAppeared = [false, false, false, false, false]
+    @State private var showEndConfirm = false
 
     var body: some View {
         GeometryReader { geo in
@@ -92,7 +93,7 @@ struct LiveDashboardView: View {
                 }
                 todayStats
                 Spacer()
-                bottomBar
+                sessionControlBar
             }
             .frame(width: size.width * 0.35)
             .padding()
@@ -144,8 +145,30 @@ struct LiveDashboardView: View {
 
     private func portraitLayout(size: CGSize) -> some View {
         VStack(spacing: 16) {
+            // Top: streak + gym location
+            HStack {
+                HStack(spacing: 4) {
+                    Image(systemName: "flame.fill")
+                        .foregroundStyle(TopOutTheme.streakOrange)
+                    Text("连续 \(viewModel.streakDays) 天")
+                        .foregroundStyle(TopOutTheme.streakOrange)
+                        .font(.subheadline.weight(.medium))
+                        .contentTransition(.numericText())
+                }
+                Spacer()
+                HStack(spacing: 6) {
+                    Image(systemName: privacySettings.isVisible ? "eye" : "eye.slash")
+                        .font(.caption)
+                        .contentTransition(.symbolEffect(.replace))
+                    if privacySettings.isVisible && privacySettings.isAnonymous {
+                        Text("匿名").font(.caption)
+                    }
+                }
+                .foregroundStyle(TopOutTheme.textTertiary)
+            }
+
             gymLocationBar
-            
+
             statusIndicator
                 .offset(y: elementsAppeared[0] ? 0 : -20)
                 .opacity(elementsAppeared[0] ? 1 : 0)
@@ -186,18 +209,28 @@ struct LiveDashboardView: View {
 
             // Route recorder button
             routeRecorderButton
-            
+
             // Recorded routes list
             if !climbSession.routeRecords.isEmpty {
                 recordedRoutesList
             }
 
             Spacer()
-            bottomBar
+
+            // Bottom: Pause + End buttons
+            sessionControlBar
         }
         .padding(.horizontal)
         .padding(.top, 8)
         .padding(.bottom, 4)
+        .alert("确认结束攀爬？", isPresented: $showEndConfirm) {
+            Button("结束", role: .destructive) {
+                climbSession.endSession()
+            }
+            Button("取消", role: .cancel) {}
+        } message: {
+            Text("结束后将保存本次攀爬记录")
+        }
     }
 
     // MARK: - Status
@@ -480,29 +513,63 @@ struct LiveDashboardView: View {
         .topOutCard()
     }
 
-    // MARK: - Bottom Bar
+    // MARK: - Session Control Bar
 
-    private var bottomBar: some View {
-        HStack {
-            HStack(spacing: 4) {
-                Image(systemName: "flame.fill")
-                    .foregroundStyle(TopOutTheme.streakOrange)
-                Text("连续 \(viewModel.streakDays) 天")
-                    .foregroundStyle(TopOutTheme.streakOrange)
-                    .font(.subheadline.weight(.medium))
-                    .contentTransition(.numericText())
-            }
-            Spacer()
-            HStack(spacing: 6) {
-                Image(systemName: privacySettings.isVisible
-                      ? "eye" : "eye.slash")
-                    .font(.caption)
-                    .contentTransition(.symbolEffect(.replace))
-                if privacySettings.isVisible && privacySettings.isAnonymous {
-                    Text("匿名").font(.caption)
+    private var sessionControlBar: some View {
+        HStack(spacing: 12) {
+            // Pause / Resume
+            Button {
+                if climbSession.isPaused {
+                    climbSession.resumeSession()
+                } else {
+                    climbSession.pauseSession()
                 }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: climbSession.isPaused ? "play.fill" : "pause.fill")
+                        .font(.subheadline)
+                    Text(climbSession.isPaused ? "继续" : "暂停")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .foregroundStyle(climbSession.isPaused ? .white : TopOutTheme.warningAmber)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    climbSession.isPaused
+                        ? TopOutTheme.accentGreen
+                        : TopOutTheme.warningAmber.opacity(0.12),
+                    in: RoundedRectangle(cornerRadius: 14)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(
+                            climbSession.isPaused
+                                ? TopOutTheme.accentGreen.opacity(0.3)
+                                : TopOutTheme.warningAmber.opacity(0.2),
+                            lineWidth: 1
+                        )
+                )
             }
-            .foregroundStyle(TopOutTheme.textTertiary)
+
+            // End
+            Button {
+                showEndConfirm = true
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "stop.fill")
+                        .font(.subheadline)
+                    Text("结束")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .foregroundStyle(TopOutTheme.heartRed)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(TopOutTheme.heartRed.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(TopOutTheme.heartRed.opacity(0.2), lineWidth: 1)
+                )
+            }
         }
     }
 }
