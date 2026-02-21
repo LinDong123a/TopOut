@@ -6,9 +6,13 @@ struct ContentView: View {
     @EnvironmentObject var connectivity: WatchConnectivityService
     @EnvironmentObject var authService: AuthService
     @StateObject private var climbSession = ClimbSessionState()
+    @StateObject private var checkInStore = CheckInStore()
     @State private var selectedTab = 0
     @State private var showClimbFinish = false
     @State private var showClimbSheet = false
+    @State private var showCheckInAlert = false
+    @State private var showCheckInSuccess = false
+    @State private var checkInGymName = ""
 
     var body: some View {
         ZStack {
@@ -25,7 +29,33 @@ struct ContentView: View {
             }
         }
         .environmentObject(climbSession)
+        .environmentObject(checkInStore)
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: authService.isLoggedIn)
+        .overlay {
+            if showCheckInAlert {
+                CheckInAlertView(
+                    gymName: checkInGymName,
+                    onCheckIn: {
+                        checkInStore.checkIn(gymName: checkInGymName)
+                        showCheckInAlert = false
+                        showCheckInSuccess = true
+                    },
+                    onDismiss: { showCheckInAlert = false }
+                )
+                .transition(.opacity)
+            }
+        }
+        .overlay {
+            if showCheckInSuccess {
+                CheckInSuccessView(
+                    gymName: checkInGymName,
+                    streakDays: checkInStore.streakDays,
+                    holiday: HolidayDetector.current,
+                    isPresented: $showCheckInSuccess
+                )
+                .transition(.opacity)
+            }
+        }
         .preferredColorScheme(.dark)
         .statusBarHidden(true)
         .persistentSystemOverlays(.hidden)
@@ -117,6 +147,41 @@ struct ContentView: View {
             UITabBar.appearance().scrollEdgeAppearance = appearance
             connectivity.setModelContext(modelContext)
             MockDataService.insertIfEmpty(context: modelContext)
+        }
+        .task {
+            await checkNearbyGymForCheckIn()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            Task { await checkNearbyGymForCheckIn() }
+        }
+    }
+    
+    // MARK: - Check-In Detection
+    
+    private func checkNearbyGymForCheckIn() async {
+        let location = LocationService.shared
+        guard location.authorizationStatus == .authorizedWhenInUse ||
+              location.authorizationStatus == .authorizedAlways else { return }
+        
+        // Use mock nearby locations (same as GymSelectorView) to detect within 200m
+        let nearbyLocations: [(name: String, distanceMeters: Int)] = [
+            ("岩时攀岩馆（望京店）", 120),
+            ("岩舞空间（三里屯）", 1800),
+            ("奥攀攀岩馆", 3200),
+            ("首攀攀岩（朝阳大悦城）", 4500),
+            ("Rock Plus 攀岩馆", 5100),
+            ("蜘蛛侠攀岩（国贸）", 6800),
+        ]
+        
+        // Find first gym within 200m
+        if let nearby = nearbyLocations.first(where: { $0.distanceMeters <= 200 }) {
+            let gymName = nearby.name
+            if checkInStore.shouldShowAlert(gymName: gymName) && !checkInStore.hasCheckedInToday(gymName: gymName) {
+                await MainActor.run {
+                    checkInGymName = gymName
+                    withAnimation { showCheckInAlert = true }
+                }
+            }
         }
     }
     

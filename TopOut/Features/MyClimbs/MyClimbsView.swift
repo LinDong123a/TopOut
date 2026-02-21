@@ -94,6 +94,7 @@ struct MyClimbsView: View {
             VStack(spacing: 16) {
                 profileCard
                 socialBar
+                stickerWallEntry
                 statsOverview
                 recordsList
             }
@@ -244,6 +245,39 @@ struct MyClimbsView: View {
         .opacity(appeared ? 1 : 0)
         .offset(y: appeared ? 0 : 20)
         .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.05), value: appeared)
+    }
+    
+    // MARK: - Sticker Wall Entry
+    
+    private var stickerWallEntry: some View {
+        NavigationLink(destination: StickerWallView()) {
+            HStack(spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(TopOutTheme.warningAmber.opacity(0.15))
+                        .frame(width: 42, height: 42)
+                    Text("🎨")
+                        .font(.title2)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("我的贴纸")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(TopOutTheme.textPrimary)
+                    Text("查看打卡贴纸墙")
+                        .font(.caption)
+                        .foregroundStyle(TopOutTheme.textTertiary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(TopOutTheme.textTertiary)
+            }
+            .topOutCard()
+        }
+        .buttonStyle(.plain)
+        .opacity(appeared ? 1 : 0)
+        .offset(y: appeared ? 0 : 20)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.08), value: appeared)
     }
     
     // MARK: - Stats Overview
