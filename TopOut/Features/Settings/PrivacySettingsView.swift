@@ -65,6 +65,7 @@ struct PrivacySettingsView: View {
         .scrollContentBackground(.hidden)
         .topOutBackground()
         .navigationTitle("隐私设置")
+        .toolbar(.hidden, for: .tabBar)
     }
 
     private func privacyRow(title: String, subtitle: String, icon: String, color: Color, binding: Binding<String>) -> some View {

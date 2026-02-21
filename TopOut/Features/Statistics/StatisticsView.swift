@@ -67,6 +67,7 @@ struct StatisticsView: View {
                 heatmapAppeared = true
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 
     // MARK: - Period Picker

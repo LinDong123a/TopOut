@@ -285,6 +285,7 @@ struct ProfileEditView: View {
         .topOutBackground()
         .navigationTitle("个人资料")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

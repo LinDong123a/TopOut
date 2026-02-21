@@ -75,6 +75,7 @@ struct RecordDetailView: View {
         .fullScreenCover(isPresented: $showCamera) {
             VideoCameraView { url in importVideo(from: url) }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 
     // MARK: - Public Toggle

@@ -36,6 +36,7 @@ struct NotificationSettingsView: View {
         .topOutBackground()
         .navigationTitle("通知设置")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

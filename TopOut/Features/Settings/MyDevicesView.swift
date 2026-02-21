@@ -53,6 +53,7 @@ struct MyDevicesView: View {
         .onAppear {
             bleManager.setup()
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

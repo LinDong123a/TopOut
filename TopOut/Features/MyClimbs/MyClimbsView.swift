@@ -146,8 +146,9 @@ struct MyClimbsView: View {
         } message: {
             Text("删除后无法恢复")
         }
+        .toolbar(isSelf ? .automatic : .hidden, for: .tabBar)
     }
-    
+
     private func likedBinding(for id: UUID) -> Binding<Bool> {
         Binding(
             get: { likedRecords.contains(id) },

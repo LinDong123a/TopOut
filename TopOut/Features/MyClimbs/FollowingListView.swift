@@ -45,6 +45,7 @@ struct FollowingListView: View {
         .topOutBackground()
         .navigationTitle("关注")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                 appeared = true
@@ -83,6 +84,7 @@ struct FollowersListView: View {
         .topOutBackground()
         .navigationTitle("粉丝")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                 appeared = true

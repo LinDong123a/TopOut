@@ -30,8 +30,9 @@ struct StickerWallView: View {
         .topOutBackground()
         .navigationTitle("🎨 我的贴纸")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
-    
+
     private var statsHeader: some View {
         HStack(spacing: 4) {
             Text("共打卡 \(checkInStore.records.count) 次")
