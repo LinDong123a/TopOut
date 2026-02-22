@@ -1,14 +1,15 @@
 import SwiftUI
 
-struct RouteMarkView: View {
+struct CompletionFlowView: View {
     @EnvironmentObject var session: ClimbSessionManager
+    @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedType: ClimbSessionManager.ClimbType = .boulder
+    /// Callback: (status, difficulty, isStarred)
+    var onComplete: (ClimbSessionManager.CompletionStatus, String, Bool) -> Void
+
     @State private var gradeIndex: Double = 3
     @State private var isStarred: Bool = false
-    @State private var showConfirmation = false
     @State private var showGradePicker = false
-    @State private var confirmationText = ""
 
     private let forestGreen = Color(red: 0.30, green: 0.65, blue: 0.32)
     private let warmWhite = Color(red: 0.94, green: 0.91, blue: 0.86)
@@ -16,12 +17,8 @@ struct RouteMarkView: View {
     private let bgColor = Color(red: 0.08, green: 0.07, blue: 0.06)
     private let amberYellow = Color(red: 0.90, green: 0.65, blue: 0.20)
 
-    private var availableTypes: [ClimbSessionManager.ClimbType] {
-        session.scene.climbTypes
-    }
-
     private var grades: [String] {
-        session.gradesForType(selectedType)
+        session.gradesForType(session.selectedClimbType)
     }
 
     private var currentGrade: String {
@@ -35,28 +32,13 @@ struct RouteMarkView: View {
 
             ScrollView {
                 VStack(spacing: 8) {
-                    // Type picker
-                    HStack(spacing: 6) {
-                        ForEach(availableTypes, id: \.self) { type in
-                            Button {
-                                selectedType = type
-                                gradeIndex = min(gradeIndex, Double(session.gradesForType(type).count - 1))
-                            } label: {
-                                Text(type.rawValue)
-                                    .font(.system(size: 11, weight: .medium))
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(
-                                        selectedType == type
-                                        ? forestGreen.opacity(0.8)
-                                        : Color.white.opacity(0.08),
-                                        in: Capsule()
-                                    )
-                                    .foregroundStyle(selectedType == type ? .white : warmGray)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
+                    // Current type label
+                    Text(session.selectedClimbType.rawValue)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(warmGray)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 3)
+                        .background(Color.white.opacity(0.08), in: Capsule())
 
                     // Grade selector — tap to pick
                     Button {
@@ -134,64 +116,16 @@ struct RouteMarkView: View {
                             .buttonStyle(.plain)
                         }
                     }
-
-                    // Recent routes title + list
-                    if !session.routeLogs.isEmpty {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("刚刚爬过的线路")
-                                .font(.system(size: 11, weight: .semibold))
-                                .foregroundStyle(warmGray)
-
-                            ForEach(session.routeLogs.suffix(3).reversed()) { log in
-                                HStack(spacing: 6) {
-                                    Text(log.status.emoji)
-                                        .font(.system(size: 10))
-                                    Text(log.type.rawValue)
-                                        .font(.system(size: 10))
-                                        .foregroundStyle(warmGray)
-                                    Text(log.difficulty)
-                                        .font(.system(size: 11, weight: .bold))
-                                        .foregroundStyle(warmWhite)
-                                    if log.isStarred {
-                                        Image(systemName: "star.fill")
-                                            .font(.system(size: 8))
-                                            .foregroundStyle(amberYellow)
-                                    }
-                                    Spacer()
-                                }
-                                .padding(.vertical, 3)
-                                .padding(.horizontal, 8)
-                                .background(Color.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 6))
-                            }
-                        }
-                        .padding(.top, 4)
-                    }
                 }
                 .padding(.horizontal, 4)
             }
-
-            // Toast overlay
-            if showConfirmation {
-                VStack {
-                    Spacer()
-                    HStack(spacing: 6) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(forestGreen)
-                        Text(confirmationText)
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(warmWhite)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(.ultraThinMaterial, in: Capsule())
-                }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-            }
         }
-        .animation(.spring(response: 0.3), value: showConfirmation)
-        .onAppear {
-            if !availableTypes.contains(selectedType) {
-                selectedType = availableTypes.first ?? .boulder
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("取消") {
+                    dismiss()
+                }
+                .foregroundStyle(warmGray)
             }
         }
         .sheet(isPresented: $showGradePicker) {
@@ -234,13 +168,8 @@ struct RouteMarkView: View {
     // MARK: - Actions
 
     private func logWithStatus(_ status: ClimbSessionManager.CompletionStatus) {
-        session.logRoute(type: selectedType, difficulty: currentGrade, status: status, starred: isStarred)
+        onComplete(status, currentGrade, isStarred)
         isStarred = false
-
-        confirmationText = "\(status.emoji) \(currentGrade) 已记录"
-        showConfirmation = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            showConfirmation = false
-        }
+        dismiss()
     }
 }

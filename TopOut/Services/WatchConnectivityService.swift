@@ -13,6 +13,8 @@ final class WatchConnectivityService: NSObject, ObservableObject {
     
     private var session: WCSession?
     private var modelContext: ModelContext?
+    /// Tracks last processed message timestamp per type to deduplicate sendMessage + transferUserInfo
+    private var lastProcessedTimestamp: [String: TimeInterval] = [:]
     
     static let shared = WatchConnectivityService()
     
@@ -31,6 +33,36 @@ final class WatchConnectivityService: NSObject, ObservableObject {
     
     // MARK: - Send to Watch
     
+    /// Send start-session command to Watch
+    func sendStartSession() {
+        let message: [String: Any] = [
+            WatchMessageKey.messageType.rawValue: WatchMessageType.phoneStartSession.rawValue,
+            WatchMessageKey.timestamp.rawValue: Date().timeIntervalSince1970
+        ]
+        guard let session, session.isReachable else {
+            session?.transferUserInfo(message)
+            return
+        }
+        session.sendMessage(message, replyHandler: nil) { [weak self] _ in
+            self?.session?.transferUserInfo(message)
+        }
+    }
+
+    /// Send end-session command to Watch
+    func sendEndSession() {
+        let message: [String: Any] = [
+            WatchMessageKey.messageType.rawValue: WatchMessageType.phoneEndSession.rawValue,
+            WatchMessageKey.timestamp.rawValue: Date().timeIntervalSince1970
+        ]
+        guard let session, session.isReachable else {
+            session?.transferUserInfo(message)
+            return
+        }
+        session.sendMessage(message, replyHandler: nil) { [weak self] _ in
+            self?.session?.transferUserInfo(message)
+        }
+    }
+
     /// Send cheer notification to Watch
     func sendCheerNotification(fromUser: String) {
         let message: [String: Any] = [
@@ -54,7 +86,16 @@ final class WatchConnectivityService: NSObject, ObservableObject {
     private func handleMessage(_ message: [String: Any]) {
         guard let typeRaw = message[WatchMessageKey.messageType.rawValue] as? String,
               let type = WatchMessageType(rawValue: typeRaw) else { return }
-        
+
+        // Deduplicate: sendReliable sends both sendMessage + transferUserInfo,
+        // so we may receive the same message twice. Skip if same type+timestamp.
+        if let ts = message[WatchMessageKey.timestamp.rawValue] as? TimeInterval {
+            if lastProcessedTimestamp[typeRaw] == ts {
+                return // Already processed this exact message
+            }
+            lastProcessedTimestamp[typeRaw] = ts
+        }
+
         DispatchQueue.main.async { [weak self] in
             switch type {
             case .realtimeUpdate:
@@ -90,8 +131,8 @@ final class WatchConnectivityService: NSObject, ObservableObject {
                     self?.latestRouteLogs.append(route)
                 }
                 
-            case .cheerNotification:
-                break // iPhone doesn't handle incoming cheers
+            case .cheerNotification, .phoneEndSession, .phoneStartSession:
+                break // iPhone doesn't handle these (they are iPhone → Watch messages)
             }
         }
     }

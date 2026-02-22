@@ -6,9 +6,13 @@ import Combine
 final class PhoneConnectivityService: NSObject, ObservableObject {
     @Published var isReachable = false
     @Published var cheerNotification: String?
+    @Published var phoneEndedSession = false
+    @Published var phoneStartedSession = false
     
     private var session: WCSession?
     private var pendingMessages: [[String: Any]] = []
+    /// Tracks last processed message timestamp per type to deduplicate sendMessage + transferUserInfo
+    private var lastProcessedTimestamp: [String: TimeInterval] = [:]
     
     static let shared = PhoneConnectivityService()
     
@@ -33,13 +37,13 @@ final class PhoneConnectivityService: NSObject, ObservableObject {
         }
     }
     
-    /// Send session started notification
+    /// Send session started notification (realtime + guaranteed fallback)
     func sendSessionStarted() {
         let message: [String: Any] = [
             WatchMessageKey.messageType.rawValue: WatchMessageType.sessionStarted.rawValue,
             WatchMessageKey.timestamp.rawValue: Date().timeIntervalSince1970
         ]
-        sendGuaranteed(message)
+        sendReliable(message)
     }
     
     /// Send single route log to iPhone
@@ -81,7 +85,7 @@ final class PhoneConnectivityService: NSObject, ObservableObject {
             WatchMessageKey.isStarred.rawValue: record.isStarred,
             WatchMessageKey.isOutdoor.rawValue: record.isOutdoor,
         ]
-        
+
         // Optional fields
         if let difficulty = record.difficulty {
             message[WatchMessageKey.difficulty.rawValue] = difficulty
@@ -89,24 +93,39 @@ final class PhoneConnectivityService: NSObject, ObservableObject {
         if let locationName = record.locationName {
             message[WatchMessageKey.locationName.rawValue] = locationName
         }
-        
+
         // Encode heart rate samples
         if let data = try? JSONEncoder().encode(record.heartRateSamples),
            let samplesString = String(data: data, encoding: .utf8) {
             message["heartRateSamples"] = samplesString
         }
-        
+
         // Encode route logs
         if !routeLogs.isEmpty,
            let data = try? JSONEncoder().encode(routeLogs),
            let routesString = String(data: data, encoding: .utf8) {
             message[WatchMessageKey.routeLogs.rawValue] = routesString
         }
-        
-        sendGuaranteed(message)
+
+        sendReliable(message)
     }
-    
-    /// Guaranteed delivery via transferUserInfo
+
+    // MARK: - Delivery Methods
+
+    /// Try sendMessage for instant delivery, always transferUserInfo as guaranteed backup
+    private func sendReliable(_ message: [String: Any]) {
+        guard let session else { return }
+        // Always queue transferUserInfo for guaranteed delivery
+        session.transferUserInfo(message)
+        // Also try sendMessage for instant delivery if reachable
+        if session.isReachable {
+            session.sendMessage(message, replyHandler: nil) { error in
+                print("[PhoneConnectivity] sendMessage failed (transferUserInfo already queued): \(error.localizedDescription)")
+            }
+        }
+    }
+
+    /// Guaranteed delivery only via transferUserInfo
     private func sendGuaranteed(_ message: [String: Any]) {
         guard let session else { return }
         session.transferUserInfo(message)
@@ -138,13 +157,26 @@ final class PhoneConnectivityService: NSObject, ObservableObject {
     private func handleMessage(_ message: [String: Any]) {
         guard let typeRaw = message[WatchMessageKey.messageType.rawValue] as? String,
               let type = WatchMessageType(rawValue: typeRaw) else { return }
-        
+
+        // Deduplicate: sender may use both sendMessage + transferUserInfo,
+        // so we may receive the same message twice. Skip if same type+timestamp.
+        if let ts = message[WatchMessageKey.timestamp.rawValue] as? TimeInterval {
+            if lastProcessedTimestamp[typeRaw] == ts {
+                return // Already processed this exact message
+            }
+            lastProcessedTimestamp[typeRaw] = ts
+        }
+
         DispatchQueue.main.async { [weak self] in
             switch type {
             case .cheerNotification:
                 if let user = message[WatchMessageKey.cheerFromUser.rawValue] as? String {
                     self?.cheerNotification = user
                 }
+            case .phoneEndSession:
+                self?.phoneEndedSession = true
+            case .phoneStartSession:
+                self?.phoneStartedSession = true
             default:
                 break
             }

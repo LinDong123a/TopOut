@@ -32,6 +32,8 @@ enum WatchMessageType: String, Codable {
     case recordSync = "recordSync"
     case routeLogged = "routeLogged"          // Watch → iPhone: single route marked
     case cheerNotification = "cheerNotification" // iPhone → Watch: someone cheered
+    case phoneEndSession = "phoneEndSession"   // iPhone → Watch: end session command
+    case phoneStartSession = "phoneStartSession" // iPhone → Watch: start session command
 }
 
 struct RealtimeData: Codable {
@@ -41,9 +43,17 @@ struct RealtimeData: Codable {
     var timestamp: Date
     var todayClimbCount: Int
     var todayTotalDuration: TimeInterval
-    
+
+    // New optional fields from multi-sensor algorithm (backward compatible)
+    var altitudeGain: Double?
+    var currentAltitudeRate: Double?
+    var climbConfidence: Double?
+    var heartRateZone: Int?
+    var currentClimbDuration: TimeInterval?
+    var climbIntervalCount: Int?
+
     var dictionary: [String: Any] {
-        [
+        var dict: [String: Any] = [
             WatchMessageKey.messageType.rawValue: WatchMessageType.realtimeUpdate.rawValue,
             WatchMessageKey.heartRate.rawValue: heartRate,
             WatchMessageKey.climbState.rawValue: climbState.rawValue,
@@ -52,8 +62,16 @@ struct RealtimeData: Codable {
             WatchMessageKey.todayClimbCount.rawValue: todayClimbCount,
             WatchMessageKey.todayTotalDuration.rawValue: todayTotalDuration
         ]
+        // Optional fields — only include if present
+        if let v = altitudeGain { dict["altitudeGain"] = v }
+        if let v = currentAltitudeRate { dict["currentAltitudeRate"] = v }
+        if let v = climbConfidence { dict["climbConfidence"] = v }
+        if let v = heartRateZone { dict["heartRateZone"] = v }
+        if let v = currentClimbDuration { dict["currentClimbDuration"] = v }
+        if let v = climbIntervalCount { dict["climbIntervalCount"] = v }
+        return dict
     }
-    
+
     static func from(dictionary: [String: Any]) -> RealtimeData? {
         guard let heartRate = dictionary[WatchMessageKey.heartRate.rawValue] as? Double,
               let stateRaw = dictionary[WatchMessageKey.climbState.rawValue] as? String,
@@ -61,14 +79,20 @@ struct RealtimeData: Codable {
               let duration = dictionary[WatchMessageKey.duration.rawValue] as? TimeInterval,
               let ts = dictionary[WatchMessageKey.timestamp.rawValue] as? TimeInterval
         else { return nil }
-        
+
         return RealtimeData(
             heartRate: heartRate,
             climbState: state,
             duration: duration,
             timestamp: Date(timeIntervalSince1970: ts),
             todayClimbCount: dictionary[WatchMessageKey.todayClimbCount.rawValue] as? Int ?? 0,
-            todayTotalDuration: dictionary[WatchMessageKey.todayTotalDuration.rawValue] as? TimeInterval ?? 0
+            todayTotalDuration: dictionary[WatchMessageKey.todayTotalDuration.rawValue] as? TimeInterval ?? 0,
+            altitudeGain: dictionary["altitudeGain"] as? Double,
+            currentAltitudeRate: dictionary["currentAltitudeRate"] as? Double,
+            climbConfidence: dictionary["climbConfidence"] as? Double,
+            heartRateZone: dictionary["heartRateZone"] as? Int,
+            currentClimbDuration: dictionary["currentClimbDuration"] as? TimeInterval,
+            climbIntervalCount: dictionary["climbIntervalCount"] as? Int
         )
     }
 }

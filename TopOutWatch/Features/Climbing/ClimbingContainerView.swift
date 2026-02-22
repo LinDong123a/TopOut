@@ -1,26 +1,22 @@
 import SwiftUI
 
-struct ClimbingContainerView: View {
+struct ActiveSessionView: View {
     @EnvironmentObject var session: ClimbSessionManager
     @State private var selectedPage = 1
-    
+
     var body: some View {
         ZStack {
             TabView(selection: $selectedPage) {
-                ControlView()
+                SessionSettingsPage()
                     .environmentObject(session)
                     .tag(0)
 
-                RouteMarkView()
+                ActiveClimbPage()
                     .environmentObject(session)
                     .tag(1)
-
-                LiveDataView()
-                    .environmentObject(session)
-                    .tag(2)
             }
             .tabViewStyle(.page)
-            
+
             // Notification overlay
             if session.showNotification {
                 VStack {
@@ -34,7 +30,7 @@ struct ClimbingContainerView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-                    
+
                     Spacer()
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))

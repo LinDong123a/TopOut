@@ -2,130 +2,249 @@ import Foundation
 import CoreMotion
 import Combine
 
-/// P0: Automatic climb detection using CoreMotion accelerometer + gyroscope
+/// Multi-sensor fusion climb detection service.
+/// At startup, detects available sensors via SensorCapability, then fuses only
+/// available signals (motion, altitude, heart rate, pedometer) to determine climbing state.
+///
+/// Preserves the existing callback API: `onStateChanged`, `onClimbStarted`, `onClimbStopped`.
+/// Adds new Published properties for richer data: `climbConfidence`, `currentMetrics`, `sensorCapability`.
 final class ClimbDetectionService: ObservableObject {
+
+    // MARK: - Published State (existing API preserved)
+
     @Published var isClimbing = false
     @Published var currentState: ClimbState = .idle
-    
-    private let motionManager = CMMotionManager()
-    private let queue = OperationQueue()
-    
-    // Detection parameters
-    private var accelerationThreshold: Double = 1.3  // g-force threshold for climb detection
-    private var stillnessThreshold: Double = 0.15     // g-force variance for stillness
-    private var stopTimeout: TimeInterval = 30        // seconds of no motion to auto-stop
-    
-    private var lastMotionTime: Date?
-    private var motionBuffer: [Double] = []
-    private let bufferSize = 50  // ~5 seconds at 10Hz
-    private var stopTimer: Timer?
-    
+
+    // MARK: - New Published Properties
+
+    /// Current algorithm confidence (0.0~1.0)
+    @Published var climbConfidence: Double = 0
+    /// Detected sensor capabilities
+    @Published var sensorCapability: SensorCapability?
+    /// Total altitude gain (meters) during current session
+    @Published var totalAltitudeGain: Double = 0
+    /// Current altitude rate (m/s)
+    @Published var currentAltitudeRate: Double = 0
+    /// Current heart rate zone
+    @Published var currentHRZone: HRZone = .rest
+    /// Current climb interval duration
+    @Published var currentClimbDuration: TimeInterval? = nil
+    /// Number of climb intervals
+    @Published var climbIntervalCount: Int = 0
+
+    // MARK: - Callbacks (existing API preserved)
+
     var onClimbStarted: (() -> Void)?
     var onClimbStopped: (() -> Void)?
     var onStateChanged: ((ClimbState) -> Void)?
-    
+
+    // MARK: - Components
+
+    private let motionManager = CMMotionManager()
+    private let motionQueue = OperationQueue()
+
+    private var motionAnalyzer: MotionAnalyzer?
+    private var altitudeAnalyzer: AltitudeAnalyzer?
+    private var heartRateAnalyzer: HeartRateAnalyzer?
+    private var pedometerAnalyzer: PedometerAnalyzer?
+    private let fusionEngine = SignalFusionEngine()
+    private let stateMachine = ClimbStateMachine()
+    private let intervalTracker = IntervalTracker()
+
+    /// Detected capability (set once on startMonitoring)
+    private var capability: SensorCapability?
+
     init() {
-        queue.name = "com.topout.climbdetection"
-        queue.maxConcurrentOperationCount = 1
-    }
-    
-    func startMonitoring() {
-        guard motionManager.isAccelerometerAvailable else { return }
-        
-        motionManager.accelerometerUpdateInterval = 0.1 // 10Hz
-        motionManager.startAccelerometerUpdates(to: queue) { [weak self] data, error in
-            guard let self, let data else { return }
-            self.processAccelerometerData(data)
-        }
-        
-        if motionManager.isGyroAvailable {
-            motionManager.gyroUpdateInterval = 0.1
-            motionManager.startGyroUpdates(to: queue, withHandler: { _, _ in })
-        }
-    }
-    
-    func stopMonitoring() {
-        motionManager.stopAccelerometerUpdates()
-        motionManager.stopGyroUpdates()
-        stopTimer?.invalidate()
-        stopTimer = nil
-    }
-    
-    func updateSensitivity(_ sensitivity: Double) {
-        // sensitivity 0.0 (low) to 1.0 (high)
-        accelerationThreshold = 1.5 - (sensitivity * 0.4) // range 1.1 - 1.5
-    }
-    
-    func updateStopTimeout(_ timeout: TimeInterval) {
-        stopTimeout = timeout
-    }
-    
-    private func processAccelerometerData(_ data: CMAccelerometerData) {
-        let acceleration = data.acceleration
-        let magnitude = sqrt(
-            acceleration.x * acceleration.x +
-            acceleration.y * acceleration.y +
-            acceleration.z * acceleration.z
-        )
-        
-        motionBuffer.append(magnitude)
-        if motionBuffer.count > bufferSize {
-            motionBuffer.removeFirst()
-        }
-        
-        let isActiveMotion = detectClimbingPattern()
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            
-            if isActiveMotion {
-                self.lastMotionTime = Date()
-                self.resetStopTimer()
-                
-                if self.currentState != .climbing {
-                    if self.currentState == .idle {
-                        self.onClimbStarted?()
-                    }
-                    self.currentState = .climbing
-                    self.isClimbing = true
-                    self.onStateChanged?(.climbing)
-                }
-            } else if self.currentState == .climbing {
-                // Transition to resting
-                self.currentState = .resting
-                self.onStateChanged?(.resting)
-                self.startStopTimer()
+        motionQueue.name = "com.topout.climbdetection"
+        motionQueue.maxConcurrentOperationCount = 1
+
+        // Wire state machine callbacks
+        stateMachine.onStateChanged = { [weak self] newState in
+            DispatchQueue.main.async {
+                self?.handleStateTransition(newState)
             }
         }
     }
-    
-    private func detectClimbingPattern() -> Bool {
-        guard motionBuffer.count >= 10 else { return false }
-        
-        let recentSamples = Array(motionBuffer.suffix(10))
-        let mean = recentSamples.reduce(0, +) / Double(recentSamples.count)
-        let variance = recentSamples.reduce(0) { $0 + ($1 - mean) * ($1 - mean) } / Double(recentSamples.count)
-        
-        // Climbing pattern: significant acceleration variance + peaks above threshold
-        let hasHighVariance = variance > stillnessThreshold
-        let hasPeaks = recentSamples.contains { $0 > accelerationThreshold }
-        
-        return hasHighVariance && hasPeaks
+
+    // MARK: - Start / Stop
+
+    func startMonitoring() {
+        // 1. Detect available sensors
+        let cap = SensorCapability.detect()
+        self.capability = cap
+        DispatchQueue.main.async { [weak self] in
+            self?.sensorCapability = cap
+        }
+
+        // 2. Configure fusion weights based on available sensors
+        fusionEngine.configure(capability: cap)
+
+        // 3. Start motion (DeviceMotion preferred, fallback to accelerometer)
+        if cap.canUseDeviceMotion {
+            motionAnalyzer = MotionAnalyzer(useDeviceMotion: true)
+            motionManager.deviceMotionUpdateInterval = 0.1 // 10Hz
+            motionManager.startDeviceMotionUpdates(to: motionQueue) { [weak self] motion, error in
+                guard let self, let motion, error == nil else { return }
+                self.processDeviceMotion(motion)
+            }
+        } else if cap.hasAccelerometer {
+            motionAnalyzer = MotionAnalyzer(useDeviceMotion: false)
+            motionManager.accelerometerUpdateInterval = 0.1 // 10Hz
+            motionManager.startAccelerometerUpdates(to: motionQueue) { [weak self] data, error in
+                guard let self, let data, error == nil else { return }
+                self.processAccelerometer(data)
+            }
+        }
+
+        // 4. Start altitude (if available)
+        if cap.hasAltimeter {
+            let alt = AltitudeAnalyzer()
+            altitudeAnalyzer = alt
+            alt.start()
+        }
+
+        // 5. Start heart rate analyzer
+        if cap.hasHeartRate {
+            heartRateAnalyzer = HeartRateAnalyzer()
+        }
+
+        // 6. Start pedometer (if available)
+        if cap.hasPedometer {
+            let ped = PedometerAnalyzer(hasFloorCounting: cap.hasFloorCounting)
+            pedometerAnalyzer = ped
+            ped.start()
+        }
+
+        // 7. Start interval tracker
+        intervalTracker.startSession()
+
+        print("[ClimbDetection] Started with sensors: \(cap.summary)")
     }
-    
-    private func startStopTimer() {
-        stopTimer?.invalidate()
-        stopTimer = Timer.scheduledTimer(withTimeInterval: stopTimeout, repeats: false) { [weak self] _ in
+
+    func stopMonitoring() {
+        motionManager.stopDeviceMotionUpdates()
+        motionManager.stopAccelerometerUpdates()
+        altitudeAnalyzer?.stop()
+        pedometerAnalyzer?.stop()
+        intervalTracker.endSession()
+
+        motionAnalyzer?.reset()
+        heartRateAnalyzer?.reset()
+        stateMachine.reset()
+
+        DispatchQueue.main.async { [weak self] in
+            self?.isClimbing = false
+            self?.currentState = .idle
+            self?.climbConfidence = 0
+        }
+
+        print("[ClimbDetection] Stopped monitoring")
+    }
+
+    // MARK: - External Heart Rate Feed
+
+    /// Called by ClimbSessionManager when WorkoutService provides a new HR reading
+    func updateHeartRate(_ bpm: Double) {
+        heartRateAnalyzer?.update(bpm: bpm)
+
+        // Also feed to interval tracker
+        intervalTracker.updateHeartRate(bpm)
+    }
+
+    // MARK: - Session Data
+
+    /// Get all climb intervals for the session (for ClimbRecord)
+    func getSessionIntervals() -> [ClimbInterval] {
+        intervalTracker.allClimbIntervals()
+    }
+
+    /// Get detailed interval metrics
+    func getSessionIntervalMetrics() -> [ClimbIntervalMetrics] {
+        intervalTracker.allIntervalMetrics()
+    }
+
+    /// Get session-level metrics
+    func getSessionMetrics() -> SessionMetrics {
+        let hrResult = heartRateAnalyzer?.currentResult()
+        return intervalTracker.sessionMetrics(
+            peakHR: hrResult?.currentBPM ?? 0,
+            totalAltGain: altitudeAnalyzer?.totalGain ?? 0
+        )
+    }
+
+    // MARK: - Motion Processing (10Hz)
+
+    private func processDeviceMotion(_ motion: CMDeviceMotion) {
+        guard let analyzer = motionAnalyzer else { return }
+        let motionResult = analyzer.process(deviceMotion: motion)
+        runFusion(motionResult: motionResult)
+    }
+
+    private func processAccelerometer(_ data: CMAccelerometerData) {
+        guard let analyzer = motionAnalyzer else { return }
+        let motionResult = analyzer.process(accelerometer: data)
+        runFusion(motionResult: motionResult)
+    }
+
+    // MARK: - Fusion (called at 10Hz from motion queue)
+
+    private func runFusion(motionResult: MotionAnalyzer.Result) {
+        // Gather current results from all analyzers
+        let altResult = altitudeAnalyzer?.currentResult()
+        let hrResult = heartRateAnalyzer?.currentResult()
+        let pedResult = pedometerAnalyzer?.currentResult()
+
+        // Fuse signals
+        let fusion = fusionEngine.fuse(
+            motionResult: motionResult,
+            altitudeResult: altResult,
+            hrResult: hrResult,
+            pedometerResult: pedResult
+        )
+
+        // Feed confidence to state machine
+        let now = Date()
+        stateMachine.update(confidence: fusion.confidence, now: now)
+
+        // Feed metrics to interval tracker
+        intervalTracker.updateConfidence(fusion.confidence)
+        if let alt = altResult {
+            intervalTracker.updateAltitudeGain(alt.totalGain)
+        }
+        if let hr = hrResult {
+            intervalTracker.updateHeartRateZone(hr.zone.rawValue)
+        }
+
+        // Update published properties on main queue
+        DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.currentState = .idle
-            self.isClimbing = false
-            self.onClimbStopped?()
-            self.onStateChanged?(.idle)
+            self.climbConfidence = fusion.confidence
+            self.totalAltitudeGain = altResult?.totalGain ?? 0
+            self.currentAltitudeRate = altResult?.currentRate ?? 0
+            self.currentHRZone = hrResult?.zone ?? .rest
+            self.currentClimbDuration = self.intervalTracker.currentClimbDuration
+            self.climbIntervalCount = self.intervalTracker.climbIntervalCount
         }
     }
-    
-    private func resetStopTimer() {
-        stopTimer?.invalidate()
-        stopTimer = nil
+
+    // MARK: - State Transition Handling
+
+    private func handleStateTransition(_ newState: ClimbState) {
+        let previousState = currentState
+
+        currentState = newState
+        isClimbing = (newState == .climbing)
+
+        // Notify interval tracker
+        intervalTracker.onStateChanged(newState)
+
+        // Fire callbacks
+        onStateChanged?(newState)
+
+        if newState == .climbing && previousState == .idle {
+            onClimbStarted?()
+        } else if newState == .idle && previousState != .idle {
+            onClimbStopped?()
+        }
     }
 }

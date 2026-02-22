@@ -14,6 +14,7 @@
 		1759F2A7B1D4D322AC73D7BE /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */; };
 		1BA5CC649A00CDEFEF62911A /* PrivacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */; };
 		1F71BA5D58EF0700FC72D8A1 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06DE1A996FCB7BC592CA5FA /* LocationService.swift */; };
+		LA02F2E3D4C5B6A798012345 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LA01F2E3D4C5B6A798012345 /* LiveActivityService.swift */; };
 		2AC3B13233F78EA531C0308A /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */; };
 		2FC19E94490ED821665070C1 /* LiveDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */; };
 		32116D60D51EB55649F38A00 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872242F87A1511886A4486C7 /* WatchMessage.swift */; };
@@ -91,6 +92,31 @@
 		C10600010000000000000001 /* HolidayDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10600020000000000000001 /* HolidayDetector.swift */; };
 		C10700010000000000000001 /* StickerWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10700020000000000000001 /* StickerWallView.swift */; };
 		C10800010000000000000001 /* ProfilePrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10800020000000000000001 /* ProfilePrivacySettingsView.swift */; };
+		92E37F537561CFC6B8979F24 /* SensorCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEA0F944F3DCE4948D7923C /* SensorCapability.swift */; };
+		7A652EE9734FF895D2ECEED2 /* RingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE462BD0D574035AD818F844 /* RingBuffer.swift */; };
+		41BA63DA05673C42776B59BE /* MotionAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B368A6C1F246F1AFB667020 /* MotionAnalyzer.swift */; };
+		C932F6CB91A39CC7FC210507 /* AltitudeAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA2D3F96B75F726D39257DA /* AltitudeAnalyzer.swift */; };
+		F59C80EA0EDC8D652A1A6B1E /* HeartRateAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E51681F49C5CEECECE25F55 /* HeartRateAnalyzer.swift */; };
+		C641D7A46B266D9ABBA077CA /* PedometerAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07CBAF7B7D24BCC6DB2857A /* PedometerAnalyzer.swift */; };
+		5E22F130DDA7DA709900EC6D /* SignalFusionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC26E0BF75174496CC639BC5 /* SignalFusionEngine.swift */; };
+		ACE8336D98D32B4C0232C937 /* ClimbStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5EE131F0C35851D9FD1437 /* ClimbStateMachine.swift */; };
+		7B459E3D0D2FE9B9E309E32F /* IntervalTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707B78BAE4F43CB857E3B2E /* IntervalTracker.swift */; };
+		BD014D7A1EC654C934D6E7BA /* ClimbMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81B53950D4D9F9B6E4804B /* ClimbMetrics.swift */; };
+		0AAA6E2E4F3B242B55AA419C /* ClimbMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81B53950D4D9F9B6E4804B /* ClimbMetrics.swift */; };
+		1CC83CAAED0CF51C8F94B9D8 /* TopOutWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8AE42E6505B7A72F2D5CF6 /* TopOutWidgetsBundle.swift */; };
+		23B2BA743095B42EAAAF78B7 /* ClimbingLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7299944FE19E6046FA33BE /* ClimbingLiveActivity.swift */; };
+		1F19D832B09DF3EE146F79A5 /* ClimbingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424C06B30F46426379F8A3F7 /* ClimbingActivityAttributes.swift */; };
+		57B586B9E3593161E70DC8D9 /* ClimbRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287F1505365D04FB7CA0811E /* ClimbRecord.swift */; };
+		8081A42C8AA1151F077BEC38 /* ClimbMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A81B53950D4D9F9B6E4804B /* ClimbMetrics.swift */; };
+		A5F5E143BC70472FE550EEB4 /* ClimbState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26DED48C966D85A4213E89 /* ClimbState.swift */; };
+		FEAD8FE1D0347AB6B4D698BA /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2571614148D8A4347F13AF /* Gym.swift */; };
+		9645C1CF1A9E1A4AB444EB41 /* PrivacySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */; };
+		159966140DA0B45A75CECDC3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A28FD4059128A51AF3357 /* User.swift */; };
+		4AA19B0262962302E46EB7CC /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872242F87A1511886A4486C7 /* WatchMessage.swift */; };
+		A9E03F09581E3E008B5863E6 /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */; };
+		18A784AE4061A28C668C3934 /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6B20D51B79A838FFF885C0 /* TimeInterval+Formatting.swift */; };
+		649ED09FFA340EE113817D46 /* ClimbingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424C06B30F46426379F8A3F7 /* ClimbingActivityAttributes.swift */; };
+		7294551AD7198E5A4BD8FDB4 /* TopOutWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E4D8A73184ADAFEFCAFA4DE3 /* TopOutWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,7 +127,29 @@
 			remoteGlobalIDString = 287E3AA579B377E5BF58162C;
 			remoteInfo = TopOut;
 		};
+		458F7BC0ECE84F75A798FB69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0200A8DD97F868C69CF26195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E17DBB9D5B6544B3EF45DD69;
+			remoteInfo = TopOutWidgets;
+		};
 /* End PBXContainerItemProxy section */
+
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C6844AEC0A864B65EF8EF441 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7294551AD7198E5A4BD8FDB4 /* TopOutWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		05E4103F2EB7BE1B0370235F /* GymLiveScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymLiveScreenView.swift; sourceTree = "<group>"; };
@@ -165,6 +213,7 @@
 		C25702741F6D8A93AF5D67B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C68BDF6F67582B95A8E99A86 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
 		D06DE1A996FCB7BC592CA5FA /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		LA01F2E3D4C5B6A798012345 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
 		D291336088CABAF4251EDBB9 /* LiveDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDashboardView.swift; sourceTree = "<group>"; };
 		D7D05EDDE184213A4B16D5A7 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		DA99CBD9DCFE63805E76C420 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
@@ -184,7 +233,32 @@
 		C10600020000000000000001 /* HolidayDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayDetector.swift; sourceTree = "<group>"; };
 		C10700020000000000000001 /* StickerWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerWallView.swift; sourceTree = "<group>"; };
 		C10800020000000000000001 /* ProfilePrivacySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePrivacySettingsView.swift; sourceTree = "<group>"; };
+		1CEA0F944F3DCE4948D7923C /* SensorCapability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorCapability.swift; sourceTree = "<group>"; };
+		AE462BD0D574035AD818F844 /* RingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingBuffer.swift; sourceTree = "<group>"; };
+		4B368A6C1F246F1AFB667020 /* MotionAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnalyzer.swift; sourceTree = "<group>"; };
+		FCA2D3F96B75F726D39257DA /* AltitudeAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeAnalyzer.swift; sourceTree = "<group>"; };
+		7E51681F49C5CEECECE25F55 /* HeartRateAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateAnalyzer.swift; sourceTree = "<group>"; };
+		C07CBAF7B7D24BCC6DB2857A /* PedometerAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerAnalyzer.swift; sourceTree = "<group>"; };
+		BC26E0BF75174496CC639BC5 /* SignalFusionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalFusionEngine.swift; sourceTree = "<group>"; };
+		7B5EE131F0C35851D9FD1437 /* ClimbStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbStateMachine.swift; sourceTree = "<group>"; };
+		A707B78BAE4F43CB857E3B2E /* IntervalTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalTracker.swift; sourceTree = "<group>"; };
+		6A81B53950D4D9F9B6E4804B /* ClimbMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbMetrics.swift; sourceTree = "<group>"; };
+		EB8AE42E6505B7A72F2D5CF6 /* TopOutWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopOutWidgetsBundle.swift; sourceTree = "<group>"; };
+		4D7299944FE19E6046FA33BE /* ClimbingLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingLiveActivity.swift; sourceTree = "<group>"; };
+		424C06B30F46426379F8A3F7 /* ClimbingActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimbingActivityAttributes.swift; sourceTree = "<group>"; };
+		E4D8A73184ADAFEFCAFA4DE3 /* TopOutWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TopOutWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+
+/* Begin PBXFrameworksBuildPhase section */
+		7837BA85B6AE06CFB269BCF2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0244D1E5BEC5BD26192AF963 /* Extensions */ = {
@@ -266,6 +340,7 @@
 			children = (
 				4B745ADD963B68FDDCE970B1 /* TopOut.app */,
 				578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */,
+				E4D8A73184ADAFEFCAFA4DE3 /* TopOutWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,6 +375,7 @@
 		4FB151D787E77F18460E34E5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1AC6EE4676120EA21802E8D9 /* Detection */,
 				5490AE490926578365B75CA7 /* ClimbDetectionService.swift */,
 				213AC6D31349B0A0E478872D /* PhoneConnectivityService.swift */,
 				4D6DBB26F38E54BF2A09F43F /* WorkoutService.swift */,
@@ -374,11 +450,13 @@
 			isa = PBXGroup;
 			children = (
 				287F1505365D04FB7CA0811E /* ClimbRecord.swift */,
+				6A81B53950D4D9F9B6E4804B /* ClimbMetrics.swift */,
 				7A26DED48C966D85A4213E89 /* ClimbState.swift */,
 				1D2571614148D8A4347F13AF /* Gym.swift */,
 				EF954D24B7F8889E2BC9660B /* PrivacySettings.swift */,
 				BE0A28FD4059128A51AF3357 /* User.swift */,
 				872242F87A1511886A4486C7 /* WatchMessage.swift */,
+				424C06B30F46426379F8A3F7 /* ClimbingActivityAttributes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -435,6 +513,7 @@
 				9807870BFECD94BCF985135B /* Shared */,
 				BD09CA0238A673B868784FE3 /* TopOut */,
 				C9616EE3A6EE3DCE68E36269 /* TopOutWatch */,
+				30DF8458AA855E914650C087 /* TopOutWidgets */,
 				3E275FC8428E4EC19F6114E8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -459,6 +538,7 @@
 				A16A2B3C4D5E6F7A8B9C0D1E /* BLEDeviceManager.swift */,
 				EDC9A891A58A28C337FC853D /* HealthKitService.swift */,
 				D06DE1A996FCB7BC592CA5FA /* LocationService.swift */,
+				LA01F2E3D4C5B6A798012345 /* LiveActivityService.swift */,
 				A17A2B3C4D5E6F7A8B9C0D1E /* MockDataService.swift */,
 				8737DF6869FE68BF5B87DBB2 /* NetworkConfig.swift */,
 				B10D00010000000000000002 /* VideoStorageService.swift */,
@@ -525,6 +605,31 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		1AC6EE4676120EA21802E8D9 /* Detection */ = {
+			isa = PBXGroup;
+			children = (
+				1CEA0F944F3DCE4948D7923C /* SensorCapability.swift */,
+				AE462BD0D574035AD818F844 /* RingBuffer.swift */,
+				4B368A6C1F246F1AFB667020 /* MotionAnalyzer.swift */,
+				FCA2D3F96B75F726D39257DA /* AltitudeAnalyzer.swift */,
+				7E51681F49C5CEECECE25F55 /* HeartRateAnalyzer.swift */,
+				C07CBAF7B7D24BCC6DB2857A /* PedometerAnalyzer.swift */,
+				BC26E0BF75174496CC639BC5 /* SignalFusionEngine.swift */,
+				7B5EE131F0C35851D9FD1437 /* ClimbStateMachine.swift */,
+				A707B78BAE4F43CB857E3B2E /* IntervalTracker.swift */,
+			);
+			path = Detection;
+			sourceTree = "<group>";
+		};
+		30DF8458AA855E914650C087 /* TopOutWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				EB8AE42E6505B7A72F2D5CF6 /* TopOutWidgetsBundle.swift */,
+				4D7299944FE19E6046FA33BE /* ClimbingLiveActivity.swift */,
+			);
+			path = TopOutWidgets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -534,10 +639,12 @@
 			buildPhases = (
 				AA40DD5792BDECBA344AFF4B /* Sources */,
 				9B0B9579309F1F3C40CEF3F7 /* Resources */,
+				C6844AEC0A864B65EF8EF441 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C348590FF34FAAEDA429E960 /* PBXTargetDependency */,
 			);
 			name = TopOut;
 			packageProductDependencies = (
@@ -565,6 +672,25 @@
 			productReference = 578E6ED8F89225DAEA3C6C4F /* TopOutWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E17DBB9D5B6544B3EF45DD69 /* TopOutWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14CA00B675E60FE623B078E7 /* Build configuration list for PBXNativeTarget "TopOutWidgets" */;
+			buildPhases = (
+				E192703B65BBA033500B5015 /* Sources */,
+				C20F914834715D15F559621F /* Resources */,
+				7837BA85B6AE06CFB269BCF2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TopOutWidgets;
+			packageProductDependencies = (
+			);
+			productName = TopOutWidgets;
+			productReference = E4D8A73184ADAFEFCAFA4DE3 /* TopOutWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -589,6 +715,7 @@
 			targets = (
 				287E3AA579B377E5BF58162C /* TopOut */,
 				CAC7A3303AA1576E97C13B3A /* TopOutWatch */,
+				E17DBB9D5B6544B3EF45DD69 /* TopOutWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -610,6 +737,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C20F914834715D15F559621F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -622,6 +756,7 @@
 				015CBE9E751938E641FADADE /* AuthService.swift in Sources */,
 				5F47A0E482E249FD1C6B23AC /* ClimbRecord.swift in Sources */,
 				C014909C9E16142F9D60696D /* ClimbState.swift in Sources */,
+				0AAA6E2E4F3B242B55AA419C /* ClimbMetrics.swift in Sources */,
 				ACEA2A88A962D0D3D7FE9910 /* ContentView.swift in Sources */,
 				917525EB4D93F13ABC52BD8C /* Date+Helpers.swift in Sources */,
 				0BD34188D149BDA1DE571C10 /* Gym.swift in Sources */,
@@ -630,6 +765,7 @@
 				2FC19E94490ED821665070C1 /* LiveDashboardView.swift in Sources */,
 				4C793EA72B19F816660E57F1 /* LiveDashboardViewModel.swift in Sources */,
 				1F71BA5D58EF0700FC72D8A1 /* LocationService.swift in Sources */,
+				LA02F2E3D4C5B6A798012345 /* LiveActivityService.swift in Sources */,
 				8AE5E2A707C16E8F3854B5F7 /* LoginView.swift in Sources */,
 				1759F2A7B1D4D322AC73D7BE /* NetworkConfig.swift in Sources */,
 				5EF0A4D305E1975E58B13AE4 /* PrivacySettings.swift in Sources */,
@@ -679,6 +815,7 @@
 				C10600010000000000000001 /* HolidayDetector.swift in Sources */,
 				C10700010000000000000001 /* StickerWallView.swift in Sources */,
 				C10800010000000000000001 /* ProfilePrivacySettingsView.swift in Sources */,
+				649ED09FFA340EE113817D46 /* ClimbingActivityAttributes.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +843,35 @@
 				E043F3E2D9307A82C81C6C52 /* User.swift in Sources */,
 				32116D60D51EB55649F38A00 /* WatchMessage.swift in Sources */,
 				D586CD6EBAB11436C4A291C1 /* WorkoutService.swift in Sources */,
+				92E37F537561CFC6B8979F24 /* SensorCapability.swift in Sources */,
+				7A652EE9734FF895D2ECEED2 /* RingBuffer.swift in Sources */,
+				41BA63DA05673C42776B59BE /* MotionAnalyzer.swift in Sources */,
+				C932F6CB91A39CC7FC210507 /* AltitudeAnalyzer.swift in Sources */,
+				F59C80EA0EDC8D652A1A6B1E /* HeartRateAnalyzer.swift in Sources */,
+				C641D7A46B266D9ABBA077CA /* PedometerAnalyzer.swift in Sources */,
+				5E22F130DDA7DA709900EC6D /* SignalFusionEngine.swift in Sources */,
+				ACE8336D98D32B4C0232C937 /* ClimbStateMachine.swift in Sources */,
+				7B459E3D0D2FE9B9E309E32F /* IntervalTracker.swift in Sources */,
+				BD014D7A1EC654C934D6E7BA /* ClimbMetrics.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E192703B65BBA033500B5015 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CC83CAAED0CF51C8F94B9D8 /* TopOutWidgetsBundle.swift in Sources */,
+				23B2BA743095B42EAAAF78B7 /* ClimbingLiveActivity.swift in Sources */,
+				1F19D832B09DF3EE146F79A5 /* ClimbingActivityAttributes.swift in Sources */,
+				8081A42C8AA1151F077BEC38 /* ClimbMetrics.swift in Sources */,
+				57B586B9E3593161E70DC8D9 /* ClimbRecord.swift in Sources */,
+				A5F5E143BC70472FE550EEB4 /* ClimbState.swift in Sources */,
+				A9E03F09581E3E008B5863E6 /* Date+Helpers.swift in Sources */,
+				FEAD8FE1D0347AB6B4D698BA /* Gym.swift in Sources */,
+				9645C1CF1A9E1A4AB444EB41 /* PrivacySettings.swift in Sources */,
+				18A784AE4061A28C668C3934 /* TimeInterval+Formatting.swift in Sources */,
+				159966140DA0B45A75CECDC3 /* User.swift in Sources */,
+				4AA19B0262962302E46EB7CC /* WatchMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +882,11 @@
 			isa = PBXTargetDependency;
 			target = 287E3AA579B377E5BF58162C /* TopOut */;
 			targetProxy = AFE1D554E3C9806AE9440471 /* PBXContainerItemProxy */;
+		};
+		C348590FF34FAAEDA429E960 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E17DBB9D5B6544B3EF45DD69 /* TopOutWidgets */;
+			targetProxy = 458F7BC0ECE84F75A798FB69 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -735,6 +906,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -837,6 +1009,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -931,6 +1104,48 @@
 			};
 			name = Debug;
 		};
+		034C5C13D1B883B9ED9D42DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TopOutWidgets;
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.markma.topout.TopOutWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		83256DCDD4C98902EE272733 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = J52VNHBJH3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = TopOutWidgets;
+				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.markma.topout.TopOutWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -957,6 +1172,15 @@
 			buildConfigurations = (
 				C78C02E4E26463315A7F9CF1 /* Debug */,
 				6F4072D4B362A59A66A7610D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		14CA00B675E60FE623B078E7 /* Build configuration list for PBXNativeTarget "TopOutWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				034C5C13D1B883B9ED9D42DC /* Debug */,
+				83256DCDD4C98902EE272733 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

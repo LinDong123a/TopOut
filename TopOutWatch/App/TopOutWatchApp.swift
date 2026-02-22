@@ -3,22 +3,22 @@ import SwiftUI
 @main
 struct TopOutWatchApp: App {
     @StateObject private var sessionManager = ClimbSessionManager()
-    
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 switch sessionManager.appState {
-                case .sceneSelection:
-                    SceneSelectionView()
+                case .idle:
+                    IdleStartView()
                         .environmentObject(sessionManager)
-                case .ready:
-                    ReadyView()
+                case .waiting:
+                    WaitingView()
                         .environmentObject(sessionManager)
                 case .climbing:
-                    ClimbingContainerView()
+                    ActiveSessionView()
                         .environmentObject(sessionManager)
                 case .summary:
-                    ClimbSummaryView()
+                    SessionSummaryView()
                         .environmentObject(sessionManager)
                 }
             }

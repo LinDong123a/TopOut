@@ -24,6 +24,11 @@ final class ClimbRecord {
     var locationName: String?
     var isOutdoor: Bool
     
+    // Multi-sensor algorithm metrics
+    var totalAltitudeGain: Double
+    var totalClimbingTime: TimeInterval
+    var climbIntervalCount: Int
+
     // Public / Video fields
     var isPublic: Bool
     var videoURLs: [String]
@@ -47,6 +52,9 @@ final class ClimbRecord {
         notes: String? = nil,
         locationName: String? = nil,
         isOutdoor: Bool = false,
+        totalAltitudeGain: Double = 0,
+        totalClimbingTime: TimeInterval = 0,
+        climbIntervalCount: Int = 0,
         isPublic: Bool = false,
         videoURLs: [String] = []
     ) {
@@ -68,6 +76,9 @@ final class ClimbRecord {
         self.notes = notes
         self.locationName = locationName
         self.isOutdoor = isOutdoor
+        self.totalAltitudeGain = totalAltitudeGain
+        self.totalClimbingTime = totalClimbingTime
+        self.climbIntervalCount = climbIntervalCount
         self.isPublic = isPublic
         self.videoURLs = videoURLs
     }

@@ -36,6 +36,7 @@ targets:
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "TopOut 需要访问相册以导入攀爬视频"
         INFOPLIST_KEY_NSCameraUsageDescription: "TopOut 需要使用相机拍摄攀爬视频"
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        INFOPLIST_KEY_NSSupportsLiveActivities: YES
     info:
       properties:
         CFBundleDocumentTypes:
@@ -71,10 +72,11 @@ schemes:
         TopOut: all
     run:
       config: Debug
-  
+
   TopOutWatch:
     build:
       targets:
         TopOutWatch: all
     run:
       config: Debug
+

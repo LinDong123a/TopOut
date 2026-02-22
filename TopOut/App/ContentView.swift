@@ -62,6 +62,19 @@ struct ContentView: View {
         .onChange(of: connectivity.pendingSessionData != nil) { _, hasPending in
             if hasPending { showClimbFinish = true }
         }
+        .onChange(of: climbSession.isClimbing) { _, isClimbing in
+            if isClimbing && !showClimbSheet {
+                // Watch started session → auto-show climbing sheet
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    showClimbSheet = true
+                }
+            } else if !isClimbing && showClimbSheet {
+                // Session ended → dismiss climbing sheet, return to "+" button
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    showClimbSheet = false
+                }
+            }
+        }
         .fullScreenCover(isPresented: $showClimbFinish) {
             if let data = connectivity.pendingSessionData {
                 ClimbFinishView(sessionData: data) {
